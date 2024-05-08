@@ -13,8 +13,8 @@ At the moment the structure of the application is:
 
 ```
 /
-|public/
-|app/
+|-public/
+|-app/
 |  |--(frontend)/    # pending
 |  |  |-- lol/       # pending
 |  |  |-- tft/       # pending
