@@ -11,6 +11,7 @@ Using App Router on Next.js currently and storing front pages on /(frontend) dir
 
 At the moment the structure of the application is:
 
+```
 /
 
 |public/
@@ -41,4 +42,4 @@ At the moment the structure of the application is:
 
 |     |-- youtube/   # pending
 
-
+```
