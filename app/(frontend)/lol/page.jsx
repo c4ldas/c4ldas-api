@@ -4,12 +4,13 @@ import styles from "../page.module.css";
 
 export default function Home({ params, searchParams }) {
 
-  console.log(params);        // {}
-  console.log(searchParams);  // { hello: 'my friend' }
+  // console.log(params);        // {}
+  // console.log(searchParams);  // { hello: 'my friend' }
 
   return (
     <main className={styles.main}>
-      <h1>{searchParams.hello}</h1>
+      <h1>This is the lol page</h1>
+      <h2>{searchParams.hello}</h2>
     </main>
   );
 }

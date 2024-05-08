@@ -7,17 +7,29 @@ export async function GET(request) {
 
   const { region, player, tag } = obj;
   const type = obj.type || "text";
+  const game = "tft";
+  const queueType = "RANKED_TFT";
+
+  // Creating null values for non ranked players
+  const nullValues = {
+    "tier": "No_Rank",
+    "rank": "0",
+    "leaguePoints": 0,
+    "wins": 0,
+    "losses": 0
+  }
 
   try {
-
-    const puuidRequest = await getSummonerPuuid({ player, tag, region, game: "tft" });
+    const puuidRequest = await getSummonerPuuid({ player, tag, region, game });
     const { puuid, gameName, tagLine } = puuidRequest;
 
-    const summonerIdRequest = await getSummonerId({ puuid, region, game: "tft" });
+    const summonerIdRequest = await getSummonerId({ puuid, region, game });
     const { id, accountId, summonerLevel } = summonerIdRequest;
 
-    const rankRequest = await getRank({ id, gameName, region, game: "tft" });
-    const { tier, rank, leaguePoints, wins, losses } = rankRequest;
+    const rankRequest = await getRank({ id, gameName, region, game });
+
+    const soloRank = rankRequest.find((response) => response.queueType === queueType);
+    const { tier, rank, leaguePoints, wins, losses } = soloRank || nullValues;
 
     const response = { gameName, tagLine, tier, rank, leaguePoints, wins, losses };
 

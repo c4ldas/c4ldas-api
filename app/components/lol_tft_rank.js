@@ -30,6 +30,7 @@ const servers = [
   }
 ];
 
+
 export async function getSummonerPuuid(request) {
   try {
     const { player, tag, region, game } = request;
@@ -40,8 +41,8 @@ export async function getSummonerPuuid(request) {
 
     const puuidRequest = await fetch(`https://${server.name}.${apiURL}/riot/account/v1/accounts/by-riot-id/${player}/${tag}`, {
       method: "GET",
-      // cache: "force-cache",
-      next: { revalidate: 0 },
+      cache: "force-cache",
+      // next: { revalidate: 0 },
       headers: {
         "X-Riot-Token": `${process.env[gameInfo[game].tokenName]}`
       }
@@ -59,7 +60,6 @@ export async function getSummonerPuuid(request) {
   }
 }
 
-
 export async function getSummonerId(request) {
   try {
     const { puuid, region, game } = request;
@@ -76,7 +76,6 @@ export async function getSummonerId(request) {
     }
 
     const summonerResponse = await summonerRequest.json();
-    console.log(summonerResponse);
     return (summonerResponse);
 
   } catch (error) {
@@ -87,10 +86,10 @@ export async function getSummonerId(request) {
 export async function getRank(request) {
   try {
     const { id, gameName, region, game } = request;
-    // const rankRequest = await fetch(`https://${region}.${apiURL}/tft/league/v1/entries/by-summoner/${id}`, {
     const rankRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].rankUrl}/${id}`, {
       method: "GET",
       // cache: "force-cache",
+      next: { revalidate: 900 }, // 15 minutes
       headers: {
         "X-Riot-Token": `${process.env[gameInfo[game].tokenName]}`
       }
@@ -101,7 +100,7 @@ export async function getRank(request) {
     }
 
     const rankResponse = await rankRequest.json();
-    return (rankResponse[0]);
+    return (rankResponse);
 
   } catch (error) {
     throw (error);
