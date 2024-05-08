@@ -23,7 +23,7 @@ At the moment the structure of the application is:
 |     |-- lol/       # done
 |     |-- spotify/   # pending
 |     |-- steam/     # pending
-|     |-- tft/       # pending
+|     |-- tft/       # done
 |     |-- twitch/    # pending
 |     |-- valorant/  # pending
 |     |-- youtube/   # pending
