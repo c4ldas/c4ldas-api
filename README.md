@@ -16,9 +16,10 @@ At the moment the structure of the application is:
 |-public/
 |-app/
 |  |--(frontend)/    # pending
+|  |  |-- homepage   # done
 |  |  |-- lol/       # pending
 |  |  |-- tft/       # pending
-|  |
+|  |  
 |  |--api/
 |     |-- lol/       # done
 |     |-- spotify/   # pending
