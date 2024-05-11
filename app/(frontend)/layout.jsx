@@ -6,9 +6,17 @@ const quicksand = Quicksand({
   subsets: ["latin"]
 });
 
+export const viewport = {
+  themeColor: "#2e2e2e",
+  colorScheme: "dark",
+  width: "device-width",
+}
+
 export const metadata = {
   title: "c4ldas webpage",
   description: "Just a webpage",
+  manifest: "https://localhost:3000/manifest.json",
+  backgroundColor: "#3c3c3c",
 
   // Favicon
   icons: {
@@ -17,24 +25,50 @@ export const metadata = {
     apple: "/images/favicon.png",
   },
 
-  // OpenGraph / Facebook
-  openGraph: {
+  // Apple
+  appleWebApp: {
     title: "c4ldas webpage",
-    description: "Just a webpage",
-    url: "https://c4ldas.com.br",
-    creator: "@c4ldas",
-    images: "https://c4ldas.com.br/images/seapi-cover.png",
+    statusBarStyle: "black",
+    backgroundColor: "#000",
+    touchIcons: [
+      {
+        sizes: "180x180",
+        url: "/images/favicon.png",
+        type: "image/png",
+      },
+    ],
+    startupImage: [
+      {
+        url: "/images/favicon.png",
+        media: "(device-width: 768px) and (device-height: 1024px)",
+      }
+    ]
   },
 
-  // Twitter
-  twitter: {
-    card: "summary_large_image",
-    title: "c4ldas webpage",
-    description: "Twitter test",
-    site: "https://c4ldas.com.br",
-    creator: "@c4ldas",
-    image: "https://c4ldas.com.br/images/seapi-cover.png",
-  }
+  // Itunes
+  itunes: {
+    appId: "686449807",
+    appArgument: "t.me/@c4ldas",
+  },
+
+  /*   // OpenGraph / Facebook
+    openGraph: {
+      title: "c4ldas webpage",
+      description: "Just a webpage",
+      url: "https://c4ldas.com.br",
+      creator: "@c4ldas",
+      images: "https://c4ldas.com.br/images/seapi-cover.png",
+    },
+  
+    // Twitter
+    twitter: {
+      card: "summary_large_image",
+      title: "c4ldas webpage",
+      description: "Twitter test",
+      site: "https://c4ldas.com.br",
+      creator: "@c4ldas",
+      image: "https://c4ldas.com.br/images/seapi-cover.png",
+    }*/
 };
 
 export default function RootLayout({ children }) {
