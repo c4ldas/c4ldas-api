@@ -195,3 +195,22 @@ input:checked+.slider:before {
     width: calc(33% - 20px);
   }
 }
+
+
+/*
+const root = document.documentElement;
+const mode = document.querySelector(".mode");
+const linkbox = document.querySelectorAll(".link-box");
+const themeToggle = document.querySelector("#theme-toggle");
+
+localStorage.setItem("theme", "dark"); 
+root.style.setProperty("background-image", "var(--bg-dark)"); 
+root.style.setProperty("color", "var(--text-dark)"); // Font color
+mode.style.setProperty("content", "url('../images/moon.svg')"); 
+mode.style.setProperty("left", "70%");
+linkbox.forEach((box) => {
+  box.style.setProperty("background-color", "var(--box-bg-dark)"); 
+  const description = box.querySelector(".description"); 
+  description.style.setProperty("color", "var(--text-dark)"); 
+
+*/

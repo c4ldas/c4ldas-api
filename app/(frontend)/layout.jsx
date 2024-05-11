@@ -9,12 +9,12 @@ const quicksand = Quicksand({
 export const metadata = {
   title: "c4ldas webpage",
   description: "Just a webpage for c4ldas",
-  // icon: "https://static-cdn.jtvnw.net/jtv_user_pictures/451dd285-491d-49e0-b1e0-20147f3ab56b-profile_image-70x70.png",
+  icon: "https://static-cdn.jtvnw.net/jtv_user_pictures/451dd285-491d-49e0-b1e0-20147f3ab56b-profile_image-70x70.png",
 
   // OpenGraph / Facebook
   openGraph: {
     title: "c4ldas webpage",
-    description: "Test test openGraph",
+    description: "Just a webpage",
     url: "https://c4ldas.com.br",
     creator: "@c4ldas",
     images: "https://c4ldas.com.br/images/seapi-cover.png",

@@ -1,45 +1,37 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 
 export default function DarkMode() {
-
   useEffect(() => {
-    // Check the current user preference for theme color
-    const savedTheme = localStorage.getItem("theme");
+    // Check for saved theme preference, returns null if not set
+    const currentTheme = localStorage.getItem("theme");
 
-    // Check the system-wide preference, if no preference set previously. Defaults to light mode.
-    if (!savedTheme) {
-      const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      prefersDarkMode ? darkMode() : lightMode();
-      return;
-    }
+    // Check system wide preference
+    const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-    // In case they have set the mode, load the user preference
-    savedTheme == "dark" ? darkMode() : lightMode();
+    // Set initial theme
+    const theme = currentTheme || (prefersDarkMode ? "dark" : "light");
+
+    // Set theme
+    setTheme(theme);
   }, []);
 
-
   return (
-    <label className="switch" >
+    <label className="switch">
       <input type="checkbox" id="theme-toggle" onChange={handleToggle} />
       <span className="slider"><span className="mode"></span></span>
     </label>
   )
 }
 
-
-function handleToggle(test) {
-  console.log("handleToggle", test.target.checked)
-  if (test.target.checked) {
-    darkMode();
-  } else {
-    lightMode();
-  }
-
+function handleToggle(event) {
+  const newTheme = event.target.checked ? "dark" : "light";
+  localStorage.setItem("theme", newTheme);
+  setTheme(newTheme);
 }
 
-
+/* 
 function darkMode() {
   const root = document.documentElement;
   const mode = document.querySelector(".mode");
@@ -57,7 +49,6 @@ function darkMode() {
     description.style.setProperty("color", "var(--text-dark)"); // Set description text color
   });
   themeToggle.checked = true;
-  return;
 }
 
 function lightMode() {
@@ -77,92 +68,61 @@ function lightMode() {
     description.style.setProperty("color", "var(--text-light)"); // Set description text color
   });
   themeToggle.checked = false;
-  return;
+}
+ */
+
+
+function setTheme(theme) {
+  const root = document.documentElement;
+  const mode = document.querySelector(".mode");
+  const linkbox = document.querySelectorAll(".link-box");
+  const themeToggle = document.querySelector("#theme-toggle");
+  const darkIcon = "/images/moon.svg";
+  const lightIcon = "/images/sun.svg";
+  const darkPosition = "70%";
+  const lightPosition = "25%";
+
+  root.style.setProperty("background-image", `var(--bg-${theme})`); // Background color
+  root.style.setProperty("color", `var(--text-${theme})`); // Font color
+  mode.style.setProperty("content", `url(${theme == "dark" ? darkIcon : lightIcon})`); // Change image to moon or sun
+  mode.style.setProperty("left", `${theme === 'dark' ? darkPosition : lightPosition}`); // Change position of the image
+  linkbox.forEach((box) => {
+    const description = box.querySelector(".description"); // Get the description element inside link-box
+    box.style.setProperty("background-color", `var(--box-bg-${theme})`); // Set link-box background color    
+    description.style.setProperty("color", `var(--text-${theme})`); // Set description text color
+  });
+  localStorage.setItem("theme", theme); // Store user preference
+  themeToggle.checked = (theme == "dark") ? true : false;
 }
 
+
+
+
+
+/* 
+export default function DarkMode() {
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (!savedTheme) {
+      const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      prefersDarkMode ? darkMode() : lightMode();
+      return;
+    }
+    savedTheme == "dark" ? darkMode() : lightMode();
+  }, []);
+} 
+*/
 
 
 
 
 /*
-
-  const savedTheme = localStorage.getItem("theme"); // Check the current user preference for theme color
-
-  // Check the system-wide preference, if no preference set previously. Defaults to light mode.
-  if (!savedTheme) {
+export default function DarkMode() {
+  useEffect(() => {
+    const currentTheme = localStorage.getItem("theme");
     const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    prefersDarkMode ? darkMode() : lightMode();
-    return;
-  }
-  // In case they have set the mode, load the user preference
-  savedTheme == "dark" ? darkMode() : lightMode();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const root = document.documentElement;
-const linkbox = document.querySelectorAll(".link-box");
-const mode = document.querySelector(".mode");
-const themeToggle = document.querySelector("#theme-toggle");
-
-function toggleTheme(obj) {
-  const isDark = root.style.getPropertyValue("background-image") == "var(--bg-dark)";
-  isDark ? lightMode() : darkMode();
+    const theme = currentTheme || (prefersDarkMode ? "dark" : "light");
+    theme === "dark" ? darkMode() : lightMode();
+  }, []);
 }
-
-function darkMode() {
-  localStorage.setItem("theme", "dark"); // Store user preference
-  root.style.setProperty("background-image", "var(--bg-dark)"); // Background color
-  root.style.setProperty("color", "var(--text-dark)"); // Font color
-  mode.style.setProperty("content", "url('../images/moon.svg')"); // Change image to moon
-  mode.style.setProperty("left", "70%"); // Change position of the moon image
-  linkbox.forEach((box) => {
-    box.style.setProperty("background-color", "var(--box-bg-dark)"); // Set link-box background color
-    const description = box.querySelector(".description"); // Get the description element inside link-box
-    description.style.setProperty("color", "var(--text-dark)"); // Set description text color
-  });
-  themeToggle.checked = true;
-  return;
-}
-
-function lightMode() {
-  localStorage.setItem("theme", "light"); // Store user preference
-  root.style.setProperty("background-image", "var(--bg-light)"); // Background color
-  root.style.setProperty("color", "var(--text-light)"); // Font color
-  mode.style.setProperty("content", "url('../images/sun.svg')"); // Change image to sun
-  mode.style.setProperty("left", "25%"); // Change position of the sun image
-  linkbox.forEach((box) => {
-    box.style.setProperty("background-color", "var(--box-bg-light)"); // Set link-box background color
-    const description = box.querySelector(".description"); // Get the description element inside link-box
-    description.style.setProperty("color", "var(--text-light)"); // Set description text color
-  });
-  themeToggle.checked = false;
-  return;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = localStorage.getItem("theme"); // Check the current user preference for theme color
-
-  // Check the system-wide preference, if no preference set previously. Defaults to light mode.
-  if (!savedTheme) {
-    const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    prefersDarkMode ? darkMode() : lightMode();
-    return;
-  }
-  // In case they have set the mode, load the user preference
-  savedTheme == "dark" ? darkMode() : lightMode();
-});
-
-document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
-
 */
