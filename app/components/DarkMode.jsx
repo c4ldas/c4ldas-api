@@ -46,4 +46,3 @@ function setTheme(theme) {
   localStorage.setItem("theme", theme); // Store user preference
   themeToggle.checked = (theme == "dark") ? true : false;
 }
-
