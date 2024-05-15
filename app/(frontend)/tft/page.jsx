@@ -1,16 +1,22 @@
-import styles from "../page.module.css";
+"use client"
 
-// http://localhost:3000/tft?hello=my%20friend
+import { usePathname } from "next/navigation";
+import Header from "@/app/components/Header";
+import FooterComponent from "@/app/components/Footer";
 
-export default function Home({ params, searchParams }) {
+export default function TFT({ params, searchParams }) {
 
-  // console.log(params);        // {}
-  // console.log(searchParams);  // { hello: 'my friend' }
+  const path = usePathname();
 
   return (
-    <main className={styles.main}>
-      <h1>This is the tft page</h1>
-      <h2>{searchParams.hello}</h2>
-    </main>
+    <div className="container">
+      <Header />
+      <main className="main">
+
+        <h1>This is the {path} page</h1>
+        <h2>{searchParams.hello}</h2>
+      </main>
+      <FooterComponent />
+    </div>
   );
 }

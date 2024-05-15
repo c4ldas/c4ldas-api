@@ -63,6 +63,12 @@ export default async function Home() {
         />
 
         <Linkbox
+          title="Steam Game"
+          description="Widget to show Steam game information."
+          link="https://c4ldas.com.br/api/steam"
+        />
+
+        <Linkbox
           title="Youtube - Channel ID"
           description="Retrieve a Youtube channel ID based on its channel name."
           link="https://c4ldas.com.br/api/youtube"

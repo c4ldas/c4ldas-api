@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
 
-export default function Lol({ params, searchParams }) {
+export default function Youtube({ params, searchParams }) {
 
   const path = usePathname();
 
