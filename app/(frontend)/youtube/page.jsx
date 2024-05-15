@@ -12,9 +12,7 @@ export default function Youtube({ params, searchParams }) {
     <div className="container">
       <Header />
       <main className="main">
-
         <h1>This is the {path} page</h1>
-        <h2>{searchParams.hello}</h2>
       </main>
       <FooterComponent />
     </div>
