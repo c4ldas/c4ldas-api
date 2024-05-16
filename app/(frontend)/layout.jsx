@@ -56,7 +56,7 @@ export const metadata = {
     description: "Just a webpage",
     url: "https://c4ldas.com.br",
     creator: "@c4ldas",
-    images: "/images/cover.png",
+    images: "https://c4ldas-api.vercel.app/images/cover.png",
   },
 
   // Twitter
@@ -66,7 +66,7 @@ export const metadata = {
     description: "Twitter test",
     site: "https://c4ldas.com.br",
     creator: "@c4ldas",
-    image: "/images/cover.png",
+    image: "https://c4ldas-api.vercel.app/images/cover.png",
   }
 };
 
