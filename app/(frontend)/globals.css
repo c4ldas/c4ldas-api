@@ -212,7 +212,7 @@ input:checked+.slider:before {
   }
 }
 
-/* Devices with more than 1200px will fit 3 boxes per row */
+/* Devices with at least 1200px will fit 3 boxes per row */
 @media (min-width: 1200px) {
   .link-box {
     width: calc(33% - 20px);

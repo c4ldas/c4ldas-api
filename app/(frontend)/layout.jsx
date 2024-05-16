@@ -56,7 +56,7 @@ export const metadata = {
     description: "Just a webpage",
     url: "https://c4ldas.com.br",
     creator: "@c4ldas",
-    images: "https://c4ldas.com.br/images/seapi-cover.png",
+    images: "/images/cover.png",
   },
 
   // Twitter
@@ -66,7 +66,7 @@ export const metadata = {
     description: "Twitter test",
     site: "https://c4ldas.com.br",
     creator: "@c4ldas",
-    image: "https://c4ldas.com.br/images/seapi-cover.png",
+    image: "/images/cover.png",
   }
 };
 
