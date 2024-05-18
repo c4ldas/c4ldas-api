@@ -3,10 +3,14 @@
 import { usePathname } from "next/navigation";
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
+import { GET } from "@/app/api/valorant/lastgame/route";
 
-export default function Valorant({ params, searchParams }) {
+export default async function Valorant({ params, searchParams }) {
 
   const path = usePathname();
+
+  const player = await GET();
+  console.log(player)
 
   return (
     <div className="container">

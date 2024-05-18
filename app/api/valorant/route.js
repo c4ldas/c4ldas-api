@@ -5,11 +5,21 @@ export async function GET(request) {
   const pathname = request.nextUrl.pathname;
 
   // console.log(request)
-  return NextResponse.json(
+  return NextResponse.json([
     {
-      Usage: `${origin}${pathname}/musica/<id>?type=TYPE`,
-      info: `<id> can be retrieved on ${origin}/spotify/login`,
+      endpoint: `/api/valorant/rank`,
+      usage: `${origin}${pathname}/rank/?player=PLAYERNAME&tag=TAG&region=REGION&type=TYPE`,
+      additional_info: "",
+      region: ["eu", "na", "latam", "br", "ap", "kr"],
+      type: ["json", "text"],
+    },
+    {
+      endpoint: `/api/valorant/lastgame`,
+      usage: `${origin}${pathname}/lastgame/?player=PLAYERNAME&tag=TAG&region=REGION&type=TYPE`,
+      additional_info: "",
+      region: ["eu", "na", "latam", "br", "ap", "kr"],
       type: ["json", "text"],
     }
+  ]
   );
 };
