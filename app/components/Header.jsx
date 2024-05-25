@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import DarkMode from "./DarkMode";
+// import DarkMode from "./DarkMode";
 
 export default function Header() {
 
@@ -20,7 +20,7 @@ export default function Header() {
           placeholder="empty"
         />
       </Link>
-      <DarkMode />
+      { /*<DarkMode />*/}
     </header>
   )
 }
