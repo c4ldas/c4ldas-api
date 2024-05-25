@@ -1,6 +1,7 @@
-import Header from "../components/Header";
-import Linkbox from "../components/Linkbox";
-import FooterComponent from "../components/Footer";
+import Header from "@/app/components/Header";
+import Linkbox from "@/app/components/Linkbox";
+import FooterComponent from "@/app/components/Footer";
+
 
 export default async function Home() {
   return (
@@ -21,43 +22,43 @@ export default async function Home() {
         <Linkbox
           title="Twitch Prediction"
           description="Effectively control Twitch predictions using intuitive chat commands, facilitating creation, closure, or cancellation."
-          link="https://c4ldas.com.br/api/twitch"
+          link="/api/twitch"
         />
 
         <Linkbox
           title="TFT Rank"
           description="Generate a chat command to display your real-time rank and elo in TFT."
-          link="https://c4ldas.com.br/api/tft"
+          link="/api/tft"
         />
 
         <Linkbox
           title="League of Legends Rank"
           description="Create a chat command to instantly showcase your rank and elo in League of Legends."
-          link="https://c4ldas.com.br/api/lol"
+          link="/api/lol"
         />
 
         <Linkbox
           title="Valorant Rank"
           description="Craft a chat command to reveal your real-time rank and elo in Valorant."
-          link="https://c4ldas.com.br/api/valorant"
+          link="/api/valorant"
         />
 
         <Linkbox
           title="Valorant - Find your PUUID"
           description="Discover your Valorant account ID or someone else's. Helpful when configuring a Valorant rank command."
-          link="https://c4ldas.com.br/api/valorant/puuid"
+          link="/api/valorant/puuid"
         />
 
         <Linkbox
           title="Valorant - Official games of the day"
           description="Set up a chat command to display real-time scores of today's official Valorant tournament matches."
-          link="https://c4ldas.com.br/api/valorant/scheduler"
+          link="/api/valorant/scheduler"
         />
 
         <Linkbox
           title="Spotify Now Playing"
           description="Inform your viewers about the song title and artist currently playing on your livestream."
-          link="https://c4ldas.com.br/api/spotify"
+          link="/api/spotify"
           span=" Currently undergoing maintenance."
           spanClass="red"
         />
@@ -65,13 +66,13 @@ export default async function Home() {
         <Linkbox
           title="Steam Game"
           description="Widget to show Steam game information."
-          link="https://c4ldas.com.br/api/steam"
+          link="/api/steam"
         />
 
         <Linkbox
           title="Youtube - Channel ID"
           description="Retrieve a Youtube channel ID based on its channel name."
-          link="https://c4ldas.com.br/api/youtube"
+          link="/api/youtube"
         />
 
         <Linkbox
