@@ -22,43 +22,43 @@ export default async function Home() {
         <Linkbox
           title="Twitch Prediction"
           description="Effectively control Twitch predictions using intuitive chat commands, facilitating creation, closure, or cancellation."
-          link="/api/twitch"
+          link="/twitch"
         />
 
         <Linkbox
           title="TFT Rank"
           description="Generate a chat command to display your real-time rank and elo in TFT."
-          link="/api/tft"
+          link="/tft"
         />
 
         <Linkbox
           title="League of Legends Rank"
           description="Create a chat command to instantly showcase your rank and elo in League of Legends."
-          link="/api/lol"
+          link="/lol"
         />
 
         <Linkbox
           title="Valorant Rank"
           description="Craft a chat command to reveal your real-time rank and elo in Valorant."
-          link="/api/valorant"
+          link="/valorant"
         />
 
         <Linkbox
           title="Valorant - Find your PUUID"
           description="Discover your Valorant account ID or someone else's. Helpful when configuring a Valorant rank command."
-          link="/api/valorant/puuid"
+          link="/valorant/puuid"
         />
 
         <Linkbox
           title="Valorant - Official games of the day"
           description="Set up a chat command to display real-time scores of today's official Valorant tournament matches."
-          link="/api/valorant/scheduler"
+          link="/valorant/scheduler"
         />
 
         <Linkbox
           title="Spotify Now Playing"
           description="Inform your viewers about the song title and artist currently playing on your livestream."
-          link="/api/spotify"
+          link="/spotify"
           span=" Currently undergoing maintenance."
           spanClass="red"
         />
@@ -66,13 +66,13 @@ export default async function Home() {
         <Linkbox
           title="Steam Game"
           description="Widget to show Steam game information."
-          link="/api/steam"
+          link="/steam"
         />
 
         <Linkbox
           title="Youtube - Channel ID"
           description="Retrieve a Youtube channel ID based on its channel name."
-          link="/api/youtube"
+          link="/youtube"
         />
 
         <Linkbox
