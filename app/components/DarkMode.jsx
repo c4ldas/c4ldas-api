@@ -1,4 +1,3 @@
-
 import { useTheme } from "next-themes";
 import { useEffect } from "react";
 
@@ -9,7 +8,7 @@ export default function ThemeToggleButton() {
   useEffect(() => {
     const themeToggle = document.querySelector("#theme-toggle");
     themeToggle.checked = (theme === "dark");
-  }, []);
+  }, [theme]);
 
   return (
     <label className="switch">
@@ -19,7 +18,6 @@ export default function ThemeToggleButton() {
   )
 
   function handleToggle(event) {
-    console.log(event.target.checked);
     const newTheme = event.target.checked ? "dark" : "light";
 
     localStorage.setItem("theme", newTheme);

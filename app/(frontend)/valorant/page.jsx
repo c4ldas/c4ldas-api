@@ -1,29 +1,3 @@
-/* "use client"
-
-import { usePathname } from "next/navigation";
-import Header from "@/app/components/Header";
-import FooterComponent from "@/app/components/Footer";
-import { GET } from "@/app/api/valorant/lastgame/route";
-
-export default function Valorant({ params, searchParams }) {
-
-  const path = usePathname();
-
-  const player = GET();
-  console.log(player)
-  
-  return (
-    <div className="container">
-      <Header />
-      <main className="main">
-        <h1>This is the {path} page</h1>
-      </main>
-      <FooterComponent />
-    </div>
-  );
-}
- */
-
 "use client"
 
 import { useState, useEffect } from 'react';
@@ -62,7 +36,7 @@ export default function Valorant() {
       <Header />
       <main className="main">
         <h1>Player Data</h1>
-        <img src={player?.assets.agent.killfeed} alt={player?.name} width={256} height={128} />
+        <Image src={player?.assets.agent.killfeed} alt={player?.name} width={256} height={128} />
         <p>{player?.name} as {player?.character}</p>
         <p>Rank: {player?.currenttier_patched}</p>
         <p>KDA: {player?.stats.kills} / {player?.stats.deaths} / {player?.stats.assists}</p>

@@ -16,7 +16,7 @@ export default function Header() {
           width={300}
           height={300}
           quality={100}
-          priority={false}
+          priority={true}
           placeholder="empty"
         />
       </Link>
