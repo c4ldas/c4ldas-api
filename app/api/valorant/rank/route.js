@@ -37,8 +37,6 @@ export async function GET(request) {
 
   const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
 
-  return NextResponse.json({ error: `Invalid region. Valid regions: ${validRegions.join(", ")}` });
-
   try {
     // Convert query strings (map format) to object format - Only works for this specific case!
     const obj = Object.fromEntries(request.nextUrl.searchParams);
@@ -46,6 +44,8 @@ export async function GET(request) {
     // Get the parameters from URL
     const { player, tag, id, region = "br", msg = "(player) está (rank) com (pontos) pontos.", type = "text", } = obj;
     const game = "valorant";
+
+    console.log(player, tag, id, region, msg, type);
 
     // Check if the region is valid
     if (!validRegions.includes(region)) {
