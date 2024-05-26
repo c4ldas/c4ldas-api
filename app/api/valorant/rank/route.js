@@ -82,6 +82,7 @@ async function getRank(url) {
     });
 
     const data = await rankRequest.json();
+    console.log(data);
     if (data.status !== 200) throw ({ error: { message: data.errors[0].message, code: data.errors[0].code } });
     return data;
 
@@ -104,6 +105,7 @@ async function sendResponse(data, type, msg) {
     .replace(/\(posicao\)/g, posicao);
 
   color.log("green", formattedMessage);
+
   if (type === "json") return data;
   if (type === "text") return formattedMessage;
 }
