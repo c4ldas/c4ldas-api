@@ -36,6 +36,7 @@ const badges = {
 const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
 
 export async function GET(request) {
+  console.log("Hello world");
   try {
 
     // Convert query strings (map format) to object format - Only works for this specific case!
