@@ -1,42 +1,42 @@
 import { NextResponse } from "next/server";
 import { color } from "@/app/lib/colorLog";
 
-const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/${region}/${id}`;
-const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/mmr/${region}/${player}/${tag}`;
-
-const badges = {
-  "Unrated": "Sem rank/elo",
-  "Iron 1": "Ferro 1",
-  "Iron 2": "Ferro 2",
-  "Iron 3": "Ferro 3",
-  "Bronze 1": "Bronze 1",
-  "Bronze 2": "Bronze 2",
-  "Bronze 3": "Bronze 3",
-  "Silver 1": "Prata 1",
-  "Silver 2": "Prata 2",
-  "Silver 3": "Prata 3",
-  "Gold 1": "Ouro 1",
-  "Gold 2": "Ouro 2",
-  "Gold 3": "Ouro 3",
-  "Platinum 1": "Platina 1",
-  "Platinum 2": "Platina 2",
-  "Platinum 3": "Platina 3",
-  "Diamond 1": "Diamante 1",
-  "Diamond 2": "Diamante 2",
-  "Diamond 3": "Diamante 3",
-  "Ascendant 1": "Ascendente 1",
-  "Ascendant 2": "Ascendente 2",
-  "Ascendant 3": "Ascendente 3",
-  "Immortal 1": "Imortal 1",
-  "Immortal 2": "Imortal 2",
-  "Immortal 3": "Imortal 3",
-  "Radiant": "Radiante",
-};
-
-const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
-
 export async function GET(request) {
-  console.log("Hello world");
+
+  const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/${region}/${id}`;
+  const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/mmr/${region}/${player}/${tag}`;
+
+  const badges = {
+    "Unrated": "Sem rank/elo",
+    "Iron 1": "Ferro 1",
+    "Iron 2": "Ferro 2",
+    "Iron 3": "Ferro 3",
+    "Bronze 1": "Bronze 1",
+    "Bronze 2": "Bronze 2",
+    "Bronze 3": "Bronze 3",
+    "Silver 1": "Prata 1",
+    "Silver 2": "Prata 2",
+    "Silver 3": "Prata 3",
+    "Gold 1": "Ouro 1",
+    "Gold 2": "Ouro 2",
+    "Gold 3": "Ouro 3",
+    "Platinum 1": "Platina 1",
+    "Platinum 2": "Platina 2",
+    "Platinum 3": "Platina 3",
+    "Diamond 1": "Diamante 1",
+    "Diamond 2": "Diamante 2",
+    "Diamond 3": "Diamante 3",
+    "Ascendant 1": "Ascendente 1",
+    "Ascendant 2": "Ascendente 2",
+    "Ascendant 3": "Ascendente 3",
+    "Immortal 1": "Imortal 1",
+    "Immortal 2": "Imortal 2",
+    "Immortal 3": "Imortal 3",
+    "Radiant": "Radiante",
+  };
+
+  const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
+
   try {
 
     // Convert query strings (map format) to object format - Only works for this specific case!
@@ -54,15 +54,13 @@ export async function GET(request) {
     // Check if id or player and tag are provided
     if (id) {
       const data = await getRank(urlById(region, id, type));
-      const response = await sendResponse(data, type, msg);
-      console.log(response)
+      const response = await sendResponse(data, type, msg, badges);
       return NextResponse.json(response)
     }
 
     if (player && tag) {
       const data = await getRank(urlByPlayer(region, player, tag, type));
-      const response = await sendResponse(data, type, msg);
-      console.log(response)
+      const response = await sendResponse(data, type, msg, badges);
       return NextResponse.json(response)
     }
 
@@ -85,7 +83,6 @@ async function getRank(url) {
     });
 
     const data = await rankRequest.json();
-    console.log(data);
     if (data.status !== 200) throw ({ error: { message: data.errors[0].message, code: data.errors[0].code } });
     return data;
 
@@ -94,12 +91,9 @@ async function getRank(url) {
   }
 }
 
+async function sendResponse(data, type, msg, badges) {
 
-async function sendResponse(data, type, msg) {
-
-  // color.log("blue", "Data in Send Response:", JSON.stringify(data));
   const { name: player, ranking_in_tier: pontos, currenttierpatched: elo, vitorias, posicao } = data.data;
-
   const formattedMessage = msg
     .replace(/\(player\)/g, player)
     .replace(/\(pontos\)/g, pontos)
