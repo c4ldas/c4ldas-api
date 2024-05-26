@@ -54,12 +54,14 @@ export async function GET(request) {
     if (id) {
       const data = await getRank(urlById(region, id, type));
       const response = await sendResponse(data, type, msg);
+      console.log(response)
       return NextResponse.json(response)
     }
 
     if (player && tag) {
       const data = await getRank(urlByPlayer(region, player, tag, type));
       const response = await sendResponse(data, type, msg);
+      console.log(response)
       return NextResponse.json(response)
     }
 
