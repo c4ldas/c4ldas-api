@@ -15,6 +15,8 @@ At the moment the structure of the application is:
 /
 |-public/
 |-app/
+|  |--components/  
+|  |--lib/   
 |  |--(frontend)/    
 |  |  |-- homepage        # done
 |  |  |-- lol/            # pending
