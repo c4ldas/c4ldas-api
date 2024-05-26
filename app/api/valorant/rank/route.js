@@ -13,8 +13,8 @@ export async function GET(request) {
   const { player, tag, region, id, type = "text" } = obj;
   const game = "valorant";
 
-  if (id) return NextResponse.json(await getRank(urlById(region, id)))
-  if (player && tag) return NextResponse.json(await getRank(urlByPlayer(region, player, tag)))
+  if (id) return NextResponse.json(await getRank(urlById(region, id)));
+  if (player && tag) return NextResponse.json(await getRank(urlByPlayer(region, player, tag)));
 
   async function getRank(url) {
     const rankRequest = await fetch(url, {
