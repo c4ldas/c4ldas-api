@@ -63,7 +63,7 @@ export async function GET(request) {
       return NextResponse.json(response, { status: 200 })
     }
 
-    return NextResponse.json({ error: "Id or player and tag are required" })
+    return NextResponse.json({ error: "Id or player and tag are required" }, { status: 400 })
   } catch (error) {
     return NextResponse.json({ error: error.error }, { status: 400 })
   }
