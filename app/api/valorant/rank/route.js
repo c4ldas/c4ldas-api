@@ -47,25 +47,25 @@ export async function GET(request) {
 
     // Check if the region is valid
     if (!validRegions.includes(region)) {
-      return NextResponse.json({ error: `Invalid region. Valid regions: ${validRegions.join(", ")}` });
+      return NextResponse.json({ error: `Invalid region. Valid regions: ${validRegions.join(", ")}` }, { status: 400 });
     }
 
     // Check if id or player and tag are provided
     if (id) {
       const data = await getRank(urlById(region, id, type));
       const response = await sendResponse(data, type, msg, badges);
-      return NextResponse.json(response)
+      return NextResponse.json(response, { status: 200 })
     }
 
     if (player && tag) {
       const data = await getRank(urlByPlayer(region, player, tag, type));
       const response = await sendResponse(data, type, msg, badges);
-      return NextResponse.json(response)
+      return NextResponse.json(response, { status: 200 })
     }
 
     return NextResponse.json({ error: "Id or player and tag are required" })
   } catch (error) {
-    return NextResponse.json({ error: error.error })
+    return NextResponse.json({ error: error.error }, { status: 400 })
   }
 }
 
