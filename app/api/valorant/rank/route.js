@@ -3,6 +3,8 @@ import { color } from "@/app/lib/colorLog";
 
 const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/${region}/${id}`;
 const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/mmr/${region}/${player}/${tag}`;
+const urlLeaderboardId = (region, id) => `https://api.henrikdev.xyz/valorant/v2/leaderboard/${region}?puuid=${id}`;
+const urlLeaderboardPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v2/leaderboard/${region}?name=${player}&tag=${tag}`;
 
 const badges = {
   "Unrated": "Sem rank/elo",
@@ -37,21 +39,35 @@ const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
 
 export async function GET(request) {
   try {
+
     // Convert query strings (map format) to object format - Only works for this specific case!
     const obj = Object.fromEntries(request.nextUrl.searchParams);
 
     // Get the parameters from URL
-    const { player, tag, id, region = "br", msg = "(player) está (rank) com (pontos) pontos.", type = "text" } = obj;
+    const { player, tag, id, channel, region = "br", msg = "(player) está (rank) com (pontos) pontos.", type = "text" } = obj;
     const game = "valorant";
 
-    // Check if the region is valid
-    if (!validRegions.includes(region)) {
-      return NextResponse.json({ error: `Invalid region. Valid regions: ${validRegions.join(", ")}` }, { status: 400 });
-    }
+    const validParams = await checkParams(player, tag, id, channel, region);
+    if (!validParams.status) return NextResponse.json({ error: validParams.error }, { status: 400 });
 
     // Check if id or player and tag are provided
     if (id) {
       const data = await getRank(urlById(region, id, type));
+      // If not Immmortal and not Radiant, set leaderboardRank and numberOfWins to 0
+      if (!data.data.currenttierpatched.startsWith("Immortal") && data.data.currenttierpatched !== "Radiant") {
+        data.data.leaderboardRank = 0;
+        data.data.numberOfWins = 0;
+        const response = await sendResponse(data, type, msg);
+        return NextResponse.json(response, { status: 200 });
+      }
+
+      // Get leaderboard
+      const leaderboard = await getRank(urlLeaderboardId(region, id));
+      console.log("Leaderboard", leaderboard);
+      data.data.leaderboardRank = leaderboard.data[0].leaderboardRank;
+      data.data.numberOfWins = leaderboard.data[0].numberOfWins;
+
+      // Send response
       const response = await sendResponse(data, type, msg);
       return NextResponse.json(response, { status: 200 })
     }
@@ -62,10 +78,17 @@ export async function GET(request) {
       return NextResponse.json(response, { status: 200 })
     }
 
-    return NextResponse.json({ error: "Id or player and tag are required" }, { status: 400 })
+    return NextResponse.json({ error: "Id or player / tag are required" }, { status: 400 })
   } catch (error) {
     return NextResponse.json({ error: error.error }, { status: 400 })
   }
+}
+
+async function checkParams(player, tag, id, channel, region) {
+  if ((!player || !tag) && !id) return { status: false, error: "Missing player / tag or id" };
+  if (!channel) return { status: false, error: "Missing channel" };
+  if (!validRegions.includes(region)) return { status: false, error: `Invalid region. Valid regions: ${validRegions.join(", ")}` };
+  return { status: true, error: null };
 }
 
 
@@ -79,7 +102,6 @@ async function getRank(url) {
         "Authorization": process.env.VALORANT_TOKEN
       }
     });
-
     const data = await rankRequest.json();
     if (data.status !== 200) throw ({ error: { message: data.errors[0].message, code: data.errors[0].code } });
     return data;
@@ -91,7 +113,7 @@ async function getRank(url) {
 
 async function sendResponse(data, type, msg) {
 
-  const { name: player, ranking_in_tier: pontos, currenttierpatched: elo, vitorias, posicao } = data.data;
+  const { name: player, ranking_in_tier: pontos, currenttierpatched: elo, numberOfWins: vitorias, leaderboardRank: posicao } = data.data;
   const formattedMessage = msg
     .replace(/\(player\)/g, player)
     .replace(/\(pontos\)/g, pontos)
@@ -106,7 +128,7 @@ async function sendResponse(data, type, msg) {
 }
 
 
-/* 
+/*
 {
   "data": {
     "currenttier": 19,
@@ -127,3 +149,16 @@ async function sendResponse(data, type, msg) {
   "status": 200
 }
 */
+
+
+// Check if the channel is missing
+// if (!channel || channel == "${channel}") {
+//   const noChannel = `Parameter &channel=$(channel) required. Add it to the end of URL`;
+//   const example = `${origin}${pathname}?player=PLAYERNAME&tag=TAG&region=REGION&channel=$(channel)`
+//   return NextResponse.json({ error: noChannel, example: example, status: 400 }, { status: 400 });
+// }
+
+// Check if the region is invalid
+// if (!validRegions.includes(region)) {
+//   return NextResponse.json({ error: `Invalid region. Valid regions: ${validRegions.join(", ")}` }, { status: 400 });
+// }
