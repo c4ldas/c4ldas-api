@@ -42,10 +42,8 @@ export async function GET(request) {
     const obj = Object.fromEntries(request.nextUrl.searchParams);
 
     // Get the parameters from URL
-    const { player, tag, id, region = "br", msg = "(player) está (rank) com (pontos) pontos.", type = "text", } = obj;
+    const { player, tag, id, region = "br", msg = "(player) está (rank) com (pontos) pontos.", type = "text" } = obj;
     const game = "valorant";
-
-    return NextResponse.json({ player, tag, id, region, msg, type });
 
     // Check if the region is valid
     if (!validRegions.includes(region)) {
@@ -76,7 +74,7 @@ async function getRank(url) {
   try {
     const rankRequest = await fetch(url, {
       method: "GET",
-      next: { revalidate: 0 }, // 10 minutes
+      // next: { revalidate: 0 }, // 10 minutes
       headers: {
         "Content-Type": "application/json",
         "Authorization": process.env.VALORANT_TOKEN
