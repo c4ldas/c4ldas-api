@@ -75,6 +75,7 @@ export async function GET(request) {
     if (player && tag) {
       const data = await getRank(urlByPlayer(region, player, tag, type));
       const response = await sendResponse(data, type, msg);
+      console.log(response);
       return NextResponse.json(response, { status: 200 })
     }
 
