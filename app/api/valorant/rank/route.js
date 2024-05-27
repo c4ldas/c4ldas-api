@@ -74,7 +74,7 @@ async function getRank(url) {
   try {
     const rankRequest = await fetch(url, {
       method: "GET",
-      // next: { revalidate: 0 }, // 10 minutes
+      next: { revalidate: 600 }, // 10 minutes
       headers: {
         "Content-Type": "application/json",
         "Authorization": process.env.VALORANT_TOKEN
