@@ -50,10 +50,12 @@ export async function GET(request) {
     const validParams = await checkParams(player, tag, id, channel, region);
     if (!validParams.status) return NextResponse.json({ error: validParams.error }, { status: 400 });
 
-    // Check if id or player and tag are provided
+
+    // Check if id is provided
     if (id) {
       const data = await getRank(urlById(region, id, type));
-      // If not Immmortal and not Radiant, set leaderboardRank and numberOfWins to 0
+
+      // If not Immmortal and not Radiant, return with leaderboardRank and numberOfWins set to 0
       if (!data.data.currenttierpatched.startsWith("Immortal") && data.data.currenttierpatched !== "Radiant") {
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
@@ -72,13 +74,34 @@ export async function GET(request) {
       return NextResponse.json(response, { status: 200 })
     }
 
+
+
+    // Check if player and tag are provided
     if (player && tag) {
       const data = await getRank(urlByPlayer(region, player, tag, type));
+
+      // If not Immmortal and not Radiant, return with leaderboardRank and numberOfWins set to 0
+      if (!data.data.currenttierpatched.startsWith("Immortal") && data.data.currenttierpatched !== "Radiant") {
+        data.data.leaderboardRank = 0;
+        data.data.numberOfWins = 0;
+        const response = await sendResponse(data, type, msg);
+        return NextResponse.json(response, { status: 200 });
+      }
+
+      // Get leaderboard
+      const leaderboard = await getRank(urlLeaderboardPlayer(region, player, tag));
+      console.log("Leaderboard", leaderboard);
+      data.data.leaderboardRank = leaderboard.data[0].leaderboardRank;
+      data.data.numberOfWins = leaderboard.data[0].numberOfWins;
+
+      // Send response
       const response = await sendResponse(data, type, msg);
       console.log(response);
       return NextResponse.json(response, { status: 200 })
     }
 
+
+    // If id or player/tag are not provided, return error
     return NextResponse.json({ error: "Id or player / tag are required" }, { status: 400 })
   } catch (error) {
     return NextResponse.json({ error: error.error }, { status: 400 })
@@ -124,7 +147,7 @@ async function sendResponse(data, type, msg) {
 
   color.log("green", formattedMessage);
 
-  if (type === "json") return data;
+  if (type === "json" || type === "overlay") return data;
   if (type === "text") return formattedMessage;
 }
 
