@@ -37,7 +37,7 @@ At the moment the structure of the application is:
 |     |-- youtube/        # pending
 |     |-- valorant/       
 |     |     |-- lastgame/ # pending
-|     |     |-- rank/     # in progress
+|     |     |-- rank/     # done
 |     |     
 |     |-- lol/
 |     |    |-- rank/     # done
