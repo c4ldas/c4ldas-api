@@ -45,7 +45,7 @@ export async function GET(request) {
     const { player, tag, id, region = "br", msg = "(player) está (rank) com (pontos) pontos.", type = "text", } = obj;
     const game = "valorant";
 
-    return NextResponse.json(player, tag, id, region, msg, type);
+    return NextResponse.json({ player, tag, id, region, msg, type });
 
     // Check if the region is valid
     if (!validRegions.includes(region)) {
