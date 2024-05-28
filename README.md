@@ -38,6 +38,7 @@ At the moment the structure of the application is:
 |     |-- valorant/       
 |     |     |-- lastgame/ # done
 |     |     |-- rank/     # done
+|     |     |-- puuid/    # done
 |     |     
 |     |-- lol/
 |     |    |-- rank/     # done
