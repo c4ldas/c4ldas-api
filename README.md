@@ -32,13 +32,14 @@ At the moment the structure of the application is:
 |  |  
 |  |--api/
 |     |-- spotify/        # pending
-|     |-- steam/          # pending
+|     |-- steam/          # in progress
 |     |-- twitch/         # pending
 |     |-- youtube/        # pending
 |     |-- valorant/       
 |     |     |-- lastgame/ # done
 |     |     |-- rank/     # done
 |     |     |-- puuid/    # done
+|     |     |-- schedule/ # done
 |     |     
 |     |-- lol/
 |     |    |-- rank/     # done
