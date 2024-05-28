@@ -1,17 +1,15 @@
 import { NextResponse } from 'next/server';
-// import { getSummonerPuuid } from '@/app/components/LolRank'
 
 export async function GET(request) {
 
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
-  // obj.game = "lol";
-  // const puuid = await getSummonerPuuid(obj)
-  // console.log(puuid)
 
-  const id = obj.id
+  const { region, player, tag } = obj;
 
-  const lastMatchRequest = await fetch(`https://api.henrikdev.xyz/valorant/v3/by-puuid/matches/na/${id}?filter=competitive&size=1`, {
+  const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v3/matches/${region}/${player}/${tag}?filter=competitive&size=1`;
+
+  const lastMatchRequest = await fetch(urlByPlayer(region, player, tag), {
     headers: {
       "Authorization": process.env.VALORANT_TOKEN
     }
@@ -19,32 +17,23 @@ export async function GET(request) {
 
   const lastMatch = await lastMatchRequest.json();
   const data = lastMatch.data[0]
-
   const allPlayers = data.players.all_players;
-  const map = data.metadata.map;
-  const gameStart = data.metadata.game_start;
-  const gameDuration = data.metadata.game_length;
-  const gameFinish = gameStart + gameDuration;
+
+  const playerInfo = allPlayers.find((info) => info.name.toLowerCase() == player.toLowerCase());
+  const playerTeam = playerInfo.team.toLowerCase();
   const winner = (data.teams.blue.has_won == true) ? "Blue" : "Red";
-  const player = allPlayers.find((player) => player.puuid == id);
-  player.hasWon = (winner == player.team);
-  player.gameDuration = gameDuration;
-  player.map = map;
-  player.rounds_played = data.metadata.rounds_played;
 
-  console.log(player.map)
-  /*   console.log(`Map is ${map}`)
-    console.log(`Winner is ${winner}`)
-    console.log(`Result is ${(winner == player.team) ? "Win!" : "Lose :("}`)
-    console.log(`Player name is ${player.name}`)
-    console.log(`Character is ${player.character}`)
-    console.log(`KDA is ${player.stats.kills}/${player.stats.deaths}/${player.stats.assists}`); */
+  playerInfo.hasWon = (winner == playerInfo.team);
+  playerInfo.roundsWon = data.teams[playerTeam].rounds_won;
+  playerInfo.roundsLost = data.teams[playerTeam].rounds_lost;
+  playerInfo.gameDuration = parseInt(data.metadata.game_length) / 60;;
+  playerInfo.map = data.metadata.map;
+  playerInfo.rounds_played = data.metadata.rounds_played;
 
-  // console.log(data)
   if (obj.data == "full") {
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: 200 });
   }
-  return NextResponse.json(player);
+  return NextResponse.json(playerInfo, { status: 200 });
 }
 
 
