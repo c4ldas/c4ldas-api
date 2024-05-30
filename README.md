@@ -7,8 +7,6 @@ The main idea is to learn more about Nextjs and its features. Also, I can move t
 
 Using App Router on Next.js currently and storing front pages on /(frontend) directory to clear as much as possible the app folder.
 
-
-
 <h2> Structure </h2>
 
 At the moment the structure of the application is:
@@ -21,19 +19,19 @@ At the moment the structure of the application is:
 |  |--lib/   
 |  |
 |  |--(frontend)/    
-|  |  |-- homepage        # done
-|  |  |-- lol/            # pending
-|  |  |-- tft/            # pending
-|  |  |-- spotify/        # pending
-|  |  |-- steam/          # in progress
-|  |  |-- twitch/         # pending
-|  |  |-- valorant/       # pending
-|  |  |-- youtube/        # pending
+|  |  |-- homepage       # done
+|  |  |-- lol/           # pending
+|  |  |-- tft/           # pending
+|  |  |-- spotify/       # pending
+|  |  |-- steam/         # in progress
+|  |  |-- twitch/        # pending
+|  |  |-- valorant/      # pending
+|  |  |-- youtube/       # pending
 |  |  
 |  |--api/
-|     |-- spotify/        # pending
-|     |-- twitch/         # pending
-|     |-- youtube/        # pending
+|     |-- spotify/       # pending
+|     |-- twitch/        # pending
+|     |-- youtube/       # pending
 |     |-- steam/          
 |     |    |-- game/     # done
 |     |     
