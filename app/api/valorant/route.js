@@ -18,6 +18,12 @@ export async function GET(request) {
       additional_info: "",
       region: ["eu", "na", "latam", "br", "ap", "kr"],
       type: ["json", "text"],
+    },
+    {
+      endpoint: `/api/valorant/puuid`,
+      usage: `${origin}${pathname}/puuid/?player=PLAYERNAME&tag=TAG&type=TYPE`,
+      additional_info: "",
+      type: ["json", "text"],
     }
   ]
   );

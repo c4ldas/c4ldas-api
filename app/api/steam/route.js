@@ -7,8 +7,7 @@ export async function GET(request) {
   // console.log(request)
   return NextResponse.json(
     {
-      Usage: `${origin}${pathname}/game/<id>?type=TYPE`,
-      info: `<id> can be retrieved on ${origin}/spotify/login`,
+
       type: ["json", "text"],
     }
   );

@@ -32,9 +32,10 @@ At the moment the structure of the application is:
 |  |  
 |  |--api/
 |     |-- spotify/        # pending
-|     |-- steam/          # done
 |     |-- twitch/         # pending
 |     |-- youtube/        # pending
+|     |-- steam/          
+|     |     |-- game/     # done
 |     |-- valorant/       
 |     |     |-- lastgame/ # done
 |     |     |-- rank/     # done

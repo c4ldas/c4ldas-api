@@ -5,7 +5,7 @@ export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
 
-  const { player = "", tag = "" } = obj;
+  const { player = "", tag = "", type = "json" } = obj;
   const urlByPlayer = (player, tag) => `https://api.henrikdev.xyz/valorant/v1/account/${player}/${tag}?force=true`;
 
   try {
@@ -14,11 +14,13 @@ export async function GET(request) {
         "Authorization": process.env.VALORANT_TOKEN
       }
     });
-
     if (!getData.ok) throw ({ error: { message: getData.statusText, player: player, tag: tag, code: getData.status } });
 
     const response = await getData.json();
-    return NextResponse.json(response, { status: 200 });
+
+    if (type === "json") return NextResponse.json(response, { status: 200 });
+
+    return NextResponse.text((response.data.puuid), { status: 200 });
 
   } catch (error) {
     return NextResponse.json({ error: error.error }, { status: error.error.code });
