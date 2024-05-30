@@ -41,7 +41,7 @@ export default function Steam({ params, searchParams }) {
     };
 
     fetchData();
-  }, []);
+  }, [getData]);
 
   const style = {
     box: {
