@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const urlByPlayer = (player, tag) => `https://api.henrikdev.xyz/valorant/v1/account/${player}/${tag}?force=true`;
+
 export async function GET(request) {
   try {
     // Convert query strings (map format) to object format - Only works for this specific case!
