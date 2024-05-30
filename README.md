@@ -35,13 +35,13 @@ At the moment the structure of the application is:
 |     |-- twitch/         # pending
 |     |-- youtube/        # pending
 |     |-- steam/          
-|     |     |-- game/     # done
+|     |    |-- game/     # done
 |     |     
 |     |-- valorant/       
-|     |     |-- lastgame/ # done
-|     |     |-- rank/     # done
-|     |     |-- puuid/    # done
-|     |     |-- schedule/ # done
+|     |    |-- lastgame/ # done
+|     |    |-- rank/     # done
+|     |    |-- puuid/    # done
+|     |    |-- schedule/ # done
 |     |     
 |     |-- lol/
 |     |    |-- rank/     # done
