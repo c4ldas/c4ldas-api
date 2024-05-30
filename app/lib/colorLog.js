@@ -1,30 +1,33 @@
-
 /**
- * This is a simple color logger for terminal. The idea is to make it more user friendly.
- * How to use it: 
- * color.log(chosenColor, message);
+ * Use:
+ * * color.log(chosenColor, message);
  * 
  * Example: 
- * color.log("red", "Hello World");
- * color.log("blue", "Hello World");
+ * * color.log("red", "Hello World");
+ * * color.log("blue", "Hello World");
  * 
- * In case the first parameter is not a valid color defined in the object "colors",  
- * the message will be sent to the console as is.
+ * In case the first parameter isn't a color from `colors` object, `message` will be logged in plain color.
  * 
- * Author: c4ldas
- * Version: 0.1.0
- * Date: 2024-05-26
- *  
+ * Author: c4ldas *
+ * Date: 2024-05-30 *
  */
-
 export const color = {
-  log: function (...args) {
-
+  /**
+   * Logs a message with a specified color or formatting to the console.
+   ** color.log("blue", "Hello World");
+   * @param {string} chosenColor - The color to use for the message. One of the following:
+   * * `black` | `red` | `green` | `yellow` | `blue` | `magenta` | `cyan` | `white` | 
+   * `bgBlack` | `bgRed` | `bgGreen` | `bgYellow` | `bgBlue` | `bgMagenta` | `bgCyan` | 
+   * `bgWhite` | `bold` | `bright` | `dim` | `underscore` | `blink` | `reverse` | `hidden` | `reset`
+   * @param {...string} message - The message to log.
+   * * "Hello World"
+   */
+  log: function (chosenColor, ...message) {
     // Define colors
     const colors = {
-      // General styles
-      bold: "\x1b[1m",
+      // General formatting
       reset: "\x1b[0m",
+      bold: "\x1b[1m",
       bright: "\x1b[1m",
       dim: "\x1b[2m",
       underscore: "\x1b[4m",
@@ -54,18 +57,14 @@ export const color = {
     };
 
     // Check if the first argument is a color
-    const potentialColor = args[0];
-    const isValidColor = Object.keys(colors).some((color) => color === potentialColor);
+    const isValidColor = Object.keys(colors).some((item) => item === chosenColor);
 
     // In case the color is invalid, send the message back without color
     if (!isValidColor) {
-      return (console.log(args.join(" ")));
+      return (console.log(message.join(" ")));
     }
 
-    // Remove the color from message parts
-    args.shift();
-
-    // Send coloured message
-    return console.log(colors[potentialColor] + args.join(" ") + colors.reset);
+    // Send colored message
+    return console.log(colors[chosenColor] + message.join(" ") + colors.reset);
   }
 }

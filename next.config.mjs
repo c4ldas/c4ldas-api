@@ -22,6 +22,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'static-cdn.jtvnw.net',
       },
+      {
+        protocol: 'https',
+        hostname: '*.steamstatic.com',
+      },
     ],
   },
 };

@@ -25,14 +25,14 @@ At the moment the structure of the application is:
 |  |  |-- lol/            # pending
 |  |  |-- tft/            # pending
 |  |  |-- spotify/        # pending
-|  |  |-- steam/          # pending
+|  |  |-- steam/          # in progress
 |  |  |-- twitch/         # pending
 |  |  |-- valorant/       # pending
 |  |  |-- youtube/        # pending
 |  |  
 |  |--api/
 |     |-- spotify/        # pending
-|     |-- steam/          # in progress
+|     |-- steam/          # done
 |     |-- twitch/         # pending
 |     |-- youtube/        # pending
 |     |-- valorant/       
