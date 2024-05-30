@@ -14,10 +14,9 @@ export async function GET(request) {
     },
     {
       endpoint: `/api/valorant/lastgame`,
-      usage: `${origin}${pathname}/lastgame/?player=PLAYERNAME&tag=TAG&region=REGION&type=TYPE`,
-      additional_info: "",
+      usage: `${origin}${pathname}/lastgame/?player=PLAYERNAME&tag=TAG&region=REGION`,
+      additional_info: "Add '&data=full' at the end of URL to get full game data",
       region: ["eu", "na", "latam", "br", "ap", "kr"],
-      type: ["json", "text"],
     },
     {
       endpoint: `/api/valorant/puuid`,
