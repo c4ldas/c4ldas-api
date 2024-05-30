@@ -39,7 +39,6 @@ const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
 
 export async function GET(request) {
   try {
-
     // Convert query strings (map format) to object format - Only works for this specific case!
     const obj = Object.fromEntries(request.nextUrl.searchParams);
 

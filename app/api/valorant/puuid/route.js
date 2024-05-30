@@ -6,9 +6,13 @@ export async function GET(request) {
   try {
     // Convert query strings (map format) to object format - Only works for this specific case!
     const obj = Object.fromEntries(request.nextUrl.searchParams);
+
+    // Get the parameters from URL
     const { player = "", tag = "", type = "json" } = obj;
+    // const game = "valorant";
 
     const validParams = checkParams(player, tag);
+    // if (!validParams.status) return NextResponse.json({ error: validParams.error }, { status: 400 });
 
     const getData = await fetch(urlByPlayer(player, tag), {
       headers: {
@@ -25,7 +29,7 @@ export async function GET(request) {
 
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error: error.error }, { status: error.error.code });
+    return NextResponse.json({ error: error.error }, { status: 400 });
   }
 }
 

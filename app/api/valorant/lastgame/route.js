@@ -43,7 +43,7 @@ export async function GET(request) {
 
   } catch (error) {
     console.log(error)
-    return NextResponse.json({ error: error.error }, { status: error.error.code });
+    return NextResponse.json({ error: error.error }, { status: 400 });
 
   }
 }
