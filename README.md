@@ -39,7 +39,7 @@ At the moment the structure of the application is:
 |     |    |-- lastgame/ # done
 |     |    |-- rank/     # done
 |     |    |-- puuid/    # done
-|     |    |-- schedule/ # done
+|     |    |-- schedule/ # pending
 |     |     
 |     |-- lol/
 |     |    |-- rank/     # done
