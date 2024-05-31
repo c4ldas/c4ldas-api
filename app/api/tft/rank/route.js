@@ -5,8 +5,7 @@ export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
 
-  const { region, player, tag } = obj;
-  const type = obj.type || "text";
+  const { region, player, tag, type = "text", msg = "(player): (rank) - (points) points" } = obj;
   const game = "tft";
   const queueType = "RANKED_TFT";
 
@@ -34,7 +33,16 @@ export async function GET(request) {
     const response = { gameName, tagLine, tier, rank, leaguePoints, wins, losses };
 
     if (type == "text") {
-      return NextResponse.json(`${response.gameName}: ${response.tier} ${response.rank} - ${response.leaguePoints} points`, { status: 200 })
+      const message = msg
+        .replace(/\(player\)/g, response.gameName)
+        .replace(/\(rank\)/g, response.tier + " " + response.rank)
+        .replace(/\(points\)/g, response.leaguePoints)
+        .replace(/\(wins\)/g, response.wins)
+        .replace(/\(losses\)/g, response.losses);
+
+      return NextResponse.json(message, { status: 200 });
+
+      // return NextResponse.json(`${response.gameName}: ${response.tier} ${response.rank} - ${response.leaguePoints} points`, { status: 200 })
     }
 
     return NextResponse.json(response, { status: 200 });
