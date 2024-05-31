@@ -37,7 +37,7 @@ At the moment the structure of the application is:
 |     |     
 |     |-- valorant/       
 |     |    |-- lastgame/ # done
-|     |    |-- rank/     # done
+|     |    |-- rank/     # Bug found when Radiant/Immortal has private account on leaderboard
 |     |    |-- puuid/    # done
 |     |    |-- schedule/ # pending
 |     |     

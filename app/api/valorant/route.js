@@ -7,23 +7,120 @@ export async function GET(request) {
   return NextResponse.json([
     {
       endpoint: `/api/valorant/rank`,
-      usage: `${origin}${pathname}/rank/?player=PLAYERNAME&tag=TAG&region=REGION&type=TYPE`,
-      additional_info: "",
-      region: ["eu", "na", "latam", "br", "ap", "kr"],
-      type: ["json", "text"],
+      description: "Display your real-time rank and elo in Valorant.",
+      usage: `${origin}${pathname}/rank/?player=PLAYERNAME&tag=TAG&region=REGION&type=TYPE&msg=MSG`,
+      params: {
+        player: {
+          description: "Name of the player",
+          required: true,
+        },
+        tag: {
+          description: "Tag of the player, same as #",
+          required: true,
+        },
+        region: {
+          description: "Region of the player",
+          required: true,
+          available_variables: ["eu", "na", "latam", "br", "ap", "kr"],
+        },
+        type: {
+          description: "Format of the response",
+          required: false,
+          default: "text",
+          available_variables: ["json", "text"],
+        },
+        msg: {
+          description: "Message to be displayed as response",
+          required: false,
+          default: "(player) está (rank) com (points) points",
+          available_variables: ["(player)", "(tag)", "(rank)", "(pontos)", "(vitorias)", "(posicao)"],
+          additional_info: "(wins) and (posicao) are only available for Immortal and Radiant.",
+        },
+      },
     },
     {
       endpoint: `/api/valorant/lastgame`,
-      usage: `${origin}${pathname}/lastgame/?player=PLAYERNAME&tag=TAG&region=REGION`,
-      additional_info: "Add '&data=full' at the end of URL to get full game data",
-      region: ["eu", "na", "latam", "br", "ap", "kr"],
+      description: "Display your last game stats in Valorant.",
+      usage: `${origin}${pathname}/lastgame/?player=PLAYERNAME&tag=TAG&region=REGION&type=TYPE`,
+      params: {
+        player: {
+          description: "Name of the player",
+          required: true,
+        },
+        tag: {
+          description: "Tag of the player, same as #",
+          required: true,
+        },
+        region: {
+          description: "Region of the player",
+          required: true,
+          available_variables: ["eu", "na", "latam", "br", "ap", "kr"],
+        },
+        type: {
+          description: "Format of the response",
+          required: false,
+          default: "json",
+          available_variables: ["json", "text"],
+        },
+      }
     },
     {
       endpoint: `/api/valorant/puuid`,
+      description: "Display your puuid in Valorant.",
       usage: `${origin}${pathname}/puuid/?player=PLAYERNAME&tag=TAG&type=TYPE`,
-      additional_info: "",
-      type: ["json", "text"],
+      params: {
+        player: {
+          description: "Name of the player",
+          required: true,
+        },
+        tag: {
+          description: "Tag of the player, same as #",
+          required: true,
+        },
+        type: {
+          description: "Format of the response",
+          required: false,
+          default: "text",
+          available_variables: ["json", "text"],
+        },
+      }
     }
   ]
   );
 };
+
+
+/* 
+{
+  endpoint: `/api/lol/rank`,
+  description: "Display your real-time rank and elo in League of Legends.",
+  usage: `${origin}${pathname}/rank?player=PLAYERNAME&tag=TAG&region=REGION&type=TYPE&msg=MSG`,
+  params: {
+    player: {
+      description: "Name of the player",
+      required: true,
+    },
+    tag: {
+      description: "Tag of the player, same as #",
+      required: true,
+    },
+    region: {
+      description: "Region of the player",
+      required: true,
+      available_variables: ["eun1", "euw1", "ru1", "tr1", "br1", "la1", "la2", "na1", "jp1", "kr", "oc1"]
+    },
+    type: {
+      description: "Format of the response",
+      required: false,
+      default: "text",
+      available_variables: ["json", "text"],
+    },
+    msg: {
+      description: "Message to be displayed as response",
+      required: false,
+      default: "(player): (rank) - (points) points",
+      available_variables: ["(player)", "(tag)", "(rank)", "(points)", "(wins)", "(losses)"],
+    },
+  }
+}
+*/

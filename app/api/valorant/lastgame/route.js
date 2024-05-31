@@ -39,6 +39,12 @@ export async function GET(request) {
     if (obj.data == "full") {
       return NextResponse.json(data, { status: 200 });
     }
+
+    if (obj.type == "text") {
+      const results = `Map: ${playerInfo.map} / ${playerInfo.has_won ? 'Victory' : 'Defeat'} / Score: ${playerInfo.rounds_won}x${playerInfo.rounds_lost} / KDA: ${playerInfo.stats.kills}/${playerInfo.stats.deaths}/${playerInfo.stats.assists} / Game Time: ${playerInfo.game_duration_minutes}min`;
+
+      return NextResponse.json(results, { status: 200 });
+    }
     return NextResponse.json(playerInfo, { status: 200 });
 
   } catch (error) {
