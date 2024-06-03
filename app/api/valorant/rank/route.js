@@ -1,3 +1,28 @@
+/*
+Response example: 
+{
+  "status": 200,
+    "data": {
+    "currenttier": 27,
+    "currenttierpatched": "Radiant",
+    images": {
+      "small": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png",
+      "large": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/largeicon.png",
+      "triangle_down": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/ranktriangledownicon.png",
+      "triangle_up": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/ranktriangleupicon.png"
+    },
+    "ranking_in_tier": 712,
+    "mmr_change_to_last_game": 16,
+    "elo": 2812,
+    "name": "LOUD Coreano",
+    "tag": "LLL",
+    "old": false,
+    "leaderboardRank": 39,
+    "numberOfWins": 103
+  }
+}
+*/
+
 import { NextResponse } from "next/server";
 import { color } from "@/app/lib/colorLog";
 
@@ -64,7 +89,12 @@ export async function GET(request) {
 
       // Get leaderboard
       const leaderboard = await getRank(urlLeaderboardId(region, id));
-      console.log("Leaderboard", leaderboard);
+      if (leaderboard.status !== 200) {
+        data.data.leaderboardRank = 0;
+        data.data.numberOfWins = 0;
+        const response = await sendResponse(data, type, msg);
+        return NextResponse.json(response, { status: 200 });
+      };
       data.data.leaderboardRank = leaderboard.data[0].leaderboardRank;
       data.data.numberOfWins = leaderboard.data[0].numberOfWins;
 
@@ -96,13 +126,12 @@ export async function GET(request) {
         return NextResponse.json(response, { status: 200 });
       };
 
-      console.log("Leaderboard", leaderboard);
       data.data.leaderboardRank = leaderboard.data[0].leaderboardRank;
       data.data.numberOfWins = leaderboard.data[0].numberOfWins;
 
       // Send response
       const response = await sendResponse(data, type, msg);
-      console.log(response);
+      //console.log(response);
       return NextResponse.json(response, { status: 200 })
     }
 
@@ -157,39 +186,3 @@ async function sendResponse(data, type, msg) {
   if (type != "text") return data;
   return formattedMessage;
 }
-
-
-/*
-{
-  "data": {
-    "currenttier": 19,
-    "currenttierpatched": "Diamond 2",
-    "elo": 1615,
-    "images": {
-      "large": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/19/largeicon.png",
-      "small": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/19/smallicon.png",
-      "triangle_down": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/19/ranktriangledownicon.png",
-      "triangle_up": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/19/ranktriangleupicon.png"
-    },
-    "mmr_change_to_last_game": 16,
-    "name": "Aprendendo",
-    "old": false,
-    "ranking_in_tier": 15,
-    "tag": "BR10"
-  },
-  "status": 200
-}
-*/
-
-
-// Check if the channel is missing
-// if (!channel || channel == "${channel}") {
-//   const noChannel = `Parameter &channel=$(channel) required. Add it to the end of URL`;
-//   const example = `${origin}${pathname}?player=PLAYERNAME&tag=TAG&region=REGION&channel=$(channel)`
-//   return NextResponse.json({ error: noChannel, example: example, status: 400 }, { status: 400 });
-// }
-
-// Check if the region is invalid
-// if (!validRegions.includes(region)) {
-//   return NextResponse.json({ error: `Invalid region. Valid regions: ${validRegions.join(", ")}` }, { status: 400 });
-// }
