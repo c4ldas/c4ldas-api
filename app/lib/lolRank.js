@@ -1,3 +1,22 @@
+/*
+Riot Endpoints used by this API:
+`https://${serverName}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${player}/${tag}`
+`https://${region}.api.riotgames.com/{game}/summoner/v4/summoners/by-puuid/${puuid}`
+`https://${region}.api.riotgames.com/{game}/league/v4/entries/by-summoner/${summonerId}`
+
+Example response from this API:
+{
+  "gameName": "YoDa",
+  "tagLine": "BR1",
+  "tier": "DIAMOND",
+  "rank": "I",
+  "leaguePoints": 60,
+  "wins": 26,
+  "losses": 26
+}
+
+*/
+
 const apiURL = "api.riotgames.com";
 
 const gameInfo = {
