@@ -89,6 +89,13 @@ export async function GET(request) {
 
       // Get leaderboard
       const leaderboard = await getRank(urlLeaderboardPlayer(region, player, tag));
+      if (leaderboard.status !== 200) {
+        data.data.leaderboardRank = 0;
+        data.data.numberOfWins = 0;
+        const response = await sendResponse(data, type, msg);
+        return NextResponse.json(response, { status: 200 });
+      };
+
       console.log("Leaderboard", leaderboard);
       data.data.leaderboardRank = leaderboard.data[0].leaderboardRank;
       data.data.numberOfWins = leaderboard.data[0].numberOfWins;
@@ -126,7 +133,8 @@ async function getRank(url) {
       }
     });
     const data = await rankRequest.json();
-    if (data.status !== 200) throw ({ error: { message: data.errors[0].message, code: data.errors[0].code } });
+
+    // if (data.status !== 200) throw ({ error: { message: data.errors[0].message, code: data.errors[0].code } });
     return data;
 
   } catch (error) {
@@ -146,8 +154,8 @@ async function sendResponse(data, type, msg) {
 
   color.log("green", formattedMessage);
 
-  if (type === "json" || type === "overlay") return data;
-  if (type === "text") return formattedMessage;
+  if (type != "text") return data;
+  return formattedMessage;
 }
 
 
