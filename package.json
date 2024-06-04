@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@js-temporal/polyfill": "^0.4.4",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "next": "14.2.3",
