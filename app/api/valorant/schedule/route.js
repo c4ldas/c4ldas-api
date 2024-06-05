@@ -60,8 +60,7 @@ export async function GET(request) {
     })
 
     if (type == "text") {
-      console.log("Type text");
-      return NextResponse.json(matches.toString().replaceAll(',', ' // '), { status: 200 });
+      return new Response(matches.toString().replaceAll(',', ' // '), { status: 200 });
     }
     return NextResponse.json(todayGames, { status: 200 });
 
