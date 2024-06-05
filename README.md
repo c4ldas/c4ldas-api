@@ -47,5 +47,3 @@ At the moment the structure of the application is:
 |     |-- tft/
 |     |    |-- rank/     # done
 </pre>
-
-#dfgdg
