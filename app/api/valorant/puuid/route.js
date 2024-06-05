@@ -25,7 +25,7 @@ export async function GET(request) {
 
     if (type === "json") return NextResponse.json(response, { status: 200 });
 
-    return NextResponse.json((response.data.puuid), { status: 200 });
+    return new Response((response.data.puuid), { status: 200 });
 
   } catch (error) {
     console.log(error);

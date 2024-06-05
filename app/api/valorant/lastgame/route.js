@@ -25,9 +25,11 @@ export async function GET(request) {
 
     const playerInfo = allPlayers.find((info) => info.name.toLowerCase() == player.toLowerCase());
     const playerTeam = playerInfo.team.toLowerCase();
-    const winner = (data.teams.blue.has_won == true) ? "Blue" : "Red";
+    const winner = (data.teams.blue.has_won == true) ? "Blue" : (data.teams.red.has_won == true) ? "Red" : "None";
+
 
     playerInfo.has_won = (winner == playerInfo.team);
+    playerInfo.outcome = playerInfo.has_won ? "Victory" : (winner == "None") ? "Draw" : "Defeat";
     playerInfo.rounds_won = data.teams[playerTeam].rounds_won;
     playerInfo.rounds_lost = data.teams[playerTeam].rounds_lost;
     playerInfo.game_duration_minutes = parseInt(data.metadata.game_length / 60);
@@ -41,9 +43,9 @@ export async function GET(request) {
     }
 
     if (obj.type == "text") {
-      const results = `Map: ${playerInfo.map} / ${playerInfo.has_won ? 'Victory' : 'Defeat'} / Score: ${playerInfo.rounds_won}x${playerInfo.rounds_lost} / KDA: ${playerInfo.stats.kills}/${playerInfo.stats.deaths}/${playerInfo.stats.assists} / Game Time: ${playerInfo.game_duration_minutes}min`;
+      const results = `Map: ${playerInfo.map} / Outcome: ${playerInfo.outcome} / Score: ${playerInfo.rounds_won}x${playerInfo.rounds_lost} / KDA: ${playerInfo.stats.kills}/${playerInfo.stats.deaths}/${playerInfo.stats.assists} / Game Time: ${playerInfo.game_duration_minutes}min`;
 
-      return NextResponse.json(results, { status: 200 });
+      return new Response(results, { status: 200 });
     }
     return NextResponse.json(playerInfo, { status: 200 });
 
