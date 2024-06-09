@@ -31,7 +31,10 @@ At the moment the structure of the application is:
 |  |--api/
 |     |-- spotify/       # pending
 |     |-- twitch/        # pending
-|     |-- youtube/       # pending
+|     |-- youtube/       
+|     |    |-- search/   # pending
+|     |    |-- channel/     # pending
+|     |     
 |     |-- steam/          
 |     |    |-- game/     # done
 |     |     
