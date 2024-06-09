@@ -44,7 +44,7 @@ export async function GET(request) {
 
   try {
     const validParams = await checkParams(league, channel);
-    color.log("green", `Valid Params: ${validParams}`);
+    // color.log("green", `Valid Params: ${JSON.stringify(validParams)}`);
     if (!validParams.status) return sendResponse({ error: validParams.error }, 400, type, channel);
 
     const request = await fetch(url(league), {
