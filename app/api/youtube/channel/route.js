@@ -1,3 +1,4 @@
+/*
 import { NextResponse } from 'next/server';
 
 
@@ -14,6 +15,8 @@ export async function GET(request) {
     console.log(error);
   }
 }
+ */
+
 
 // router.get("/:username", async (req, res) => {
 //   const username = req.params.username;
