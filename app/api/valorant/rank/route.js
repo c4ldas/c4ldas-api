@@ -26,8 +26,8 @@ Response example:
 import { NextResponse } from "next/server";
 import { color } from "@/app/lib/colorLog";
 
-const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/${region}/${id}`;
-const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/mmr/${region}/${player}/${tag}`;
+export const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/${region}/${id}`;
+export const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/mmr/${region}/${player}/${tag}`;
 const urlLeaderboardId = (region, id) => `https://api.henrikdev.xyz/valorant/v2/leaderboard/${region}?puuid=${id}`;
 const urlLeaderboardPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v2/leaderboard/${region}?name=${player}&tag=${tag}`;
 
@@ -151,7 +151,7 @@ async function checkParams(player, tag, id, channel, region) {
 }
 
 
-async function getRank(url) {
+export async function getRank(url) {
   try {
     const rankRequest = await fetch(url, {
       method: "GET",

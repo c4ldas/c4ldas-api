@@ -1,32 +1,41 @@
 import { NextResponse } from 'next/server';
+import { getRank, urlById as rankById, urlByPlayer as rankByPlayer } from '../rank/route';
+
+
 
 const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v3/matches/${region}/${player}/${tag}?filter=competitive&size=1`;
+const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v3/by-puuid/matches/${region}/${id}`
 const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
 
 export async function GET(request) {
   try {
     // Convert query strings (map format) to object format - Only works for this specific case!
     const obj = Object.fromEntries(request.nextUrl.searchParams);
-    const { region, player, tag } = obj;
+    const { region, player, tag, id } = obj;
 
-    const validParams = checkParams(region, player, tag);
+    const validParams = checkParams(region, player, tag, id);
 
-    const lastMatchRequest = await fetch(urlByPlayer(region, player, tag), {
+    const url = id ? urlById(region, id) : urlByPlayer(region, player, tag);
+    const rank = id ? await getRank(rankById(region, id)) : await getRank(rankByPlayer(region, player, tag));
+
+    const lastMatchRequest = await fetch(url, {
+      // cache: "force-cache",
+      next: { revalidate: 0 },
       headers: {
         "Authorization": process.env.VALORANT_TOKEN
       }
     });
 
-    if (!lastMatchRequest.ok) throw ({ error: { message: lastMatchRequest.statusText, player: player, tag: tag, code: lastMatchRequest.status } });
+    if (!lastMatchRequest.ok) throw ({ error: { message: lastMatchRequest.statusText, id: id, player: player, tag: tag, code: lastMatchRequest.status } });
 
     const lastMatch = await lastMatchRequest.json();
     const data = lastMatch.data[0]
     const allPlayers = data.players.all_players;
 
-    const playerInfo = allPlayers.find((info) => info.name.toLowerCase() == player.toLowerCase());
+    const playerInfo = allPlayers.find((info) => info.name.toLowerCase() == player?.toLowerCase() || info.puuid == id);
     const playerTeam = playerInfo.team.toLowerCase();
+    if (playerTeam != "blue" && playerTeam != "red") throw ({ error: { message: "It was not possible to determine player team. Try again later", player: player, tag: tag, id: id, team: playerTeam, region: region, status: 500 } });
     const winner = (data.teams.blue.has_won == true) ? "Blue" : (data.teams.red.has_won == true) ? "Red" : "None";
-
 
     playerInfo.has_won = (winner == playerInfo.team);
     playerInfo.outcome = playerInfo.has_won ? "Victory" : (winner == "None") ? "Draw" : "Defeat";
@@ -37,6 +46,7 @@ export async function GET(request) {
     playerInfo.rounds_played = data.metadata.rounds_played;
     playerInfo.game_start = data.metadata.game_start;
     playerInfo.game_start_patched = data.metadata.game_start_patched;
+    playerInfo.ranking_in_tier = rank.data.ranking_in_tier;
 
     if (obj.data == "full") {
       return NextResponse.json(data, { status: 200 });
@@ -51,13 +61,13 @@ export async function GET(request) {
 
   } catch (error) {
     console.log(error)
-    return NextResponse.json({ error: error.error }, { status: 400 });
+    return NextResponse.json({ error: error.error }, { status: error.error.status });
 
   }
 }
 
-function checkParams(region, player, tag) {
-  if (!player || !tag) throw ({ error: { message: "Missing player / tag", player: player, tag: tag, region: region, status: 400, } });
+function checkParams(region, player, tag, id) {
+  if ((!player || !tag) && !id) throw ({ error: { message: "Missing player / tag or id", player: player, tag: tag, id: id, region: region, status: 400, } });
   /* if (!player || !tag) throw ({ error: { message: "Missing id", id: "Find your steam ID in https://imgur.com/a/EBYhudl", region: region, status: 400, } }); */
   if (!validRegions.includes(region)) throw ({ error: { message: "Invalid or missing region", player: player, tag: tag, region: region, regions_available: validRegions, status: 400, } });
 

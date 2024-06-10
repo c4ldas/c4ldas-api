@@ -26,6 +26,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.steamstatic.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.valorant-api.com',
+      },
     ],
   },
 };

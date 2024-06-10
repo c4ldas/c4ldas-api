@@ -1,12 +1,12 @@
-/*
+
 import { NextResponse } from 'next/server';
-
-
 
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const username = searchParams.get('username');
+    console.log(username)
+    return
     const url = "https://youtube.googleapis.com/youtube/v3/channels";
     const id = await getChannelByHandle(username);
     const channelInfo = id != 0 ? await getChannelById(id, url) : { items: [] };
@@ -15,9 +15,22 @@ export async function GET(request) {
     console.log(error);
   }
 }
+
+/*
+export async function GET(request) {
+  try {
+    // Convert query strings (map format) to object format - Only works for this specific case!
+    const obj = Object.fromEntries(request.nextUrl.searchParams);
+
+    // Get the parameters from URL
+    const { player, tag, id, channel, region = "br", msg = "(player) está (rank) com (pontos) pontos.", type = "text" } = obj;
+    const game = "valorant";
+
+  } catch (error) {
+    console.log(error);
+  }
+}
  */
-
-
 // router.get("/:username", async (req, res) => {
 //   const username = req.params.username;
 //   const key = process.env.YOUTUBE_KEY;

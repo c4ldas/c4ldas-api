@@ -33,7 +33,7 @@ At the moment the structure of the application is:
 |     |-- twitch/        # pending
 |     |-- youtube/       
 |     |    |-- search/   # pending
-|     |    |-- channel/     # pending
+|     |    |-- channel/  # pending
 |     |     
 |     |-- steam/          
 |     |    |-- game/     # done

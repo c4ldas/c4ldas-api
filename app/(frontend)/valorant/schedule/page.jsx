@@ -3,16 +3,12 @@
 import { useState, useEffect } from 'react';
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
-
-
-const id = "9fe721ed-4a11-5549-8387-e2d3d5ea76d9"; // Danny Jones
-// const id = "7cd4994f-3255-5575-b8a2-968f428bf9a1"; // Otsuka
+import Image from 'next/image';
 
 async function fetchPlayerData() {
-  const response = await fetch(`/api/valorant/lastgame?id=${id}&region=br`);
+  const response = await fetch('/api/valorant/lastgame?id=7cd4994f-3255-5575-b8a2-968f428bf9a1&region=br');
   if (!response.ok) {
-    console.log(response)
-    throw new Error('Failed to fetch data', { status: response.status });
+    throw new Error('Failed to fetch data');
   }
   const player = await response.json();
   return player;
@@ -34,79 +30,22 @@ export default function Valorant() {
   }, []);
 
 
-  const style = {
-    box: {
-      display: "block",
-      background: `linear-gradient(90deg, rgba(0, 0, 0, 0.60) 60%, rgba(0,212,255,0) 100%), 
-                  url('${player?.assets.agent.full || ''}') top no-repeat`,
-      backgroundSize: "100%",
-      borderRadius: "10px",
-      minHeight: "150px",
-      minWidth: "500px",
-      maxWidth: "500px",
-    },
-
-    text: {
-      minWidth: "55%",
-      maxWidth: "55%",
-      height: "100%",
-      padding: "5% 0px 5% 20px", // top, right, bottom, left
-      color: "white",
-    },
-
-    title: {
-      fontWeight: "bold",
-      fontSize: "1.4rem",
-    },
-
-    infos: {
-      color: "white",
-      // display: "inline-flex",
-      alignItems: "space-around",
-      // verticalAlign: "middle",
-      // alignItems: "center",
-    },
-
-    green: {
-      color: "green",
-      paddingRight: "0.5rem",
-    }
-  }
-
 
   return (
     <div className="container">
       <Header />
-      <main className="main block">
+      <main className="main">
         <h1>Player Data</h1>
-        {console.log(player)}
-        {!player && <span id="title">Loading...</span>}
-
-        {player && (
-          <div id="box" style={style.box}>
-            <div id="text" style={style.text}>
-              <h2 style={style.title}>{player.name}</h2>
-              <div style={style.infos}>Rank: <span style={style.green}>{player.currenttier_patched}</span></div>
-              <div style={style.infos}>KDA: <span style={style.green}>{player.stats.kills} / {player.stats.deaths} / {player.stats.assists}</span></div>
-              <div style={style.infos}>Headshots: <span style={style.green}>{player?.stats.headshots}</span></div>
-              <div style={style.infos}>Duration: <span style={style.green}>{Math.floor(player.game_duration_minutes)} min</span></div>
-              <div style={style.infos}>Map: <span style={style.green}>{player.map}</span></div>
-              <div style={style.infos}>Total rounds: <span style={style.green}>{player.rounds_played}</span></div>
-              <div style={style.infos}>Winner: <span style={style.green}>{player.has_won.toString()}</span></div>
-            </div>
-
-            {/* <Image src={player.assets.agent.killfeed} alt={player.name} width={500} height={256} quality={100} placeholder="empty" />
-            <p>{player.name} as {player.character}</p>
-            <p>Rank: {player.currenttier_patched}</p>
-            <p>KDA: {player.stats.kills} / {player.stats.deaths} / {player.stats.assists}</p>
-            <p>Headshots: {player?.stats.headshots}</p>
-            <p>Duration: {Math.floor(player.game_duration_minutes)} min</p>
-            <p>Map: {player.map}</p>
-            <p>Total rounds: {player.rounds_played}</p>
-            <p>Winner: {player.has_won.toString()}</p>
-            */}
-          </div>
-        )}
+        <Image src={player?.assets.agent.killfeed} alt={player?.name} width={256} height={128} />
+        <p>{player?.name} as {player?.character}</p>
+        <p>Rank: {player?.currenttier_patched}</p>
+        <p>KDA: {player?.stats.kills} / {player?.stats.deaths} / {player?.stats.assists}</p>
+        <p>Headshots: {player?.stats.headshots}</p>
+        <p>Duration: {Math.floor(player?.gameDuration / 60)} min</p>
+        <p>Map: {player?.map}</p>
+        <p>Total rounds: {player?.rounds_played}</p>
+        <p>Winner: {player?.hasWon.toString()}</p>
+        <pre>{JSON.stringify(player, null, 4)}</pre>
       </main>
       <FooterComponent />
     </div>
