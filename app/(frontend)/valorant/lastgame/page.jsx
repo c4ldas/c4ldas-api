@@ -10,37 +10,63 @@ import FooterComponent from "@/app/components/Footer";
 // const id = "10726a29-ce65-5471-a794-32733f309a16"; // Coreano
 // const id = "19071032-691d-55a3-8529-4fbbbd867eaf" // Aprendendo
 
-async function fetchPlayerData(url) {
+async function fetchPlayerData(playerName, tag, region, id) {
+
+  let url;
+  if (id) url = `/api/valorant/lastgame?id=${id}&region=${region}`;
+  if (playerName && tag) url = `/api/valorant/lastgame?player=${playerName}&tag=${tag}&region=${region}`;
+
   const response = await fetch(url);
-  /*   if (!response.ok) {
-      throw new Error('Failed to fetch data', { status: response.status });
-    } */
   const player = await response.json();
-  // console.log("Player: ", player);
   return player;
 }
 
-export default function Valorant({ params, searchParams }) {
-  /*     const id = searchParams.id || 0
-      const region = searchParams.region || "br" */
-  const { id, region, player: playerName, tag } = searchParams;
-  let url;
-  if (id) url = `/api/valorant/lastgame?id=${id}&region=${region}`
-  if (playerName) url = `/api/valorant/lastgame?player=${playerName}&tag=${tag}&region=${region}`
+export default function Valorant({ searchParams }) {
 
   const [player, setPlayer] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [id, setId] = useState(searchParams.id || '');
+  const [playerName, setPlayerName] = useState(searchParams.player || '');
+  const [tag, setTag] = useState(searchParams.tag || '');
+  const [region, setRegion] = useState(searchParams.region || 'br');
 
-  useEffect(() => {
-    const fetchData = async () => {
+  /* const { id, region, player: playerName, tag } = searchParams; */
+
+
+  /* const [player, setPlayer] = useState(null); */
+
+
+
+  /*   useEffect(() => {
+      if ((id && id.trim() !== '') || (playerName && playerName.trim() !== '' && tag && tag.trim() !== '')) {
+        const fetchData = async () => {
+          try {
+            const data = await fetchPlayerData(playerName, tag, region, id);
+            setPlayer(data);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+        fetchData();
+      }
+    }, [id, playerName, tag, region]); */
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true); // Set isLoading to true when fetching data
+    setPlayer(null); // Reset player data
+    if ((id && id.trim() !== '') || (playerName && playerName.trim() !== '' && tag && tag.trim() !== '')) {
       try {
-        const data = await fetchPlayerData(url);
+        const data = await fetchPlayerData(playerName, tag, region, id);
         setPlayer(data);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false); // Set isLoading to false when data is fetched
       }
-    };
-    fetchData();
-  }, []);
+    }
+  }
+
 
   let colour;
 
@@ -56,14 +82,14 @@ export default function Valorant({ params, searchParams }) {
     colour = "rgba(64, 0, 0, 0.90)"; // red
   }
 
-  // rgba(0, 0, 0, 0.60)
+  // console.log("Image URL:", player?.assets?.agent.full);
+
   const style = {
     box: {
       display: "block",
+      height: "290px",
       background: `url('${player?.assets?.agent.full || ''}') 85px top no-repeat,
-                  linear-gradient(90deg, rgba(0, 0, 0, 0.90) 20%, ${colour} 80%)
-                  center center no-repeat`,
-      // backgroundSize: "100%",
+                      linear-gradient(90deg, rgba(0, 0, 0, 0.90) 20%, ${colour} 80%) center center / 100% 100% no-repeat`,
       backgroundSize: "100%",
       borderRadius: "10px",
       minHeight: "150px",
@@ -102,8 +128,73 @@ export default function Valorant({ params, searchParams }) {
     <div className="container">
       <Header />
       <main className="main block">
-        <h1>Player Data</h1>
-        {!player && <span id="title">Loading...</span>}
+        <h1>Last Game Status</h1>
+
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>
+              ID:
+              <input
+                type="text"
+                value={id}
+                onChange={(e) => {
+                  setId(e.target.value);
+                  setPlayerName('');
+                  setTag('');
+                }}
+                disabled={playerName || tag}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Player Name:
+              <input
+                type="text"
+                value={playerName}
+                onChange={(e) => {
+                  setPlayerName(e.target.value);
+                  setId('');
+                }}
+                disabled={id}
+                required={!id}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Tag:
+              <input
+                type="text"
+                value={tag}
+                onChange={(e) => {
+                  setTag(e.target.value);
+                  setId('');
+                }}
+                disabled={id}
+                required={!id}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Region:
+              <input
+                type="text"
+                value={region}
+                onChange={(e) => setRegion(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <button type="submit">Fetch Player Data</button>
+        </form>
+
+
+
+
+        {isLoading && <span id="title">Loading...</span>} {/* Render "Loading..." message if isLoading is true */}
+        {/* !isLoading && !player && <span id="title">Please enter player data</span> */} {/* Render message if player data is not available and not loading */}
         {player?.error ? (
           <span id="title">{player.error.message}</span>
         ) : (player && (
