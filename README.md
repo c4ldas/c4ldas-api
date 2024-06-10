@@ -23,7 +23,7 @@ At the moment the structure of the application is:
 |  |  |-- lol/           # pending
 |  |  |-- tft/           # pending
 |  |  |-- spotify/       # pending
-|  |  |-- steam/         # in progress
+|  |  |-- steam/         # pending
 |  |  |-- twitch/        # pending
 |  |  |-- valorant/      # pending
 |  |  |-- youtube/       # pending
@@ -31,9 +31,10 @@ At the moment the structure of the application is:
 |  |--api/
 |     |-- spotify/       # pending
 |     |-- twitch/        # pending
+|     |
 |     |-- youtube/       
-|     |    |-- search/   # pending
-|     |    |-- channel/  # pending
+|     |    |-- search/   # in progress
+|     |    |-- channel/  # in progress
 |     |     
 |     |-- steam/          
 |     |    |-- game/     # done
@@ -42,7 +43,7 @@ At the moment the structure of the application is:
 |     |    |-- lastgame/ # done
 |     |    |-- rank/     # done
 |     |    |-- puuid/    # done
-|     |    |-- schedule/ # pending
+|     |    |-- schedule/ # in progress
 |     |     
 |     |-- lol/
 |     |    |-- rank/     # done
