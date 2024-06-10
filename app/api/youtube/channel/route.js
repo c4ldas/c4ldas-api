@@ -1,18 +1,20 @@
-
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const username = searchParams.get('username');
-    console.log(username)
-    return
+    // Convert query strings (map format) to object format - Only works for this specific case!
+    const obj = Object.fromEntries(request.nextUrl.searchParams);
+    const { username } = obj;
+
+    // Remove it later
+    return NextResponse.json({ "Hello": "World" });
     const url = "https://youtube.googleapis.com/youtube/v3/channels";
     const id = await getChannelByHandle(username);
     const channelInfo = id != 0 ? await getChannelById(id, url) : { items: [] };
     return NextResponse.json(channelInfo);
   } catch (error) {
     console.log(error);
+    return NextResponse.json({ error: "error" }, { status: 400 });
   }
 }
 
