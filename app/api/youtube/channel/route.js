@@ -5,7 +5,7 @@ export async function GET(request) {
   try {
     // Convert query strings (map format) to object format - Only works for this specific case!
     const obj = Object.fromEntries(request.nextUrl.searchParams);
-    const { username } = obj;
+    const { username, type = "json" } = obj;
     // const innerTube = await Innertube.create(/* options */);
     const url = "https://youtube.googleapis.com/youtube/v3/channels";
 
@@ -27,7 +27,8 @@ export async function GET(request) {
     };
 
     const { title, description, publishedAt, thumbnails } = results.snippet;
-    return NextResponse.json({ channelId: id, title, description, publishedAt, thumbnails });
+    if (type == "text") return new Response(id, { status: 200 });
+    return NextResponse.json({ channelId: id, title, description, publishedAt, thumbnails }, { status: 200 });
 
   } catch (error) {
     console.log(error);
