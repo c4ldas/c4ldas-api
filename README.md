@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 <h2> Justification</h2>
 
-I have decided to rewrite my code running on https://c4ldas.com.br and the APIs created on that for Next.js. The current page is written using Nodejs/Express.js and deployed in Replit.com using Core account.
+I have decided to rewrite my code running on https://c4ldas.com.br and the APIs created on that for Next.js. The current page is written using Nodejs/Express.js and deployed in Replit.com using Core account plan.
 The main idea is to learn more about Nextjs and its features. Also, I can move the hosting to Vercel (which is free for hobby accounts) and have the benefits of it, like caching, CDN, etc.
 
 Using App Router on Next.js currently and storing front pages on /(frontend) directory to clear as much as possible the app folder.
