@@ -38,13 +38,14 @@ export async function GET(request) {
 
 async function getChannelByHandle(username) {
   try {
-    const html = await (
-      await fetch(`https://youtube.com/${username}`)
-    ).text();
+    const htmlRequest = await fetch(`https://youtube.com/${username}`, {
+      revalidate: 900, // 15 minutes
+    });
+    const html = await htmlRequest.text();
+
     const channelId = html.match(
       /itemprop="url"\s*href="https:\/\/www\.youtube\.com\/channel\/([^"]+)"/,
     )[1];
-    // console.log("Channel ID: ", channelId);
     return channelId;
 
     // Using Youtubei.js library
