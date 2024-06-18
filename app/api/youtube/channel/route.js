@@ -7,10 +7,9 @@ export async function GET(request) {
     const obj = Object.fromEntries(request.nextUrl.searchParams);
     const { username } = obj;
     // const innerTube = await Innertube.create(/* options */);
-
     const url = "https://youtube.googleapis.com/youtube/v3/channels";
+
     const id = await getChannelByHandle(username);
-    // return NextResponse.json({ username: id });
     const channelInfo = id != 0 ? await getChannelById(id, url, key) : { items: [] };
 
     const results = await channelInfo.items[0] || {
@@ -35,35 +34,6 @@ export async function GET(request) {
     return NextResponse.json({ error: "error" }, { status: 400 });
   }
 }
-
-
-// router.get("/:username", async (req, res) => {
-//   const username = req.params.username;
-//   const key = process.env.YOUTUBE_KEY;
-//   // const innerTube = await Innertube.create(/* options */);
-//   const url = "https://youtube.googleapis.com/youtube/v3/channels";
-//
-//   const id = await getChannelByHandle(username);
-//   const channelInfo = id != 0 ? await getChannelById(id, url, key) : { items: [] };
-//
-//   const results = await channelInfo.items[0] || {
-//     snippet: {
-//       publishedAt: null,
-//       channelId: null,
-//       title: null,
-//       description: null,
-//       thumbnails: {
-//         medium: {
-//           url: "https://www.c4ldas.com.br/api/youtube/not-found.png",
-//         },
-//       },
-//     },
-//   };
-//   const { title, description, publishedAt, thumbnails } = results.snippet;
-//
-//   res.status(200).json({ channelId: id, title, description, publishedAt, thumbnails });
-// });
-
 
 async function getChannelByHandle(username) {
   try {
