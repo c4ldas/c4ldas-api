@@ -34,7 +34,7 @@ At the moment the structure of the application is:
 |     |
 |     |-- youtube/       
 |     |    |-- search/   # in progress
-|     |    |-- channel/  # in progress
+|     |    |-- channel/  # done
 |     |     
 |     |-- steam/          
 |     |    |-- game/     # done
