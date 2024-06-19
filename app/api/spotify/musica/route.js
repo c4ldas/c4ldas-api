@@ -5,11 +5,5 @@ export async function GET(request) {
   const pathname = request.nextUrl.pathname;
 
   // console.log(request)
-  return NextResponse.json(
-    {
-      Usage: `${origin}${pathname}/musica/<id>?type=TYPE`,
-      info: `<id> can be retrieved on ${origin}/spotify/login`,
-      type: ["json", "text"],
-    }
-  );
+  return NextResponse.json({ Hello: "World" }, { status: 200 });
 };
