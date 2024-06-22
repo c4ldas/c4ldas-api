@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { sql } from '@vercel/postgres';
 
 export async function GET(request, { params }) {
 
@@ -8,7 +9,9 @@ export async function GET(request, { params }) {
   const { channel, type = "text" } = obj;
   const id = params.id;
 
+  const { rows } = await sql`SELECT * FROM spotify WHERE id = ${id};`;
 
+  console.log(rows);
 
   const origin = request.nextUrl.origin;
   const pathname = request.nextUrl.pathname;

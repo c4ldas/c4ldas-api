@@ -10,9 +10,9 @@ export default function decrypt(encryptedApiKey) {
   const encryptionKey = readEncryptionKeyFromFile(encryptionKeyFilePath);
 
   if (encryptionKey) {
-    console.log('Encryption key read from file:', encryptionKeyFilePath);
+    // console.log('Encryption key read from file:', encryptionKeyFilePath);
     const decryptedApiKey = decryptData(encryptedApiKey, encryptionKey);
-    console.log("Decrypted API Key:", decryptedApiKey);
+    // console.log("Decrypted API Key:", decryptedApiKey);
     return decryptedApiKey;
 
   } else {
