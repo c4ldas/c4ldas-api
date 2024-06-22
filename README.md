@@ -29,7 +29,7 @@ At the moment the structure of the application is:
 |  |  |-- youtube/       # pending
 |  |  
 |  |--api/
-|     |-- spotify/       # pending
+|     |-- spotify/       # in progress
 |     |-- twitch/        # pending
 |     |
 |     |-- youtube/       
