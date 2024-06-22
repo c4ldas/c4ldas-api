@@ -16,6 +16,13 @@ Response example:
 import { NextResponse } from "next/server";
 import { Temporal } from "@js-temporal/polyfill";
 import { color } from "@/app/lib/colorLog";
+import decrypt from "@/app/lib/encode_key";
+
+const env = process.env.ENVIRONMENT;
+
+const apiToken = env == "dev" ?
+  decrypt(process.env.VALORANT_TOKEN) :
+  process.env.VALORANT_TOKEN;
 
 const url = (league) => `https://api.henrikdev.xyz/valorant/v1/esports/schedule?league=${league}`;
 
@@ -50,7 +57,7 @@ export async function GET(request) {
     const request = await fetch(url(league), {
       method: "GET",
       headers: {
-        "Authorization": process.env.VALORANT_TOKEN
+        "Authorization": apiToken
       }
     });
     const response = await request.json();

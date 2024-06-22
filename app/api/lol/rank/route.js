@@ -23,7 +23,7 @@ export async function GET(request) {
     const puuidRequest = await getSummonerPuuid({ player, tag, region, game });
     const { puuid, gameName, tagLine } = puuidRequest;
 
-    const summonerIdRequest = await getSummonerId({ puuid, region, game });
+    const summonerIdRequest = await getSummonerId({ puuid, region, game, player, tag });
     const { id, accountId, summonerLevel } = summonerIdRequest;
 
     const rankRequest = await getRank({ id, gameName, region, game });
@@ -41,9 +41,11 @@ export async function GET(request) {
 
   } catch (error) {
     if (type == "text") {
+      console.log(error)
       const { message, player, tag, } = error.error;
       return NextResponse.json(`Error: ${message}. Player: ${player}, tag: ${tag}`);
     }
+    console.log(error);
     return NextResponse.json(error, { status: error.code });
   }
 }

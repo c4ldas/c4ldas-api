@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getRank, urlById as rankById, urlByPlayer as rankByPlayer } from '../rank/route';
 
+import decrypt from "@/app/lib/encode_key";
+const env = process.env.ENVIRONMENT;
 
+const apiToken = env == "dev" ?
+  decrypt(process.env.VALORANT_TOKEN) :
+  process.env.VALORANT_TOKEN;
 
 const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v3/matches/${region}/${player}/${tag}?filter=competitive&size=1`;
 const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v3/by-puuid/matches/${region}/${id}`
@@ -22,7 +27,7 @@ export async function GET(request) {
       // cache: "force-cache",
       next: { revalidate: 0 },
       headers: {
-        "Authorization": process.env.VALORANT_TOKEN
+        "Authorization": apiToken
       }
     });
 

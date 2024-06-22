@@ -26,6 +26,14 @@ Response example:
 import { NextResponse } from "next/server";
 import { color } from "@/app/lib/colorLog";
 
+import decrypt from "@/app/lib/encode_key";
+
+const env = process.env.ENVIRONMENT;
+
+const apiToken = env == "dev" ?
+  decrypt(process.env.VALORANT_TOKEN) :
+  process.env.VALORANT_TOKEN;
+
 export const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/${region}/${id}`;
 export const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/mmr/${region}/${player}/${tag}`;
 const urlLeaderboardId = (region, id) => `https://api.henrikdev.xyz/valorant/v2/leaderboard/${region}?puuid=${id}`;
@@ -158,7 +166,7 @@ export async function getRank(url) {
       next: { revalidate: 600 }, // 10 minutes
       headers: {
         "Content-Type": "application/json",
-        "Authorization": process.env.VALORANT_TOKEN
+        "Authorization": apiToken
       }
     });
     const data = await rankRequest.json();

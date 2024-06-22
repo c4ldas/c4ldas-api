@@ -1,5 +1,12 @@
 import { NextResponse } from 'next/server';
 
+import decrypt from "@/app/lib/encode_key";
+const env = process.env.ENVIRONMENT;
+
+const apiToken = env == "dev" ?
+  decrypt(process.env.VALORANT_TOKEN) :
+  process.env.VALORANT_TOKEN;
+
 const urlByPlayer = (player, tag) => `https://api.henrikdev.xyz/valorant/v1/account/${player}/${tag}?force=true`;
 
 export async function GET(request) {
@@ -16,7 +23,7 @@ export async function GET(request) {
 
     const getData = await fetch(urlByPlayer(player, tag), {
       headers: {
-        "Authorization": process.env.VALORANT_TOKEN
+        "Authorization": apiToken
       }
     });
     if (!getData.ok) throw ({ error: { message: getData.statusText, player: player, tag: tag, code: getData.status } });

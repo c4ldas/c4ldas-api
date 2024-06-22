@@ -1,5 +1,12 @@
 import { NextResponse } from "next/server";
 import { color } from "/app/lib/colorLog";
+import decrypt from "/app/lib/encode_key";
+
+const env = process.env.ENVIRONMENT;
+
+const apiToken = env == "dev" ?
+  decrypt(process.env.STEAM_KEY) :
+  process.env.STEAM_KEY;
 
 /**
  * Check valid regions from Steam
@@ -20,6 +27,7 @@ const nullValues = {
   timePlayed: ""
 }
 
+
 const getGameId = (apiKey, id) => `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?steamids=${id}&key=${apiKey}`;
 const getGameDetails = (apiKey, appId, region) => `https://store.steampowered.com/api/appdetails?appids=${appId}&cc=${region}&l=${region}&key=${apiKey}`;
 const getPlayTime = (apiKey, steamId, appId) => `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?steamid=${steamId}&include_appinfo=true&appids_filter[0]=${appId}&key=${apiKey}`
@@ -34,8 +42,8 @@ export async function GET(request) {
   try {
     const validParams = checkParams(id, region);
 
-    const gameIdRequest = await fetch(getGameId(process.env.STEAM_KEY, id));
-    color.log("blue", JSON.stringify(gameIdRequest));
+    const gameIdRequest = await fetch(getGameId(apiToken, id));
+    // color.log("blue", JSON.stringify(gameIdRequest));
     const gameId = await gameIdRequest.json();
 
     // console.log("game id: ", gameId);
@@ -44,10 +52,10 @@ export async function GET(request) {
     // color.log("green", `Game ID: ${JSON.stringify(appId)}`);
     if (!appId) return NextResponse.json(nullValues, { status: 404 });;
 
-    const gameDetailsRequest = await fetch(getGameDetails(process.env.STEAM_KEY, appId, region));
+    const gameDetailsRequest = await fetch(getGameDetails(apiToken, appId, region));
     const gameDetails = await gameDetailsRequest.json();
 
-    const playTimeRequest = await fetch(getPlayTime(process.env.STEAM_KEY, id, appId));
+    const playTimeRequest = await fetch(getPlayTime(apiToken, id, appId));
     const playTime = await playTimeRequest.json();
 
     const name = gameDetails[appId].data.name || "";

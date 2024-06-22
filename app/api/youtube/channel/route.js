@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server';
-const key = process.env.YOUTUBE_KEY;
+
+import decrypt from "@/app/lib/encode_key";
+const env = process.env.ENVIRONMENT;
+
+const apiToken = env == "dev" ?
+  decrypt(process.env.YOUTUBE_KEY) :
+  process.env.YOUTUBE_KEY;
 
 export async function GET(request) {
   try {
@@ -10,7 +16,7 @@ export async function GET(request) {
     const url = "https://youtube.googleapis.com/youtube/v3/channels";
 
     const id = await getChannelByHandle(username);
-    const channelInfo = id != 0 ? await getChannelById(id, url, key) : { items: [] };
+    const channelInfo = id != 0 ? await getChannelById(id, url, apiToken) : { items: [] };
 
     const results = await channelInfo.items[0] || {
       snippet: {

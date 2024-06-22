@@ -17,6 +17,9 @@ Example response from this API:
 
 */
 
+import decrypt from "./encode_key";
+const env = process.env.ENVIRONMENT;
+
 const apiURL = "api.riotgames.com";
 
 const gameInfo = {
@@ -55,6 +58,10 @@ export async function getSummonerPuuid(request) {
     const { player, tag, region, game } = request;
     const server = servers.find(serverObj => serverObj.regions.includes(region));
 
+    const apiToken = env == "dev" ?
+      decrypt(process.env[gameInfo[game].tokenName]) :
+      process.env[gameInfo[game].tokenName];
+
     if (!player || !tag) throw ({ error: { message: "Missing player / tag", player: player, tag: tag, region: region, code: 400 } });
     if (!server) throw ({ error: { message: "Incorrect or missing region", player: player, tag: tag, region: region, code: 400 } });
 
@@ -63,7 +70,7 @@ export async function getSummonerPuuid(request) {
       cache: "force-cache",
       // next: { revalidate: 0 },
       headers: {
-        "X-Riot-Token": `${process.env[gameInfo[game].tokenName]}`
+        "X-Riot-Token": apiToken
       }
     });
 
@@ -81,12 +88,17 @@ export async function getSummonerPuuid(request) {
 
 export async function getSummonerId(request) {
   try {
-    const { puuid, region, game } = request;
+    const { puuid, region, game, player, tag } = request;
+
+    const apiToken = env == "dev" ?
+      decrypt(process.env[gameInfo[game].tokenName]) :
+      process.env[gameInfo[game].tokenName];
+
     const summonerRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].puuidUrl}/${puuid}`, {
       method: "GET",
       cache: "force-cache",
       headers: {
-        "X-Riot-Token": `${process.env[gameInfo[game].tokenName]}`
+        "X-Riot-Token": apiToken
       }
     });
 
@@ -105,12 +117,17 @@ export async function getSummonerId(request) {
 export async function getRank(request) {
   try {
     const { id, gameName, region, game } = request;
+
+    const apiToken = env == "dev" ?
+      decrypt(process.env[gameInfo[game].tokenName]) :
+      process.env[gameInfo[game].tokenName];
+
     const rankRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].rankUrl}/${id}`, {
       method: "GET",
       // cache: "force-cache",
       next: { revalidate: 900 }, // 15 minutes
       headers: {
-        "X-Riot-Token": `${process.env[gameInfo[game].tokenName]}`
+        "X-Riot-Token": apiToken
       }
     });
 
