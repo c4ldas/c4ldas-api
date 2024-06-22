@@ -68,7 +68,7 @@ export async function GET(request) {
     },
     {
       endpoint: `/api/twitch/callback/`,
-      description: "Callback URL for Twitch.",
+      description: "Callback for Twitch authentication",
       usage: `${origin}${pathname}/callback/?code=CODE&scope=SCOPE&state=STATE`,
       params: {
         code: {
