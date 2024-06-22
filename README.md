@@ -19,35 +19,40 @@ At the moment the structure of the application is:
 |  |--lib/   
 |  |
 |  |--(frontend)/    
-|  |  |-- homepage       # done
-|  |  |-- lol/           # pending
-|  |  |-- tft/           # pending
-|  |  |-- spotify/       # pending
-|  |  |-- steam/         # pending
-|  |  |-- twitch/        # pending
-|  |  |-- valorant/      # pending
-|  |  |-- youtube/       # pending
+|  |  |-- homepage          # done
+|  |  |-- lol/              # pending
+|  |  |-- tft/              # pending
+|  |  |-- spotify/          # pending
+|  |  |-- steam/            # pending
+|  |  |-- twitch/           # pending
+|  |  |-- valorant/         # pending
+|  |  |-- youtube/          # pending
 |  |  
 |  |--api/
-|     |-- spotify/       # in progress
-|     |-- twitch/        # pending
+|     |-- spotify/       
+|     |    |-- musica/      # in progress
+|     |    |-- callback/    # pending
+|     |    
+|     |-- twitch/        
+|     |    |-- prediction/  # pending
+|     |    |-- callback/    # pending
 |     |
 |     |-- youtube/       
-|     |    |-- search/   # done
-|     |    |-- channel/  # done
-|     |     
-|     |-- steam/          
-|     |    |-- game/     # done
-|     |     
-|     |-- valorant/       
-|     |    |-- lastgame/ # done
-|     |    |-- rank/     # done
-|     |    |-- puuid/    # done
-|     |    |-- schedule/ # done
-|     |     
-|     |-- lol/
-|     |    |-- rank/     # done
-|     |     
-|     |-- tft/
-|     |    |-- rank/     # done
+|     |    |-- search/      # done
+|     |    |-- channel/     # done
+|     |         
+|     |-- steam/             
+|     |    |-- game/        # done
+|     |         
+|     |-- valorant/          
+|     |    |-- lastgame/    # done
+|     |    |-- rank/        # done
+|     |    |-- puuid/       # done
+|     |    |-- schedule/    # done
+|     |         
+|     |-- lol/    
+|     |    |-- rank/        # done
+|     |         
+|     |-- tft/    
+|     |    |-- rank/        # done
 </pre>
