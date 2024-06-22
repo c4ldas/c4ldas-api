@@ -6,7 +6,7 @@ export async function GET(request) {
 
   return NextResponse.json([
     {
-      endpoint: `/api/spotify/musica/<id>?type=TYPE`,
+      endpoint: `/api/spotify/musica/`,
       description: "Shows which song is currently playing for the user",
       usage: `${origin}${pathname}/musica/<id>/?type=TYPE`,
       params: {
@@ -20,6 +20,17 @@ export async function GET(request) {
           default: "text",
           available_variables: ["json", "text"],
         },
+      },
+    },
+    {
+      endpoint: `/api/spotify/callback/`,
+      description: "Callback for Spotify authentication",
+      usage: `${origin}${pathname}/callback/?code=CODE`,
+      params: {
+        code: {
+          description: `Code received from Spotify`,
+          required: true,
+        }
       },
     },
   ]);
