@@ -34,8 +34,6 @@ export async function GET(request, { params }) {
   }
 };
 
-
-
 async function getRefreshToken(id) {
   try {
 
@@ -58,8 +56,6 @@ async function getRefreshToken(id) {
     throw (error);
   }
 }
-
-
 
 async function getAccessToken(refreshToken) {
   try {
@@ -87,7 +83,6 @@ async function getAccessToken(refreshToken) {
     throw (error);
   }
 }
-
 
 async function getSong(accessToken) {
   try {
