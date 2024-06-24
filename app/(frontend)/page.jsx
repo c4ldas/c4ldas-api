@@ -2,7 +2,6 @@ import Header from "@/app/components/Header";
 import Linkbox from "@/app/components/Linkbox";
 import FooterComponent from "@/app/components/Footer";
 
-
 export default async function Home() {
   return (
     <div className="container">
@@ -52,7 +51,7 @@ export default async function Home() {
         <Linkbox
           title="Valorant - Official games of the day"
           description="Set up a chat command to display real-time scores of today's official Valorant tournament matches."
-          link="/valorant/scheduler"
+          link="/valorant/schedule"
         />
 
         <Linkbox
