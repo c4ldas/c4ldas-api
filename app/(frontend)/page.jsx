@@ -9,13 +9,13 @@ export default async function Home() {
       <main className="main">
         <div>
           <h1 className="title">Welcome!</h1>
-          <p className="subtitle">
+          <h2 className="subtitle">
             Dive into a collection of tools and utilities designed to elevate
             your Twitch streaming experience with Streamelements. From
             managing predictions to showcasing your gaming ranks in real-time,
             explore a range of features tailored to enrich your
             channel.
-          </p>
+          </h2>
         </div>
 
         <Linkbox
