@@ -12,7 +12,7 @@ export default function ThemeToggleButton() {
 
   return (
     <label className="switch">
-      <input type="checkbox" id="theme-toggle" label="Dark Mode" onClick={handleToggle} />
+      <input type="checkbox" id="theme-toggle" label="dark-mode" onClick={handleToggle} />
       <span className="slider"><span className="mode"></span></span>
     </label>
   )
