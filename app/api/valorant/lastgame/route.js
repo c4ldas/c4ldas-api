@@ -1,3 +1,7 @@
+// https://api.henrikdev.xyz/valorant/v1/lifetime/matches/br/loud%20coreano/lll?api_key=HDEV-c079302a-3ba8-432a-9ce6-9d1adacf52f2&size=1&mode=competitive
+// https://api.henrikdev.xyz/valorant/v1/by-puuid/lifetime/matches/br/10726a29-ce65-5471-a794-32733f309a16?mode=competitive&size=1
+
+
 import { NextResponse } from 'next/server';
 import { getRank, urlById as rankById, urlByPlayer as rankByPlayer } from '../rank/route';
 
