@@ -28,7 +28,22 @@ export async function sendResponse(song, type, channel) {
     const songIsPlaying = song.is_playing;
 
     if (type == "json") {
-      return NextResponse.json({ song }, { status: 200 });
+
+      const data = {
+        "name": song.item.name,
+        "artists": song.item.artists.map(artist => artist.name).join(" & "),
+        "artists_array": song.item.artists,
+        "is_playing": song.is_playing,
+        "album": song.item.album.name,
+        "album_art": song.item.album.images,
+        "timestamp": song.timestamp,
+        "progress_ms": song.progress_ms,
+        "duration_ms": song.item.duration_ms,
+        "popularity": song.item.popularity,
+        "song_preview": song.item.preview_url,
+      }
+
+      return NextResponse.json(data, { status: 200 });
     }
 
     if (!songIsPlaying) {
