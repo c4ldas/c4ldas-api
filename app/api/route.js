@@ -1,4 +1,3 @@
-import encryption from "../lib/encode_key";
 
 export async function GET(request) {
 
