@@ -22,7 +22,7 @@ Response example:
   }
 }
 */
-
+import { tiers, urlById, urlByPlayer, getRank, validRegions } from '@/app/lib/valorant_rank';
 import { NextResponse } from "next/server";
 import { color } from "@/app/lib/colorLog";
 
@@ -34,8 +34,8 @@ const apiToken = env == "dev" ?
   decrypt(process.env.VALORANT_TOKEN) :
   process.env.VALORANT_TOKEN;
 
-export const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/${region}/${id}`;
-export const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/mmr/${region}/${player}/${tag}`;
+// export const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/${region}/${id}`;
+// export const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/mmr/${region}/${player}/${tag}`;
 const urlLeaderboardId = (region, id) => `https://api.henrikdev.xyz/valorant/v2/leaderboard/${region}?puuid=${id}`;
 const urlLeaderboardPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v2/leaderboard/${region}?name=${player}&tag=${tag}`;
 
@@ -68,7 +68,8 @@ const badges = {
   "Radiant": "Radiante",
 };
 
-const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
+// const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
+
 
 export async function GET(request) {
   try {
@@ -85,10 +86,10 @@ export async function GET(request) {
 
     // Check if id is provided
     if (id) {
-      const data = await getRank(urlById(region, id, type));
+      const data = await getRank(urlById(region, id, type), apiToken);
 
       // If not Immmortal and not Radiant, return with leaderboardRank and numberOfWins set to 0
-      if (!data.data.currenttierpatched.startsWith("Immortal") && data.data.currenttierpatched !== "Radiant") {
+      if (data.data.currenttier <= 23) { // Below Immortal and Radiant
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
         const response = await sendResponse(data, type, msg);
@@ -96,7 +97,7 @@ export async function GET(request) {
       }
 
       // Get leaderboard
-      const leaderboard = await getRank(urlLeaderboardId(region, id));
+      const leaderboard = await getRank(urlLeaderboardId(region, id), apiToken);
       if (leaderboard.status !== 200) {
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
@@ -112,13 +113,12 @@ export async function GET(request) {
     }
 
 
-
     // Check if player and tag are provided
     if (player && tag) {
-      const data = await getRank(urlByPlayer(region, player, tag, type));
+      const data = await getRank(urlByPlayer(region, player, tag, type), apiToken);
 
       // If not Immmortal and not Radiant, return with leaderboardRank and numberOfWins set to 0
-      if (!data.data.currenttierpatched.startsWith("Immortal") && data.data.currenttierpatched !== "Radiant") {
+      if (data.data.currenttier <= 23) { // Below Immortal and Radiant
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
         const response = await sendResponse(data, type, msg);
@@ -126,7 +126,7 @@ export async function GET(request) {
       }
 
       // Get leaderboard
-      const leaderboard = await getRank(urlLeaderboardPlayer(region, player, tag));
+      const leaderboard = await getRank(urlLeaderboardPlayer(region, player, tag), apiToken);
       if (leaderboard.status !== 200) {
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
@@ -143,10 +143,10 @@ export async function GET(request) {
       return NextResponse.json(response, { status: 200 })
     }
 
-
     // If id or player/tag are not provided, return error
     return NextResponse.json({ error: "Id or player / tag are required" }, { status: 400 })
   } catch (error) {
+    console.log("This is the error: ", error);
     return NextResponse.json({ error: error.error }, { status: 400 })
   }
 }
@@ -159,33 +159,34 @@ async function checkParams(player, tag, id, channel, region) {
 }
 
 
-export async function getRank(url) {
-  try {
-    const rankRequest = await fetch(url, {
-      method: "GET",
-      next: { revalidate: 600 }, // 10 minutes
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": apiToken
-      }
-    });
-    const data = await rankRequest.json();
-
-    // if (data.status !== 200) throw ({ error: { message: data.errors[0].message, code: data.errors[0].code } });
-    return data;
-
-  } catch (error) {
-    throw (error);
-  }
-}
+// export async function getRank(url) {
+//   try {
+//     const rankRequest = await fetch(url, {
+//       method: "GET",
+//       next: { revalidate: 600 }, // 10 minutes
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": apiToken
+//       }
+//     });
+//     const data = await rankRequest.json();
+// 
+//     // if (data.status !== 200) throw ({ error: { message: data.errors[0].message, code: data.errors[0].code } });
+//     return data;
+// 
+//   } catch (error) {
+//     throw (error);
+//   }
+// }
 
 async function sendResponse(data, type, msg) {
 
-  const { name: player, ranking_in_tier: pontos, currenttierpatched: elo, numberOfWins: vitorias, leaderboardRank: posicao } = data.data;
+  const { name: player, ranking_in_tier: pontos, currenttier, numberOfWins: vitorias, leaderboardRank: posicao } = data.data;
   const formattedMessage = msg
     .replace(/\(player\)/g, player)
     .replace(/\(pontos\)/g, pontos)
-    .replace(/\(rank\)/g, badges[elo])
+    // .replace(/\(rank\)/g, badges[elo])
+    .replace(/\(rank\)/g, tiers[currenttier].tier_name_pt)
     .replace(/\(vitorias\)/g, vitorias)
     .replace(/\(posicao\)/g, posicao);
 
