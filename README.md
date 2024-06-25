@@ -31,7 +31,7 @@ At the moment the structure of the application is:
 |  |--api/
 |     |-- spotify/       
 |     |    |-- musica/      # done
-|     |    |-- callback/    # pending
+|     |    |-- callback/    # in progress
 |     |    
 |     |-- twitch/        
 |     |    |-- prediction/  # pending
