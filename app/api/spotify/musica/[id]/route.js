@@ -28,7 +28,6 @@ export async function sendResponse(song, type, channel) {
     const songIsPlaying = song.is_playing;
 
     if (type == "json") {
-
       const data = {
         "name": song.item.name,
         "artists": song.item.artists.map(artist => artist.name).join(" & "),
@@ -49,6 +48,7 @@ export async function sendResponse(song, type, channel) {
     if (!songIsPlaying) {
       return new Response("No song playing!", { status: 200 });
     }
+
     return new Response(`${artists} - ${songName}`, { status: 200 });
   } catch (error) {
     console.log(error);
