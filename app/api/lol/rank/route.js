@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSummonerPuuid, getSummonerId, getRank } from "@/app/lib/lolRank.js";
+import { getSummonerPuuid, getSummonerId, getRank } from "@/app/lib/lol_rank.js";
 
 export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
