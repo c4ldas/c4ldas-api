@@ -1,27 +1,3 @@
-/*
-Response example: 
-{
-  "status": 200,
-    "data": {
-    "currenttier": 27,
-    "currenttierpatched": "Radiant",
-    images": {
-      "small": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/smallicon.png",
-      "large": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/largeicon.png",
-      "triangle_down": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/ranktriangledownicon.png",
-      "triangle_up": "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/27/ranktriangleupicon.png"
-    },
-    "ranking_in_tier": 712,
-    "mmr_change_to_last_game": 16,
-    "elo": 2812,
-    "name": "LOUD Coreano",
-    "tag": "LLL",
-    "old": false,
-    "leaderboardRank": 39,
-    "numberOfWins": 103
-  }
-}
-*/
 import { tiers, urlById, urlByPlayer, getRank, validRegions } from '@/app/lib/valorant_rank';
 import { NextResponse } from "next/server";
 import { color } from "@/app/lib/colorLog";
