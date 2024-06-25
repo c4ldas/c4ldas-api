@@ -116,7 +116,7 @@ async function sendResponse(song, type, channel) {
     const artists = song.item.artists.map(artist => artist.name).join(" & ");
     const songIsPlaying = song.is_playing;
 
-    console.log(`Channel: ${channel} - ${artists} - ${songName}`);
+    // console.log(`Channel: ${channel} - ${artists} - ${songName}`);
 
     if (type == "json") {
       return NextResponse.json({ song }, { status: 200 });
