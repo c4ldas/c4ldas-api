@@ -34,42 +34,9 @@ const apiToken = env == "dev" ?
   decrypt(process.env.VALORANT_TOKEN) :
   process.env.VALORANT_TOKEN;
 
-// export const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/mmr/${region}/${id}`;
-// export const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/mmr/${region}/${player}/${tag}`;
+
 const urlLeaderboardId = (region, id) => `https://api.henrikdev.xyz/valorant/v2/leaderboard/${region}?puuid=${id}`;
 const urlLeaderboardPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v2/leaderboard/${region}?name=${player}&tag=${tag}`;
-
-const badges = {
-  "Unrated": "Sem rank/elo",
-  "Iron 1": "Ferro 1",
-  "Iron 2": "Ferro 2",
-  "Iron 3": "Ferro 3",
-  "Bronze 1": "Bronze 1",
-  "Bronze 2": "Bronze 2",
-  "Bronze 3": "Bronze 3",
-  "Silver 1": "Prata 1",
-  "Silver 2": "Prata 2",
-  "Silver 3": "Prata 3",
-  "Gold 1": "Ouro 1",
-  "Gold 2": "Ouro 2",
-  "Gold 3": "Ouro 3",
-  "Platinum 1": "Platina 1",
-  "Platinum 2": "Platina 2",
-  "Platinum 3": "Platina 3",
-  "Diamond 1": "Diamante 1",
-  "Diamond 2": "Diamante 2",
-  "Diamond 3": "Diamante 3",
-  "Ascendant 1": "Ascendente 1",
-  "Ascendant 2": "Ascendente 2",
-  "Ascendant 3": "Ascendente 3",
-  "Immortal 1": "Imortal 1",
-  "Immortal 2": "Imortal 2",
-  "Immortal 3": "Imortal 3",
-  "Radiant": "Radiante",
-};
-
-// const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
-
 
 export async function GET(request) {
   try {
@@ -111,7 +78,6 @@ export async function GET(request) {
       const response = await sendResponse(data, type, msg);
       return NextResponse.json(response, { status: 200 })
     }
-
 
     // Check if player and tag are provided
     if (player && tag) {
@@ -158,34 +124,12 @@ async function checkParams(player, tag, id, channel, region) {
   return { status: true, error: null };
 }
 
-
-// export async function getRank(url) {
-//   try {
-//     const rankRequest = await fetch(url, {
-//       method: "GET",
-//       next: { revalidate: 600 }, // 10 minutes
-//       headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": apiToken
-//       }
-//     });
-//     const data = await rankRequest.json();
-// 
-//     // if (data.status !== 200) throw ({ error: { message: data.errors[0].message, code: data.errors[0].code } });
-//     return data;
-// 
-//   } catch (error) {
-//     throw (error);
-//   }
-// }
-
 async function sendResponse(data, type, msg) {
 
   const { name: player, ranking_in_tier: pontos, currenttier, numberOfWins: vitorias, leaderboardRank: posicao } = data.data;
   const formattedMessage = msg
     .replace(/\(player\)/g, player)
     .replace(/\(pontos\)/g, pontos)
-    // .replace(/\(rank\)/g, badges[elo])
     .replace(/\(rank\)/g, tiers[currenttier].tier_name_pt)
     .replace(/\(vitorias\)/g, vitorias)
     .replace(/\(posicao\)/g, posicao);
