@@ -16,23 +16,25 @@ if (env == "dev") {
 }
 
 export async function GET(request, { params }) {
+  // Convert query strings (map format) to object format - Only works for this specific case!
+  const obj = Object.fromEntries(request.nextUrl.searchParams);
+  const { channel, type = "text" } = obj;
+  const id = params.id;
+
   try {
-
-    // Convert query strings (map format) to object format - Only works for this specific case!
-    const obj = Object.fromEntries(request.nextUrl.searchParams);
-    const { channel, type = "text" } = obj;
-    const id = params.id;
-
     const refreshToken = await getRefreshToken(id);
-    const accessToken = await getAccessToken(refreshToken);
-    const song = await getSong(accessToken);
+    const accessToken = await getAccessToken(refreshToken, type);
+    const song = await getSong(accessToken, type);
 
-    return NextResponse.json({ song }, { status: 200 });
+    return sendResponse(song, type, channel);
+
   } catch (error) {
-    console.log("GET(): ", error);
-    return NextResponse.json({ error: error.error }, { status: 200 });
+    console.log("GET() error: ", error);
+    if (type == "text") return new Response(error.error, { status: 200 });
+    return NextResponse.json(error, { status: 200 });
   }
 };
+
 
 async function getRefreshToken(id) {
   try {
@@ -62,7 +64,7 @@ async function getAccessToken(refreshToken) {
 
     const accessTokenRequest = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
-      next: { revalidate: 300 },
+      next: { revalidate: 0 },
       body: new URLSearchParams({
         'grant_type': 'refresh_token',
         'refresh_token': refreshToken
@@ -84,7 +86,7 @@ async function getAccessToken(refreshToken) {
   }
 }
 
-async function getSong(accessToken) {
+async function getSong(accessToken, type) {
   try {
 
     const musicFetch = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
@@ -102,7 +104,31 @@ async function getSong(accessToken) {
     return music;
 
   } catch (error) {
-    console.log("getSong(): ", error);
+    console.log("getSong() error: ", error);
     throw (error);
   }
+}
+
+async function sendResponse(song, type, channel) {
+  try {
+
+    const songName = song.item.name;
+    const artists = song.item.artists.map(artist => artist.name).join(" & ");
+    const songIsPlaying = song.is_playing;
+
+    console.log(`Channel: ${channel} - ${artists} - ${songName}`);
+
+    if (type == "json") {
+      return NextResponse.json({ song }, { status: 200 });
+    }
+
+    if (!songIsPlaying) {
+      return new Response("No song playing!", { status: 200 });
+    }
+    return new Response(`${artists} - ${songName}`, { status: 200 });
+  } catch (error) {
+    console.log(error)
+    return NextResponse.json({ error: error.error }, { status: 200 });
+  }
+
 }
