@@ -1,9 +1,7 @@
-import { NextResponse } from "next/server";
-// import { sql } from '@vercel/postgres';
+import { sql } from '@vercel/postgres';
 import decrypt from "@/app/lib/encode_key";
-import { getRefreshTokenDatabase, getAccessToken, getSong } from "@/app/lib/spotify";
 
-/* const env = process.env.ENVIRONMENT;
+const env = process.env.ENVIRONMENT;
 let SPOTIFY_CLIENT_ID;
 let SPOTIFY_CLIENT_SECRET;
 
@@ -14,30 +12,9 @@ if (env == "dev") {
 } else {
   SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
   SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
-} */
+}
 
-export async function GET(request, { params }) {
-  // Convert query strings (map format) to object format - Only works for this specific case!
-  const obj = Object.fromEntries(request.nextUrl.searchParams);
-  const { channel, type = "text" } = obj;
-  const id = params.id;
-
-  try {
-    const refreshToken = await getRefreshTokenDatabase(id);
-    const accessToken = await getAccessToken(refreshToken, type);
-    const song = await getSong(accessToken, type);
-
-    return sendResponse(song, type, channel);
-
-  } catch (error) {
-    console.log("GET() error: ", error);
-    if (type == "text") return new Response(error.error, { status: 200 });
-    return NextResponse.json(error, { status: 200 });
-  }
-};
-
-
-/* export async function getRefreshToken(id) {
+export async function getRefreshTokenDatabase(id) {
   try {
 
     const refreshTokenQuery = {
@@ -58,9 +35,9 @@ export async function GET(request, { params }) {
     console.log("getRefreshToken(): ", error);
     throw (error);
   }
-} */
+}
 
-/* export async function getAccessToken(refreshToken) {
+export async function getAccessToken(refreshToken) {
   try {
 
     const accessTokenRequest = await fetch('https://accounts.spotify.com/api/token', {
@@ -85,9 +62,9 @@ export async function GET(request, { params }) {
     console.log("getAccessToken(): ", error);
     throw (error);
   }
-} */
+}
 
-/* export async function getSong(accessToken, type) {
+export async function getSong(accessToken, type) {
   try {
 
     const musicFetch = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
@@ -108,24 +85,6 @@ export async function GET(request, { params }) {
     console.log("getSong() error: ", error);
     throw (error);
   }
-} */
-
-export async function sendResponse(song, type, channel) {
-  try {
-    const songName = song.item.name;
-    const artists = song.item.artists.map(artist => artist.name).join(" & ");
-    const songIsPlaying = song.is_playing;
-
-    if (type == "json") {
-      return NextResponse.json({ song }, { status: 200 });
-    }
-
-    if (!songIsPlaying) {
-      return new Response("No song playing!", { status: 200 });
-    }
-    return new Response(`${artists} - ${songName}`, { status: 200 });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ error: error.error }, { status: 200 });
-  }
 }
+
+export async function getUserData(accessToken, type) { }

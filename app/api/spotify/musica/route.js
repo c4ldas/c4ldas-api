@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getRefreshToken, getAccessToken, getSong, sendResponse } from "./[id]/route";
+import { getRefreshTokenDatabase, getAccessToken, getSong } from "@/app/lib/spotify";
+import { sendResponse } from "./[id]/route";
 
 export async function GET(request, { params }) {
   // Convert query strings (map format) to object format - Only works for this specific case!
@@ -7,7 +8,7 @@ export async function GET(request, { params }) {
   const { id, channel, type = "text" } = obj;
 
   try {
-    const refreshToken = await getRefreshToken(id);
+    const refreshToken = await getRefreshTokenDatabase(id);
     const accessToken = await getAccessToken(refreshToken, type);
     const song = await getSong(accessToken, type);
 
