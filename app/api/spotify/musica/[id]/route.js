@@ -36,7 +36,7 @@ export async function GET(request, { params }) {
 };
 
 
-async function getRefreshToken(id) {
+export async function getRefreshToken(id) {
   try {
 
     const refreshTokenQuery = {
@@ -59,7 +59,7 @@ async function getRefreshToken(id) {
   }
 }
 
-async function getAccessToken(refreshToken) {
+export async function getAccessToken(refreshToken) {
   try {
 
     const accessTokenRequest = await fetch('https://accounts.spotify.com/api/token', {
@@ -86,7 +86,7 @@ async function getAccessToken(refreshToken) {
   }
 }
 
-async function getSong(accessToken, type) {
+export async function getSong(accessToken, type) {
   try {
 
     const musicFetch = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
@@ -109,7 +109,7 @@ async function getSong(accessToken, type) {
   }
 }
 
-async function sendResponse(song, type, channel) {
+export async function sendResponse(song, type, channel) {
   try {
     const songName = song.item.name;
     const artists = song.item.artists.map(artist => artist.name).join(" & ");
