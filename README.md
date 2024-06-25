@@ -30,7 +30,7 @@ At the moment the structure of the application is:
 |  |  
 |  |--api/
 |     |-- spotify/       
-|     |    |-- musica/      # in progress
+|     |    |-- musica/      # done
 |     |    |-- callback/    # pending
 |     |    
 |     |-- twitch/        
