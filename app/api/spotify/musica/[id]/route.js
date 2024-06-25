@@ -111,12 +111,9 @@ async function getSong(accessToken, type) {
 
 async function sendResponse(song, type, channel) {
   try {
-
     const songName = song.item.name;
     const artists = song.item.artists.map(artist => artist.name).join(" & ");
     const songIsPlaying = song.is_playing;
-
-    // console.log(`Channel: ${channel} - ${artists} - ${songName}`);
 
     if (type == "json") {
       return NextResponse.json({ song }, { status: 200 });
@@ -127,7 +124,7 @@ async function sendResponse(song, type, channel) {
     }
     return new Response(`${artists} - ${songName}`, { status: 200 });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json({ error: error.error }, { status: 200 });
   }
 
