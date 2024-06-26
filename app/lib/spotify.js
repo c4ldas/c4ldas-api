@@ -1,9 +1,7 @@
-import { sql } from '@vercel/postgres';
 import decrypt from "@/app/lib/encode_key";
 
 const env = process.env.ENVIRONMENT;
-// const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI;
-const SPOTIFY_REDIRECT_URI = "http://localhost:3000/api/spotify/callback";
+const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI;
 let SPOTIFY_CLIENT_ID;
 let SPOTIFY_CLIENT_SECRET;
 
@@ -15,59 +13,6 @@ if (env == "dev") {
   SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
   SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 }
-
-async function getRefreshTokenDatabase(id) {
-  try {
-
-    const refreshTokenQuery = {
-      text: 'SELECT refresh_token FROM spotify WHERE id = $1',
-      values: [id],
-    }
-
-    const client = await sql.connect();
-    const { rows } = await client.query(refreshTokenQuery);
-    client.release();
-
-    if (!rows[0]) {
-      throw { error: "User not registered!" };
-    }
-    return rows[0].refresh_token;
-
-  } catch (error) {
-    console.log("getRefreshToken(): ", error);
-    throw (error);
-  }
-}
-
-
-
-async function getAccessToken(refreshToken) {
-  try {
-
-    const accessTokenRequest = await fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
-      next: { revalidate: 0 },
-      body: new URLSearchParams({
-        'grant_type': 'refresh_token',
-        'refresh_token': refreshToken
-      }),
-      headers: {
-        'Authorization': `Basic ${Buffer.from(SPOTIFY_CLIENT_ID + ':' + SPOTIFY_CLIENT_SECRET).toString("base64")}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-
-    if (!accessTokenRequest.ok || accessTokenRequest.status != 200) throw { error: "Failed to get access token.", status: 500 };
-
-    const accessToken = await accessTokenRequest.json();
-    return accessToken.access_token;
-
-  } catch (error) {
-    console.log("getAccessToken(): ", error);
-    throw (error);
-  }
-}
-
 
 
 async function getSong(accessToken, type) {
@@ -113,13 +58,8 @@ async function getUserData(token) {
       "id": "c4ldas",
       "type": "user",
       "uri": "spotify:user:c4ldas",
-      "external_urls": {
-        "spotify": "https://open.spotify.com/user/c4ldas"
-      },
-      "followers": {
-        "href": null,
-        "total": 21
-      },
+      "external_urls": {},
+      "followers": {},
       "images": [
         {
           "url": "https://i.scdn.co/image/ab67757000003b82d3ff308820a44bfa543ef303",
@@ -165,4 +105,4 @@ async function getTokenCode(code) {
   */
 }
 
-export { getRefreshTokenDatabase, getAccessToken, getSong, getUserData, getTokenCode };
+export { getSong, getUserData, getTokenCode };
