@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import decrypt from "@/app/lib/encode_key";
 
 const env = process.env.ENVIRONMENT;
@@ -15,29 +16,49 @@ if (env == "dev") {
 }
 
 
-async function getSong(accessToken, type) {
-  try {
+async function getTokenCode(code) {
+  const getTokenFetch = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${Buffer.from(SPOTIFY_CLIENT_ID + ":" + SPOTIFY_CLIENT_SECRET).toString("base64")}`,
+    },
+    body: new URLSearchParams({
+      grant_type: "authorization_code",
+      code: code,
+      redirect_uri: SPOTIFY_REDIRECT_URI,
+    }),
+  });
+  const data = await getTokenFetch.json();
+  return data;
 
-    const musicFetch = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
-      "method": "GET",
-      "next": { revalidate: 0 },
-      "headers": {
-        "Accept": "application/json",
-        "Authorization": `Bearer ${accessToken}`,
-        "Content-Type": "application/json"
-      }
-    });
-
-    if (musicFetch.status == 204) throw { error: "No song playing!", status: 204 };
-    const music = await musicFetch.json();
-    return music;
-
-  } catch (error) {
-    console.log("getSong() error: ", error);
-    throw (error);
-  }
+  /*   
+  {
+    "access_token": "******",
+    "token_type": "Bearer",
+    "expires_in": 3600,
+    "refresh_token": "********",
+    "scope": "user-modify-playback-state user-read-currently-playing"
+  } 
+  */
 }
 
+
+async function getAccessToken(refreshToken, type) {
+  const getAccessTokenFetch = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${Buffer.from(SPOTIFY_CLIENT_ID + ":" + SPOTIFY_CLIENT_SECRET).toString("base64")}`,
+    },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: refreshToken
+    }),
+  });
+  const data = await getAccessTokenFetch.json();
+  return data.access_token;
+}
 
 
 async function getUserData(token) {
@@ -77,32 +98,64 @@ async function getUserData(token) {
 }
 
 
+async function getSong(accessToken, type) {
+  try {
 
-async function getTokenCode(code) {
-  const getTokenFetch = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      "Content-type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${Buffer.from(SPOTIFY_CLIENT_ID + ":" + SPOTIFY_CLIENT_SECRET).toString("base64")}`,
-    },
-    body: new URLSearchParams({
-      grant_type: "authorization_code",
-      code: code,
-      redirect_uri: SPOTIFY_REDIRECT_URI,
-    }),
-  });
-  const data = await getTokenFetch.json();
-  return data;
+    const musicFetch = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+      "method": "GET",
+      "next": { revalidate: 0 },
+      "headers": {
+        "Accept": "application/json",
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
+      }
+    });
 
-  /*   
-  {
-    "access_token": "******",
-    "token_type": "Bearer",
-    "expires_in": 3600,
-    "refresh_token": "********",
-    "scope": "user-modify-playback-state user-read-currently-playing"
-  } 
-  */
+    if (musicFetch.status == 204) throw { error: "No song playing!", status: 204 };
+    const music = await musicFetch.json();
+    return music;
+
+  } catch (error) {
+    console.log("getSong() error: ", error);
+    throw (error);
+  }
 }
 
-export { getSong, getUserData, getTokenCode };
+
+async function sendResponse(song, type, channel) {
+  try {
+    const songName = song.item.name;
+    const artists = song.item.artists.map(artist => artist.name).join(" & ");
+    const songIsPlaying = song.is_playing;
+
+    if (type == "json") {
+      const data = {
+        "name": song.item.name,
+        "artists": song.item.artists.map(artist => artist.name).join(" & "),
+        "artists_array": song.item.artists,
+        "is_playing": song.is_playing,
+        "album": song.item.album.name,
+        "album_art": song.item.album.images,
+        "timestamp": song.timestamp,
+        "progress_ms": song.progress_ms,
+        "duration_ms": song.item.duration_ms,
+        "popularity": song.item.popularity,
+        "song_preview": song.item.preview_url,
+      }
+
+      return NextResponse.json(data, { status: 200 });
+    }
+
+    if (!songIsPlaying) {
+      return new Response("No song playing!", { status: 200 });
+    }
+
+    return new Response(`${artists} - ${songName}`, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error: error.error }, { status: 200 });
+  }
+}
+
+
+export { getSong, getUserData, getTokenCode, getAccessToken, sendResponse };
