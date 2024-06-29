@@ -5,11 +5,5 @@ export async function GET(request) {
   const pathname = request.nextUrl.pathname;
 
   // console.log(request)
-  return NextResponse.json(
-    {
-      Usage: `${origin}${pathname}/twitch/<id>?type=TYPE`,
-      info: `<id> can be retrieved on ${origin}/twitch/login`,
-      type: ["json", "text"],
-    }
-  );
+  return NextResponse.redirect(`${origin}/api/twitch/`);
 };
