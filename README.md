@@ -19,40 +19,44 @@ At the moment the structure of the application is:
 |  |--lib/   
 |  |
 |  |--(frontend)/    
-|  |  |-- homepage          # done
-|  |  |-- lol/              # pending
-|  |  |-- tft/              # pending
-|  |  |-- spotify/          # pending
-|  |  |-- steam/            # pending
-|  |  |-- twitch/           # pending
-|  |  |-- valorant/         # pending
-|  |  |-- youtube/          # pending
-|  |  
-|  |--api/
-|     |-- spotify/       
-|     |    |-- musica/      # done
-|     |    |-- callback/    # done
+|  |  |-- homepage              # done
+|  |  |-- lol/                  # pending
+|  |  |-- tft/                  # pending
+|  |  |-- spotify/              # pending
+|  |  |-- steam/                # pending
+|  |  |-- twitch/               # pending
+|  |  |-- valorant/             # pending
+|  |  |-- youtube/              # pending
+|  |      
+|  |--api/    
+|     |-- spotify/          
+|     |    |-- musica/          # done
+|     |    |-- callback/        # done
 |     |    
 |     |-- twitch/        
-|     |    |-- prediction/  # pending
-|     |    |-- callback/    # pending
+|     |    |-- prediction/
+|     |    |      |-- create/   # pending
+|     |    |      |-- close/    # pending
+|     |    |      |-- cancel/   # pending
+|     |    |      
+|     |    |-- callback/        # pending
 |     |
 |     |-- youtube/       
-|     |    |-- search/      # done
-|     |    |-- channel/     # done
-|     |         
-|     |-- steam/             
-|     |    |-- game/        # done
-|     |         
-|     |-- valorant/          
-|     |    |-- lastgame/    # done
-|     |    |-- rank/        # done
-|     |    |-- puuid/       # done
-|     |    |-- schedule/    # done
-|     |         
-|     |-- lol/    
-|     |    |-- rank/        # done
-|     |         
-|     |-- tft/    
-|     |    |-- rank/        # done
+|     |    |-- search/          # done
+|     |    |-- channel/         # done
+|     |             
+|     |-- steam/                 
+|     |    |-- game/            # done
+|     |             
+|     |-- valorant/              
+|     |    |-- lastgame/        # done
+|     |    |-- rank/            # done
+|     |    |-- puuid/           # done
+|     |    |-- schedule/        # done
+|     |             
+|     |-- lol/        
+|     |    |-- rank/            # done
+|     |             
+|     |-- tft/        
+|     |    |-- rank/            # done
 </pre>
