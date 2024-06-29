@@ -80,7 +80,6 @@ async function spotifyGetRefreshTokenDatabase(id) {
 }
 
 
-// Pending
 async function spotifySaveToDatabase(data) {
   let client;
 
@@ -112,5 +111,9 @@ async function spotifySaveToDatabase(data) {
   }
 }
 
+// Pending
+async function twitchSaveToDatabase(data) {
+  return true
+}
 
-export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase }
+export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase, twitchSaveToDatabase }
