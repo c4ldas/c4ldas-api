@@ -99,8 +99,6 @@ async function spotifySaveToDatabase(data) {
 
     client = await connectToDatabase();
     const { rows } = await client.query(insertQuery);
-    console.log("spotifySaveToDatabase(): ", data);
-    console.log("Rows: ", rows);
 
     return true;
 
