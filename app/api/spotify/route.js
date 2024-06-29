@@ -11,7 +11,7 @@ export async function GET(request) {
       usage: `${origin}${pathname}/musica/<id>/?type=TYPE`,
       params: {
         id: {
-          description: `ID of the user after registering on API. Can be retrieved on ${origin}/spotify/login`,
+          description: `ID of the user after registering on API. Can be retrieved on ${origin}/spotify`,
           required: true,
         },
         type: {
