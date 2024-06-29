@@ -1,16 +1,29 @@
 import { Pool } from 'pg';
-
 const pool = new Pool();
 
-async function testConnectionDatabase() {
-  const select = {
-    text: 'SELECT id, display_name FROM spotify where id = $1',
-    values: ["c4ldas"],
-  }
+async function connectToDatabase() {
+  try {
+    const client = await pool.connect();
+    console.log("Client connected");
+    return client;
 
+  } catch (error) {
+    console.log("connectToDatabase():", error);
+    throw (error);
+  }
+}
+
+
+async function testConnectionDatabase() {
   let client;
   try {
-    client = await pool.connect();
+
+    const select = {
+      text: 'SELECT id, display_name FROM spotify where id = $1',
+      values: ["c4ldas"],
+    }
+
+    client = await connectToDatabase();
     const { rows } = await client.query(select);
 
     const data = {
@@ -39,18 +52,17 @@ async function testConnectionDatabase() {
 }
 
 
-// Pending
 async function spotifyGetRefreshTokenDatabase(id) {
-  try {
+  let client;
 
+  try {
     const refreshTokenQuery = {
       text: 'SELECT refresh_token FROM spotify WHERE id = $1',
       values: [id],
     }
 
-    const client = await sql.connect();
+    client = await connectToDatabase();
     const { rows } = await client.query(refreshTokenQuery);
-    client.release();
 
     if (!rows[0]) {
       throw { error: "User not registered!" };
@@ -58,32 +70,36 @@ async function spotifyGetRefreshTokenDatabase(id) {
     return rows[0].refresh_token;
 
   } catch (error) {
-    console.log("getRefreshToken(): ", error);
+    console.log("spotifyGetRefreshTokenDatabase(): ", error);
     throw (error);
+
+  } finally {
+    if (client) client.release();
+    console.log("Client released");
   }
 }
 
 
 // Pending
 async function spotifySaveToDatabase(data) {
+  let client;
 
-  const { id, display_name, access_token, refresh_token } = data;
+  try {
+    const { id, display_name, access_token, refresh_token } = data;
 
-  const insertQuery = {
-    text: `
+    const insertQuery = {
+      text: `
       INSERT INTO spotify (id, display_name, access_token, refresh_token) 
       VALUES ($1, $2, $3, $4)
       ON CONFLICT (id) DO
       UPDATE SET display_name = $2, access_token = $3, refresh_token = $4
     `,
-    values: [id, display_name, access_token, refresh_token],
-  }
+      values: [id, display_name, access_token, refresh_token],
+    }
 
-  let client;
-
-  try {
-    client = await pool.connect();
+    client = await connectToDatabase();
     const { rows } = await client.query(insertQuery);
+    console.log("spotifySaveToDatabase(): ", data);
     console.log("Rows: ", rows);
 
     return true;
@@ -94,8 +110,9 @@ async function spotifySaveToDatabase(data) {
 
   } finally {
     if (client) client.release();
-
+    console.log("Client released");
   }
 }
 
-export { testConnectionDatabase, spotifySaveToDatabase, spotifyGetRefreshTokenDatabase }
+
+export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase }
