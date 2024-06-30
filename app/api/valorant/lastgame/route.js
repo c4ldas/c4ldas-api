@@ -9,7 +9,7 @@ const apiToken = env == "dev" ?
   process.env.VALORANT_TOKEN;
 
 const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/lifetime/matches/${region}/${player}/${tag}?filter=competitive&size=1`
-const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/lifetime/matches/${region}/${id}?filter=competitive&size=1`
+const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/lifetime/matches/${region}/${id}?filter=competitive&size=1`
 
 // const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
 
