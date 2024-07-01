@@ -37,6 +37,8 @@ export async function GET(request) {
     const lastMatch = await lastMatchRequest.json();
     const data = lastMatch.data[0];
     const { team, tier, kills, deaths, assists, character, puuid } = data.stats;
+    const map = data.meta.map.name;
+    const started_at = data.meta.started_at;
     const character_name = character.name;
     const tier_name = tiers[tier].tier_name;
     const tier_name_pt = tiers[tier].tier_name_pt;
@@ -46,13 +48,12 @@ export async function GET(request) {
     const outcome = rounds_won > rounds_lost ? "Victory" : (rounds_won == rounds_lost) ? "Draw" : "Defeat";
     const outcome_pt = rounds_won > rounds_lost ? "Vitória" : (rounds_won == rounds_lost) ? "Empate" : "Derrota";
     const has_won = (outcome == "Victory");
-    const map = data.meta.map.name;
     const display_name = lastMatch.name;
     const display_tag = lastMatch.tag;
 
     const playerInfo = {
       puuid, display_name, display_tag, tier, tier_name, tier_name_pt,
-      team, enemy_team, kills, deaths, assists, character_name,
+      team, started_at, enemy_team, kills, deaths, assists, character_name,
       rounds_won, rounds_lost, outcome, outcome_pt, has_won, map
     };
 
