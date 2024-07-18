@@ -18,7 +18,10 @@ export async function GET(request) {
     const url = "https://youtube.googleapis.com/youtube/v3/channels";
 
     const id = await getChannelByHandle(username);
+    console.log("id: ", id);
+
     const channelInfo = id != 0 ? await getChannelById(id, url, apiToken) : { items: [] };
+    console.log("channelInfo: ", channelInfo);
 
     const results = await channelInfo.items[0] || {
       snippet: {
@@ -34,13 +37,15 @@ export async function GET(request) {
       },
     };
 
+    console.log("results: ", results);
+
     const { title, description, publishedAt, thumbnails } = results.snippet;
     if (type == "text") return new Response(id, { status: 200 });
     return NextResponse.json({ channelId: id, title, description, publishedAt, thumbnails }, { status: 200 });
 
   } catch (error) {
-    console.log(error);
-    return NextResponse.json({ error: "error" }, { status: 400 });
+    console.log("Youtube GET:", error);
+    return NextResponse.json({ error: "An error occurred while processing the request" }, { status: 400 });
   }
 }
 
@@ -51,9 +56,8 @@ async function getChannelByHandle(username) {
     });
     const html = await htmlRequest.text();
 
-    const channelId = html.match(
-      /itemprop="url"\s*href="https:\/\/www\.youtube\.com\/channel\/([^"]+)"/,
-    )[1];
+    const channelId = html.match(/itemprop="url"\s*href="https:\/\/www\.youtube\.com\/channel\/([^"]+)"/)[1];
+    console.log("channelId: ", channelId);
     return channelId;
 
     // Using Youtubei.js library
