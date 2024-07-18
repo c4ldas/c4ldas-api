@@ -37,7 +37,7 @@ export async function GET(request) {
   const obj = Object.fromEntries(request.nextUrl.searchParams);
 
   // Get the parameters from URL
-  const { id = "", region = "" } = obj;
+  const { id = "", region = "", type = "json" } = obj;
 
   try {
     const validParams = checkParams(id, region);
@@ -63,6 +63,9 @@ export async function GET(request) {
     const header_image = gameDetails[appId].data.header_image;
     const timePlayed = parseInt(playTime.response.games[0].playtime_forever / 60);
     const game = { name, price, header_image, timePlayed };
+
+    if (type == "text") return new Response(`Game: ${game.name} / Price: ${game.price} / Time played: ${game.timePlayed}`, { status: 200 });
+
     return NextResponse.json(game, { status: 200 });
 
   } catch (error) {
