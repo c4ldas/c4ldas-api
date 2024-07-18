@@ -11,7 +11,9 @@ export async function GET(request) {
   try {
     // Convert query strings (map format) to object format - Only works for this specific case!
     const obj = Object.fromEntries(request.nextUrl.searchParams);
-    const { username, type = "json" } = obj;
+    let { username, type = "json" } = obj;
+    username = decodeURIComponent(username);
+
     // const innerTube = await Innertube.create(/* options */);
     const url = "https://youtube.googleapis.com/youtube/v3/channels";
 
@@ -61,7 +63,7 @@ async function getChannelByHandle(username) {
   } catch (error) {
     // console.log(error)
     // const errorMessage = JSON.parse(error.info);
-    // console.log("Youtube: ", errorMessage.error.message);
+    console.log("Youtube getChannelByHandle:", error);
     return 0;
   }
 }
@@ -73,7 +75,7 @@ async function getChannelById(id, url, key) {
     return await info;
 
   } catch (error) {
-    // console.log("Catch get ChannelById Youtube: ", error);
+    console.log("Youtube getChannelById:", error);
     return 0;
   }
 }
