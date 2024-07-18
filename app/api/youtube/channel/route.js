@@ -12,16 +12,12 @@ export async function GET(request) {
     // Convert query strings (map format) to object format - Only works for this specific case!
     const obj = Object.fromEntries(request.nextUrl.searchParams);
     let { username, type = "json" } = obj;
-    username = decodeURIComponent(username);
 
     // const innerTube = await Innertube.create(/* options */);
     const url = "https://youtube.googleapis.com/youtube/v3/channels";
 
     const id = await getChannelByHandle(username);
-    console.log("id: ", id);
-
     const channelInfo = id != 0 ? await getChannelById(id, url, apiToken) : { items: [] };
-    console.log("channelInfo: ", channelInfo);
 
     const results = await channelInfo.items[0] || {
       snippet: {
@@ -36,8 +32,6 @@ export async function GET(request) {
         },
       },
     };
-
-    console.log("results: ", results);
 
     const { title, description, publishedAt, thumbnails } = results.snippet;
     if (type == "text") return new Response(id, { status: 200 });
@@ -74,8 +68,10 @@ async function getChannelByHandle(username) {
 
 async function getChannelById(id, url, key) {
   try {
-    const info = await (await fetch(`${url}?part=id,snippet&id=${id}&key=${key}`)).json();
-    // console.log("Info: ", info)
+    const infoFetch = await fetch(`${url}?part=id,snippet&id=${id}&key=${key}`);
+    const info = await infoFetch.json();
+
+    if (info.error) throw new Error(info.error.message);
     return await info;
 
   } catch (error) {
