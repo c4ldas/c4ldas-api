@@ -42,7 +42,7 @@ export async function GET(request) {
   try {
     const validParams = checkParams(id, region);
 
-    const gameIdRequest = await fetch(getGameId(apiToken, id));
+    const gameIdRequest = await fetch(getGameId(apiToken, id), { next: { revalidate: 0 } });
     // color.log("blue", JSON.stringify(gameIdRequest));
     const gameId = await gameIdRequest.json();
 
@@ -55,7 +55,7 @@ export async function GET(request) {
     const gameDetailsRequest = await fetch(getGameDetails(apiToken, appId, region));
     const gameDetails = await gameDetailsRequest.json();
 
-    const playTimeRequest = await fetch(getPlayTime(apiToken, id, appId));
+    const playTimeRequest = await fetch(getPlayTime(apiToken, id, appId), { next: { revalidate: 0 } });
     const playTime = await playTimeRequest.json();
 
     const name = gameDetails[appId].data.name || "";
