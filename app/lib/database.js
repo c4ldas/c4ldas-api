@@ -75,7 +75,7 @@ async function spotifyGetRefreshTokenDatabase(id) {
 
   } finally {
     if (client) client.release();
-    console.log("Client released");
+    // console.log("Client released");
   }
 }
 
@@ -107,7 +107,7 @@ async function spotifySaveToDatabase(data) {
 
   } finally {
     if (client) client.release();
-    console.log("Client released");
+    // console.log("Client released");
   }
 }
 
