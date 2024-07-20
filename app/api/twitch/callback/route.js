@@ -20,7 +20,7 @@ export async function GET(request) {
 
   const data = {
     id: user.id,
-    display_name: user.display_name,
+    username: user.login,
     access_token: token.access_token,
     refresh_token: token.refresh_token,
     code: userCode
@@ -29,6 +29,6 @@ export async function GET(request) {
   const saved = await twitchSaveToDatabase(data);
   if (!saved) return Response.redirect(`${origin}/twitch?error=Error while saving to database`);
 
-  return Response.redirect(`${origin}/twitch?id=${data.id}&display_name=${data.display_name}&code=${data.code}`);
+  return Response.redirect(`${origin}/twitch?id=${data.id}&username=${data.username}&code=${data.code}`);
 
 }

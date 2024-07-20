@@ -116,16 +116,16 @@ async function twitchSaveToDatabase(data) {
   let client;
 
   try {
-    const { id, display_name, access_token, refresh_token, code } = data;
+    const { id, username, access_token, refresh_token, code } = data;
 
     const insertQuery = {
       text: `
-      INSERT INTO twitch (id, display_name, access_token, refresh_token, code) 
+      INSERT INTO twitch (id, username, access_token, refresh_token, code) 
       VALUES ($1, $2, $3, $4, $5)
       ON CONFLICT (id) DO
-      UPDATE SET display_name = $2, access_token = $3, refresh_token = $4, code = $5
+      UPDATE SET username = $2, access_token = $3, refresh_token = $4, code = $5
     `,
-      values: [id, display_name, access_token, refresh_token, code],
+      values: [id, username, access_token, refresh_token, code],
     }
 
     client = await connectToDatabase();
@@ -148,7 +148,7 @@ async function checkUser(id) {
 
   try {
     const select = {
-      text: 'SELECT id, display_name, code FROM twitch where id = $1',
+      text: 'SELECT id, username, code FROM twitch where id = $1',
       values: [id],
     }
     client = await connectToDatabase();

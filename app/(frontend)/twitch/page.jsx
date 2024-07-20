@@ -12,7 +12,7 @@ export default function Twitch({ params, searchParams }) {
   }, []);
 
   const path = usePathname();
-  const { id, display_name, code, error } = searchParams;
+  const { id, username, code, error } = searchParams;
 
   const baseURL = 'https://id.twitch.tv/oauth2/authorize?'
   const urlSearchParams = new URLSearchParams({
@@ -28,15 +28,15 @@ export default function Twitch({ params, searchParams }) {
       <Header />
       <main className="main block">
         <h1>This is the {path} page</h1>
-        {display_name && (
+        {username && (
           <>
-            <p>Display name: {display_name} </p>
+            <p>Display name: {username} </p>
             <p>ID: {id}</p>
             <p>Code: {code}</p>
           </>
         )}
         {error && <p>Error: {error}</p>}
-        {!display_name && (
+        {!username && (
           <a href={baseURL + urlSearchParams.toString()}>
             <button type="submit">Login with Twitch</button>
           </a>
