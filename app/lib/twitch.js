@@ -12,10 +12,9 @@ if (env == "dev") {
 
 } else {
   TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
-  TWITCH_CLIENT_SECRET = process.env.TWICH_CLIENT_SECRET;
+  TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 }
 
-console.log(TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET);
 async function getTokenCode(code) {
   const request = await fetch("https://id.twitch.tv/oauth2/token", {
     method: "POST",
