@@ -20,7 +20,7 @@ export default function Twitch({ params, searchParams }) {
     client_id: '1mhvnqfp2xtswwqz1p8ol3doqm4t26',
     scope: '',
     redirect_uri: `${origin}/api/twitch/callback`,
-    force_verify: true
+    force_verify: false
   });
 
   return (
