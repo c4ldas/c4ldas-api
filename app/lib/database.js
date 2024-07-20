@@ -4,7 +4,7 @@ const pool = new Pool();
 async function connectToDatabase() {
   try {
     const client = await pool.connect();
-    console.log("Client connected");
+    // console.log("Client connected");
     return client;
 
   } catch (error) {
@@ -111,9 +111,58 @@ async function spotifySaveToDatabase(data) {
   }
 }
 
-// Pending
+
 async function twitchSaveToDatabase(data) {
-  return true
+  let client;
+
+  try {
+    const { id, display_name, access_token, refresh_token, code } = data;
+
+    const insertQuery = {
+      text: `
+      INSERT INTO twitch (id, display_name, access_token, refresh_token, code) 
+      VALUES ($1, $2, $3, $4, $5)
+      ON CONFLICT (id) DO
+      UPDATE SET display_name = $2, access_token = $3, refresh_token = $4, code = $5
+    `,
+      values: [id, display_name, access_token, refresh_token, code],
+    }
+
+    client = await connectToDatabase();
+    const { rows } = await client.query(insertQuery);
+    return true;
+
+  } catch (error) {
+    console.log("twitchSaveToDatabase(): ", error);
+    return false;
+
+  } finally {
+    if (client) client.release();
+    // console.log("Client released");
+  }
 }
 
-export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase, twitchSaveToDatabase }
+
+async function checkUser(id) {
+  let client;
+
+  try {
+    const select = {
+      text: 'SELECT id, display_name, code FROM twitch where id = $1',
+      values: [id],
+    }
+    client = await connectToDatabase();
+    const { rows } = await client.query(select);
+    return rows[0];
+
+  } catch (error) {
+    console.log("checkUser(): ", error);
+    return null;
+
+  } finally {
+    if (client) client.release();
+    // console.log("Client released");
+  }
+}
+
+export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase, twitchSaveToDatabase, checkUser }
