@@ -11,8 +11,11 @@ export async function GET(request) {
   if (!code) return Response.redirect(`${origin}/twitch?error=Code not found`);
 
   const token = await getTokenCode(code);
+  console.log('token', token);
   const user = await getUserData(token.access_token);
+  console.log('user', user);
   const userExists = await checkUser(user.id); // return user data if user exists, else null
+  console.log('userExists', userExists);
 
   const userCode = userExists ? userExists.code : crypto.randomUUID().replace(/-/g, '');
 
