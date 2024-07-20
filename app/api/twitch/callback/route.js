@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 import { twitchSaveToDatabase, checkUser } from "@/app/lib/database";
-
-// Pending
 import { getTokenCode, getUserData } from "@/app/lib/twitch";
 
 export async function GET(request) {
@@ -13,10 +11,14 @@ export async function GET(request) {
   if (!code) return Response.redirect(`${origin}/twitch?error=Code not found`);
 
   const token = await getTokenCode(code);
+  console.log("token: ", token);
   const user = await getUserData(token.access_token);
+  console.log("user: ", user);
   const userExists = await checkUser(user.id); // return user data if user exists, else null
+  console.log("userExists: ", userExists);
 
   const userCode = userExists ? userExists.code : crypto.randomUUID().replace(/-/g, '');
+  console.log("userCode: ", userCode);
 
   const data = {
     id: user.id,
@@ -27,6 +29,7 @@ export async function GET(request) {
   };
 
   const saved = await twitchSaveToDatabase(data);
+  console.log("saved: ", saved);
   if (!saved) return Response.redirect(`${origin}/twitch?error=Error while saving to database`);
 
   return Response.redirect(`${origin}/twitch?id=${data.id}&username=${data.username}&code=${data.code}`);
