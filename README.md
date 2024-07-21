@@ -39,7 +39,7 @@ At the moment the structure of the application is:
 |     |    |      |-- close/    # pending
 |     |    |      |-- cancel/   # pending
 |     |    |      
-|     |    |-- callback/        # pending
+|     |    |-- callback/        # done
 |     |
 |     |-- youtube/       
 |     |    |-- search/          # done
