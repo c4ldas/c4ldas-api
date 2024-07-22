@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { twitchSaveToDatabase, checkUser } from "@/app/lib/database";
+import { twitchSaveToDatabase, twitchCheckUser } from "@/app/lib/database";
 import { getTokenCode, getUserData } from "@/app/lib/twitch";
 
 export async function GET(request) {
@@ -12,7 +12,7 @@ export async function GET(request) {
 
   const token = await getTokenCode(code);
   const user = await getUserData(token.access_token);
-  const userExists = await checkUser(user.id); // return user data if user exists, else null
+  const userExists = await twitchCheckUser(user.id); // return user data if user exists, else null
 
   const userCode = userExists ? userExists.code : crypto.randomUUID().replace(/-/g, '');
 

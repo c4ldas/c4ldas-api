@@ -143,7 +143,7 @@ async function twitchSaveToDatabase(data) {
 }
 
 
-async function checkUser(id) {
+async function twitchCheckUser(id) {
   let client;
 
   try {
@@ -165,4 +165,27 @@ async function checkUser(id) {
   }
 }
 
-export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase, twitchSaveToDatabase, checkUser }
+
+async function twitchGetTokenDatabase(code, channel) {
+  let client;
+  try {
+    const refreshTokenQuery = {
+      text: 'SELECT id, access_token, refresh_token FROM twitch WHERE code = $1 AND username = $2',
+      values: [code, channel]
+    }
+    client = await connectToDatabase();
+    const { rows } = await client.query(refreshTokenQuery);
+    return rows[0];
+
+  } catch (error) {
+    console.log("twitchGetTokenDatabase(): ", error);
+    throw (error);
+
+  } finally {
+    if (client) client.release();
+    // console.log("Client released");
+  }
+}
+
+
+export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase, twitchSaveToDatabase, twitchCheckUser, twitchGetTokenDatabase }

@@ -18,7 +18,7 @@ export default function Twitch({ params, searchParams }) {
   const urlSearchParams = new URLSearchParams({
     response_type: 'code',
     client_id: '1mhvnqfp2xtswwqz1p8ol3doqm4t26',
-    scope: '',
+    scope: 'channel:manage:predictions',
     redirect_uri: `${origin}/api/twitch/callback`,
     force_verify: false
   });
