@@ -192,6 +192,7 @@ async function getOpenPrediction(accessToken, broadcasterId) {
 
   } catch (error) {
     console.log(error);
+    throw { status: "failed", message: error.message };
   }
 }
 
