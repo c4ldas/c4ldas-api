@@ -1,15 +1,14 @@
 import { NextResponse } from "next/server";
 import { twitchGetTokenDatabase } from "@/app/lib/database";
-import { closePrediction, getOpenPrediction } from "@/app/lib/twitch";
+import { getOpenPrediction } from "@/app/lib/twitch";
 
 export async function GET(request, { params }) {
   try {
     const obj = Object.fromEntries(request.nextUrl.searchParams);
     const code = params.code;
-    const { channel, winner } = obj
+    const channel = obj.channel;
 
     if (!channel) return NextResponse.json({ status: "failed", error: "Channel missing" }, { status: 400 });
-    if (!winner) return NextResponse.json({ status: "failed", error: "Winner missing" }, { status: 400 });
 
     const token = await twitchGetTokenDatabase(code, channel);
     const result = await getOpenPrediction(token.access_token, token.id);
