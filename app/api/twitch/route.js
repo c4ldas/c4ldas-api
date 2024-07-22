@@ -6,8 +6,23 @@ export async function GET(request) {
 
   return NextResponse.json([
     {
+      endpoint: `/api/twitch/prediction/get`,
+      description: "Get open Twitch prediction.",
+      usage: `${origin}${pathname}/prediction/get/<code>/?channel=CHANNELNAME`,
+      params: {
+        code: {
+          description: "Code received by application",
+          required: true,
+        },
+        channel: {
+          description: "Twitch channel name",
+          required: true,
+        },
+      },
+    },
+    {
       endpoint: `/api/twitch/prediction/create`,
-      description: "Control Twitch predictions.",
+      description: "Create a new Twitch prediction.",
       usage: `${origin}${pathname}/prediction/create/<code>/?channel=CHANNELNAME&option1=OPTION1&option2=OPTION2&&question=QUESTION`,
       params: {
         code: {
@@ -53,7 +68,7 @@ export async function GET(request) {
     },
     {
       endpoint: `/api/twitch/prediction/cancel`,
-      description: "Cancel a previously created prediction",
+      description: "Cancel a previously created Twitchprediction",
       usage: `${origin}${pathname}/prediction/cancel/<code>/?channel=CHANNELNAME`,
       params: {
         code: {

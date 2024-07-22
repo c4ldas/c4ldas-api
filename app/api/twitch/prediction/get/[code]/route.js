@@ -12,14 +12,9 @@ export async function GET(request, { params }) {
     if (!winner) return NextResponse.json({ status: "failed", error: "Winner missing" }, { status: 400 });
 
     const token = await twitchGetTokenDatabase(code, channel);
-    const openPrediction = await getOpenPrediction(token.access_token, token.id);
-    if (!openPrediction) return NextResponse.json({ status: "failed", message: "No open prediction" }, { status: 400 });
+    const result = await getOpenPrediction(token.access_token, token.id);
+    if (!result) return NextResponse.json({ status: "failed", message: "No open prediction" }, { status: 400 });
 
-    const winnerInfo = openPrediction.outcomes.find(outcome => outcome.title.toLowerCase() === winner.toLowerCase());
-    console.log("Winner Id:", winnerInfo);
-    if (!winnerInfo) return NextResponse.json({ status: "failed", message: `Invalid winner option: '${winner}'` }, { status: 400 });
-
-    const result = await closePrediction(token.access_token, token.id, openPrediction.id, winnerInfo);
     return NextResponse.json(result, { status: 200 });
 
   } catch (error) {
@@ -27,8 +22,3 @@ export async function GET(request, { params }) {
     return NextResponse.json(error, { status: 400 });
   }
 }
-
-
-
-
-// closePrediction(accessToken, broadcasterId, predictionId, winner)

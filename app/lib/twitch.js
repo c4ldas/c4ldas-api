@@ -134,11 +134,33 @@ async function createPrediction() {
   }
 }
 
-async function closePrediction() {
+async function closePrediction(accessToken, broadcasterId, predictionId, winner) {
   try {
+    const request = await fetch(`https://api.twitch.tv/helix/predictions`, {
+      "next": { revalidate: 0 },
+      "method": "PATCH",
+      "headers": {
+        "Authorization": `Bearer ${accessToken}`,
+        "Client-Id": TWITCH_CLIENT_ID,
+        "Content-Type": "application/json"
+      },
+      "body": JSON.stringify({
+        "broadcaster_id": broadcasterId,
+        "status": "RESOLVED",
+        "id": predictionId,
+        "winning_outcome_id": winner.id
+      })
+    });
+
+    const response = await request.json();
+    if (response.status) throw new Error('Failed to close prediction', { status: response.status });
+
+    console.log("Close prediction:", response);
+    return { status: "success", message: `Prediction closed successfully. Winner: ${winner.title}` };
 
   } catch (error) {
     console.log(error);
+    throw { status: "failed", message: error.message };
   }
 }
 
@@ -146,6 +168,7 @@ async function closePrediction() {
 async function cancelPrediction(accessToken, broadcasterId, predictionId) {
   try {
     const request = await fetch(`https://api.twitch.tv/helix/predictions`, {
+      "next": { revalidate: 0 },
       "method": "PATCH",
       "headers": {
         "Authorization": `Bearer ${accessToken}`,
@@ -174,8 +197,8 @@ async function cancelPrediction(accessToken, broadcasterId, predictionId) {
 async function getOpenPrediction(accessToken, broadcasterId) {
   try {
     const request = await fetch(`https://api.twitch.tv/helix/predictions?broadcaster_id=${broadcasterId}&first=1`, {
-      "method": "GET",
       "next": { revalidate: 0 },
+      "method": "GET",
       "headers": {
         "Authorization": `Bearer ${accessToken}`,
         "Client-Id": TWITCH_CLIENT_ID
@@ -196,4 +219,4 @@ async function getOpenPrediction(accessToken, broadcasterId) {
   }
 }
 
-export { getTokenCode, getUserData, cancelPrediction, getOpenPrediction };
+export { getTokenCode, getUserData, cancelPrediction, getOpenPrediction, closePrediction };
