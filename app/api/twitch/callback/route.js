@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+// import { NextResponse } from "next/server";
 import { twitchSaveToDatabase, twitchCheckUser } from "@/app/lib/database";
 import { getTokenCode, getUserData } from "@/app/lib/twitch";
 import { cookies } from "next/headers";
@@ -15,7 +15,6 @@ export async function GET(request) {
   const token = await getTokenCode(code);
   const user = await getUserData(token.access_token);
   const userExists = await twitchCheckUser(user.id); // return user data if user exists, else null
-
   const userCode = userExists ? userExists.code : crypto.randomUUID().replace(/-/g, '');
 
   const data = {
@@ -34,5 +33,4 @@ export async function GET(request) {
   cookies().set('code', data.code);
 
   return Response.redirect(`${origin}/twitch`);
-
 }
