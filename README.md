@@ -41,6 +41,7 @@ At the moment the structure of the application is:
 |     |    |      |-- cancel/   # done
 |     |    |      
 |     |    |-- callback/        # done
+|     |    |-- logout/          # done
 |     |
 |     |-- youtube/       
 |     |    |-- search/          # done
