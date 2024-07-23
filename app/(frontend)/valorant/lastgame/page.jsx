@@ -201,10 +201,10 @@ export default function Valorant({ searchParams }) {
           <div id="box" style={style.box}>
             <div id="text" style={style.text}>
               <h2 style={style.title}>{player.name}</h2>
-              <div style={style.infos}>Rank: <span style={style.light}>{player.currenttier_patched} - {player.ranking_in_tier} points</span></div>
-              <div style={style.infos}>KDA: <span style={style.light}>{player.stats.kills} / {player.stats.deaths} / {player.stats.assists}</span></div>
-              <div style={style.infos}>Headshots: <span style={style.light}>{player?.stats.headshots}</span></div>
-              <div style={style.infos}>Duration: <span style={style.light}>{Math.floor(player.game_duration_minutes)} min</span></div>
+              <div style={style.infos}>Rank: <span style={style.light}>{player.tier_name} - {player.ranking_in_tier} points</span></div>
+              <div style={style.infos}>KDA: <span style={style.light}>{player.kills} / {player.deaths} / {player.assists}</span></div>
+              { /* <div style={style.infos}>Headshots: <span style={style.light}>{player?.stats.headshots}</span></div> 
+              <div style={style.infos}>Duration: <span style={style.light}>{Math.floor(player.game_duration_minutes)} min</span></div> */ }
               <div style={style.infos}>Map: <span style={style.light}>{player.map}</span></div>
               <div style={style.infos}>Score: <span style={style.light}>{player.rounds_won} / {player.rounds_lost}</span></div>
               <div style={style.infos}>Outcome: <span style={style.light}>{player.outcome}</span></div>
