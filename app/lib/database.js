@@ -168,6 +168,7 @@ async function twitchCheckUser(id) {
 
 async function twitchGetTokenDatabase(code, channel) {
   let client;
+
   try {
     const refreshTokenQuery = {
       text: 'SELECT id, access_token, refresh_token FROM twitch WHERE code = $1 AND username = $2',
@@ -187,5 +188,32 @@ async function twitchGetTokenDatabase(code, channel) {
   }
 }
 
+async function twitchRemoveIntegration(id, username, code) {
+  let client;
 
-export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase, twitchSaveToDatabase, twitchCheckUser, twitchGetTokenDatabase }
+  try {
+    const removeQuery = {
+      text: 'DELETE FROM twitch WHERE id = $1 AND username = $2 AND code = $3',
+      values: [id, username, code],
+    }
+    client = await connectToDatabase();
+    const { rowCount } = await client.query(removeQuery);
+    console.log("removeQuery: ", rowCount);
+
+    if (rowCount === 0) {
+      throw { error: "User not registered!" };
+    }
+    return true;
+
+  } catch (error) {
+    console.log("twitchRemoveIntegration(): ", error);
+    throw error.message;
+
+  } finally {
+    if (client) client.release();
+    // console.log("Client released");
+  }
+}
+
+
+export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase, twitchSaveToDatabase, twitchCheckUser, twitchGetTokenDatabase, twitchRemoveIntegration };

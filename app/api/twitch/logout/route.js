@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { twitchRemoveIntegration } from "@/app/lib/database";
 
 export async function POST(request) {
   try {
@@ -7,7 +8,7 @@ export async function POST(request) {
     const username = cookies().get('username').value;
     const code = cookies().get('code').value;
 
-    console.log(id, username, code);
+    const isRemoved = await twitchRemoveIntegration(id, username, code);
 
     cookies().delete('id');
     cookies().delete('username');
