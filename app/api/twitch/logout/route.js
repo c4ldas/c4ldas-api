@@ -21,3 +21,6 @@ export async function POST(request) {
   }
 }
 
+export async function GET(request) {
+  return NextResponse.json({ status: "failed", message: "Method not allowed" });
+}
