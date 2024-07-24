@@ -13,8 +13,8 @@ At the moment the structure of the application is:
 
 <pre>
 /
-|-public/
-|-app/
+|- public/
+|- app/
 |  |--components/  
 |  |--lib/   
 |  |
