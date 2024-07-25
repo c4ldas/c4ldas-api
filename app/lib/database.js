@@ -170,12 +170,13 @@ async function twitchGetTokenDatabase(code, channel) {
   let client;
 
   try {
-    const refreshTokenQuery = {
+    const getTokenQuery = {
       text: 'SELECT id, access_token, refresh_token FROM twitch WHERE code = $1 AND username = $2',
       values: [code, channel]
     }
     client = await connectToDatabase();
-    const { rows } = await client.query(refreshTokenQuery);
+    const { rows } = await client.query(getTokenQuery);
+    if (!rows[0]) return null
     return rows[0];
 
   } catch (error) {
@@ -187,6 +188,7 @@ async function twitchGetTokenDatabase(code, channel) {
     // console.log("Client released");
   }
 }
+
 
 async function twitchRemoveIntegration(id, username, code) {
   let client;

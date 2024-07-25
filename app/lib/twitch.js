@@ -16,38 +16,71 @@ if (env == "dev") {
 }
 
 async function getTokenCode(code) {
-  const request = await fetch("https://id.twitch.tv/oauth2/token", {
-    method: "POST",
-    body: new URLSearchParams({
-      client_id: TWITCH_CLIENT_ID,
-      client_secret: TWITCH_CLIENT_SECRET,
-      code: code,
-      grant_type: "authorization_code",
-      redirect_uri: TWITCH_REDIRECT_URI,
-    }),
-  });
-  const response = await request.json();
-  return response;
-}
-
-async function getUserData(token) {
-  const request = await fetch("https://api.twitch.tv/helix/users", {
-    method: "GET",
-    headers: {
-      "Content-type": "application/json",
-      "Client-Id": TWITCH_CLIENT_ID,
-      "Authorization": `Bearer ${token}`,
-    },
-  });
-  const response = await request.json();
-  return response.data[0];
-}
-
-async function createPrediction() {
   try {
+    const request = await fetch("https://id.twitch.tv/oauth2/token", {
+      method: "POST",
+      body: new URLSearchParams({
+        client_id: TWITCH_CLIENT_ID,
+        client_secret: TWITCH_CLIENT_SECRET,
+        code: code,
+        grant_type: "authorization_code",
+        redirect_uri: TWITCH_REDIRECT_URI,
+      }),
+    });
+    const response = await request.json();
+    return response;
 
   } catch (error) {
     console.log(error);
+    throw { status: "failed", message: error.message };
+  }
+}
+
+async function getUserData(accessToken) {
+  try {
+    const request = await fetch("https://api.twitch.tv/helix/users", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        "Client-Id": TWITCH_CLIENT_ID,
+        "Authorization": `Bearer ${accessToken}`,
+      },
+    });
+    const response = await request.json();
+    return response.data[0];
+
+  } catch (error) {
+    console.log(error);
+    throw { status: "failed", message: error.message };
+  }
+}
+
+async function createPrediction(accessToken, broadcasterId, question, options) {
+  try {
+    const request = await fetch('https://api.twitch.tv/helix/predictions', {
+      method: 'POST',
+      headers: {
+        'authorization': `Bearer ${accessToken}`,
+        'Client-Id': TWITCH_CLIENT_ID,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'broadcaster_id': broadcasterId,
+        'title': question !== null ? question : 'Quem ganha esse mapa?',
+        'prediction_window': 300,
+        'outcomes': options.map(option => { return { "title": option } })
+      })
+    });
+
+    const response = await request.json();
+    if (response.status) throw new Error('Failed to create prediction', { status: response.status });
+
+    // console.log("Create prediction:", response);
+    return { status: "success", message: `Prediction created successfully. Question: ${question}` };
+
+  } catch (error) {
+    console.log(error);
+    throw { status: "failed", message: error.message };
   }
 }
 
@@ -72,7 +105,7 @@ async function closePrediction(accessToken, broadcasterId, predictionId, winner)
     const response = await request.json();
     if (response.status) throw new Error('Failed to close prediction', { status: response.status });
 
-    console.log("Close prediction:", response);
+    // console.log("Close prediction:", response);
     return { status: "success", message: `Prediction closed successfully. Winner: ${winner.title}` };
 
   } catch (error) {
@@ -80,7 +113,6 @@ async function closePrediction(accessToken, broadcasterId, predictionId, winner)
     throw { status: "failed", message: error.message };
   }
 }
-
 
 async function cancelPrediction(accessToken, broadcasterId, predictionId) {
   try {
@@ -102,7 +134,7 @@ async function cancelPrediction(accessToken, broadcasterId, predictionId) {
     const response = await request.json();
     if (response.status) throw new Error('Failed to cancel prediction', { status: response.status });
 
-    console.log("Cancel prediction:", response);
+    // console.log("Cancel prediction:", response);
     return { status: "success", message: 'Prediction cancelled successfully' };
 
   } catch (error) {
@@ -172,4 +204,4 @@ async function sendResponse(song, type, channel) {
   }
 }
 
-export { getTokenCode, getUserData, cancelPrediction, getOpenPrediction, closePrediction };
+export { getTokenCode, getUserData, createPrediction, cancelPrediction, getOpenPrediction, closePrediction };
