@@ -5,7 +5,7 @@ export default function FooterComponent() {
   return (
     <footer className="footer">
       <nav className="navigation">
-        <Link href="#">
+        <Link href="/">
           <Image className="icons" src="/images/home.svg" width={20} height={20} alt="home" />
         </Link>
         <Link href="https://twitch.tv/c4ldas" target="_blank">

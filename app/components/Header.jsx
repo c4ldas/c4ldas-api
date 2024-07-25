@@ -8,7 +8,7 @@ export default function Header() {
 
   return (
     <header className="header">
-      <Link href="#">
+      <Link href="/">
         <Image
           src="/images/logo.webp"
           className="image"
