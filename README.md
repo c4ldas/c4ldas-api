@@ -14,6 +14,9 @@ At the moment the structure of the application is:
 <pre>
 /
 |- public/
+|  |-- images/  
+|  |-- css/  
+|  
 |- app/
 |  |--components/  
 |  |--lib/   
@@ -24,7 +27,7 @@ At the moment the structure of the application is:
 |  |  |-- tft/                  # pending
 |  |  |-- spotify/              # pending
 |  |  |-- steam/                # pending
-|  |  |-- twitch/               # pending
+|  |  |-- twitch/               # in progress
 |  |  |-- valorant/             # pending
 |  |  |-- youtube/              # pending
 |  |      
@@ -36,7 +39,7 @@ At the moment the structure of the application is:
 |     |-- twitch/        
 |     |    |-- prediction/
 |     |    |      |-- get/      # done
-|     |    |      |-- create/   # pending
+|     |    |      |-- create/   # in progress
 |     |    |      |-- close/    # done
 |     |    |      |-- cancel/   # done
 |     |    |      
