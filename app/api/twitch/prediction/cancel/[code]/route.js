@@ -11,8 +11,9 @@ export async function GET(request, { params }) {
     if (!channel) return NextResponse.json({ status: "failed", error: "Channel missing" }, { status: 400 });
 
     const token = await twitchGetTokenDatabase(code, channel);
-    const openPrediction = await getOpenPrediction(token.access_token, token.id);
+    if (!token) return NextResponse.json({ status: "failed", error: "Code and channel do not match" }, { status: 400 });
 
+    const openPrediction = await getOpenPrediction(token.access_token, token.id);
     if (!openPrediction) return NextResponse.json({ status: "failed", message: "No open prediction" }, { status: 400 });
 
     const result = await cancelPrediction(token.access_token, token.id, openPrediction.id);
