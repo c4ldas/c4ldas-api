@@ -230,7 +230,8 @@ html {
 
 .link-box {
   background-color: var(--linkbox-background-color);
-  color: var(--linkbox-description-color);
+  /* color: black; */
+  color: var(--linkbox-background-color);
 }
 
 .description {
@@ -255,4 +256,8 @@ input:checked+.slider:before {
 /* the thing behind the circle - dark mode */
 input:checked+.slider {
   background-color: var(--slider-background-color);
+}
+
+dialog::backdrop {
+  backdrop-filter: blur(5px);
 }
