@@ -39,7 +39,7 @@ At the moment the structure of the application is:
 |     |-- twitch/        
 |     |    |-- prediction/
 |     |    |      |-- get/      # done
-|     |    |      |-- create/   # in progress
+|     |    |      |-- create/   # done
 |     |    |      |-- close/    # done
 |     |    |      |-- cancel/   # done
 |     |    |      
