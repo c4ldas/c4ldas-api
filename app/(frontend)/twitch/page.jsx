@@ -122,7 +122,7 @@ export default function Twitch({ _, searchParams }) {
               <code
                 style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
                 onClick={copyPrediction}
-                datacommand={`${predictionCommand}/close/${cookie.code}/?channel=$(channel)&winner=$(winner)`}
+                datacommand={`${predictionCommand}/close/${cookie.code}/?channel=$(channel)&winner=$(winner))`}
               >
                 .me $(sender) ► $(customapi.{origin}/api/twitch/prediction/close/••••••••••••/...)
               </code>
@@ -133,7 +133,7 @@ export default function Twitch({ _, searchParams }) {
               <code
                 style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
                 onClick={copyPrediction}
-                datacommand={`${predictionCommand}/cancel/${cookie.code}/?channel=$(channel)`}
+                datacommand={`${predictionCommand}/cancel/${cookie.code}/?channel=$(channel))`}
               >
                 .me $(sender) ► $(customapi.{origin}/api/twitch/prediction/cancel/••••••••••••/...)
               </code>
