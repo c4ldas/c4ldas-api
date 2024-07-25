@@ -17,8 +17,8 @@ export default function Twitch({ _, searchParams }) {
     setCookie(getCookies());
   }, []);
 
-  // console.log("cookie:", cookie);
 
+  const predictionCommand = `.me $(sender) ► $(customapi.${origin}/api/twitch/prediction`
   const baseURL = 'https://id.twitch.tv/oauth2/authorize?'
   const urlSearchParams = new URLSearchParams({
     response_type: 'code',
@@ -30,6 +30,9 @@ export default function Twitch({ _, searchParams }) {
 
   async function openDialog() {
     const dialog = document.querySelector("#dialog");
+    const main = document.querySelector("#main").getBoundingClientRect();;
+    // dialog.style.marginTop = (main.height) + "px";
+    dialog.style.marginLeft = "auto";
     dialog.showModal();
   }
 
@@ -57,22 +60,92 @@ export default function Twitch({ _, searchParams }) {
     }, 3000);
   }
 
+  function copyCode(event) {
+    const dialog = document.getElementById("copy-success");
+    const position = event.target.getBoundingClientRect();
+    navigator.clipboard.writeText(cookie.code);
+
+    // Show the dialog next to the clicked element
+    dialog.style.top = (position.top - position.height) + "px";
+    dialog.style.marginLeft = (event.clientX + position.width) + "px";
+    dialog.show();
+
+    // Close the dialog after 2 seconds
+    setTimeout(() => {
+      dialog.close();
+    }, 2000);
+  }
+
+  function copyPrediction(event) {
+    const dialog = document.getElementById("copy-success");
+    const position = event.target.getBoundingClientRect();
+    const command = event.target.getAttribute("datacommand");
+    navigator.clipboard.writeText(command);
+
+    // Show the dialog next to the clicked element
+    dialog.style.top = (position.top - position.height) + "px";
+    dialog.style.marginLeft = (event.clientX) + "px";
+    dialog.show();
+
+    // Close the dialog after 2 seconds
+    setTimeout(() => {
+      dialog.close();
+    }, 2000);
+  }
+
   return (
     <div className="container">
       <Header />
-      <main className="main block">
+      <main id="main" className="main block">
         <h1>This is the {path} page</h1>
         {cookie.id && (
           <>
+            <p><button id="remove-integration" type="submit" onClick={openDialog}>Remove integration</button></p>
             <p><strong>Channel name:</strong> {cookie.username} </p>
             <p><strong>Channel ID:</strong> {cookie.id}</p>
+            <p><strong>Code (click to copy):</strong> <span style={{ cursor: "pointer" }} onClick={copyCode} >••••••••••••</span></p>
+            <dialog id="copy-success" style={{ visibility: "visible", marginLeft: "10px" }}>Code copied to clipboard</dialog>
+
+            <div style={{ padding: "2% 0%" }}>
+              <p><strong>Create prediction (click to copy):</strong></p>
+              <code
+                style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
+                onClick={copyPrediction}
+                datacommand={`${predictionCommand}/create/${cookie.code}/?channel=$(channel)&option1=$(1)&option2=$(2)&question=$(queryescape $(3:|Quem ganha esse mapa?)))`}
+              >
+                .me $(sender) ► $(customapi.{origin}/api/twitch/prediction/create/••••••••••••/...)
+              </code>
+            </div>
+
+            <div style={{ padding: "2% 0%" }}>
+              <p><strong>Close prediction (click to copy):</strong></p>
+              <code
+                style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
+                onClick={copyPrediction}
+                datacommand={`${predictionCommand}/close/${cookie.code}/?channel=$(channel)&winner=$(winner)`}
+              >
+                .me $(sender) ► $(customapi.{origin}/api/twitch/prediction/close/••••••••••••/...)
+              </code>
+            </div>
+
+            <div style={{ padding: "2% 0%" }}>
+              <p><strong>Cancel prediction (click to copy):</strong></p>
+              <code
+                style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
+                onClick={copyPrediction}
+                datacommand={`${predictionCommand}/cancel/${cookie.code}/?channel=$(channel)`}
+              >
+                .me $(sender) ► $(customapi.{origin}/api/twitch/prediction/cancel/••••••••••••/...)
+              </code>
+            </div>
+            {/*
             <details>
               <summary>Click to show code:</summary>
               <p><strong>{cookie.code}</strong></p>
-            </details>
-            <p><button id="remove-integration" type="submit" onClick={openDialog}>Remove integration</button></p>
+            </details>              
+            */}
 
-            { /* <!-- pop-up dialog box, containing a form --> */}
+            {/* <!-- pop-up dialog box, containing a form --> */}
             <dialog id="dialog" className="dialog">
               <div id="dialog-title">
                 Are you sure you want to remove the integration?<br />
