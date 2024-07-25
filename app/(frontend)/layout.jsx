@@ -1,6 +1,10 @@
 import { Quicksand } from "next/font/google";
-import { ThemeProvider } from 'next-themes'
-import "./globals.css";
+import { ThemeProvider } from 'next-themes';
+
+// CSS imports
+import "@/public/css/globals.css";
+import "@/public/css/darkmode.css";
+import "@/public/css/pagesize.css";
 
 const quicksand = Quicksand({
   weight: ["500"],
