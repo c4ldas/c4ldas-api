@@ -1,9 +1,9 @@
 "use client"
 
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from 'react';
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
-
 
 // const id = "9fe721ed-4a11-5549-8387-e2d3d5ea76d9"; // Danny Jones
 // const id = "7cd4994f-3255-5575-b8a2-968f428bf9a1"; // Otsuka
@@ -23,6 +23,7 @@ async function fetchPlayerData(playerName, tag, region, id) {
 
 export default function Valorant({ searchParams }) {
 
+  const path = usePathname();
   const [player, setPlayer] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [id, setId] = useState(searchParams.id || '');
@@ -88,7 +89,7 @@ export default function Valorant({ searchParams }) {
     box: {
       display: "block",
       height: "290px",
-      background: `url('${player?.assets?.agent.full || ''}') 85px top no-repeat,
+      background: `url('${player?.agent_portrait || ''}') 85px top no-repeat,
                       linear-gradient(90deg, rgba(0, 0, 0, 0.90) 20%, ${colour} 80%) center center / 100% 100% no-repeat`,
       backgroundSize: "100%",
       borderRadius: "10px",
@@ -128,7 +129,8 @@ export default function Valorant({ searchParams }) {
     <div className="container">
       <Header />
       <main className="main block">
-        <h1>Last Game Status</h1>
+        <h1>This is the {path} page</h1>
+        <h2>Last Game Status</h2>
 
         <form onSubmit={handleSubmit}>
           <div>

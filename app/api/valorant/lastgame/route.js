@@ -36,10 +36,13 @@ export async function GET(request) {
 
     const lastMatch = await lastMatchRequest.json();
     const data = lastMatch.data[0];
+    console.log(data)
     const { team, tier, kills, deaths, assists, character, puuid } = data.stats;
     const map = data.meta.map.name;
     const started_at = data.meta.started_at;
-    const character_name = character.name;
+    const agent = character.name;
+    const agent_id = character.id;
+    const agent_portrait = `https://media.valorant-api.com/agents/${agent_id}/fullportrait.png`;
     const tier_name = tiers[tier].tier_name;
     const tier_name_pt = tiers[tier].tier_name_pt;
     const enemy_team = team == "Blue" ? "Red" : "Blue";
@@ -52,8 +55,8 @@ export async function GET(request) {
     const display_tag = lastMatch.tag;
 
     const playerInfo = {
-      puuid, display_name, display_tag, tier, tier_name, tier_name_pt,
-      team, started_at, enemy_team, kills, deaths, assists, character_name,
+      puuid, display_name, display_tag, tier, tier_name, tier_name_pt, team,
+      started_at, enemy_team, kills, deaths, assists, agent, agent_id, agent_portrait,
       rounds_won, rounds_lost, outcome, outcome_pt, has_won, map
     };
 
