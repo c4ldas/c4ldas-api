@@ -39,7 +39,13 @@ export default async function Home() {
         <Linkbox
           title="Valorant Rank"
           description="Craft a chat command to reveal your real-time rank and elo in Valorant."
-          link="/valorant"
+          link="/valorant/rank"
+        />
+
+        <Linkbox
+          title="Valorant Last Game"
+          description="Have your last Valorant ranked game results displayed in chat."
+          link="/valorant/lastgame"
         />
 
         <Linkbox
