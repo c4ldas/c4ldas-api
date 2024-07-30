@@ -95,7 +95,7 @@ export default async function Home() {
         <Linkbox
           title="Streamelements Widgets"
           description="Discover available widgets to enhance your stream overlays."
-          link="https://github.com/c4ldas/streamelements-widgets"
+          link="/widgets"
         />
       </main>
       <FooterComponent />
