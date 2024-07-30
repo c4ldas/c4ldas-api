@@ -1,3 +1,27 @@
+.light {
+  --background-image: linear-gradient(117deg, rgba(58, 205, 182, 1) 0%, rgba(233, 251, 245, 1) 100%);
+  --color: black;
+  --mode-content: url('/images/sun.svg');
+  --mode-left: 25%;
+  --linkbox-background-color: hsla(0, 0%, 100%, .4);
+  --linkbox-description-color: black;
+  --translate: translateX(-2px);
+  --slider-background-color: #ccc;
+  --hover-color: hsla(171, 60%, 52%, 0.1);
+}
+
+.dark {
+  --background-image: linear-gradient(117deg, rgba(46, 46, 46, 1) 0%, rgba(71, 71, 71, 1) 100%);
+  --color: #f2f2f2;
+  --mode-content: url('/images/moon.svg');
+  --mode-left: 70%;
+  --linkbox-background-color: hsla(0, 100%, 100%, .2);
+  --linkbox-description-color: #f2f2f2;
+  --translate: translateX(24px);
+  --slider-background-color: #1b1c1d;
+  --hover-color: hsla(0, 0%, 50%, 0.1);
+}
+
 :root {
   --transition: .4s;
 }
@@ -71,7 +95,7 @@ a:visited {
 }
 
 .link-box {
-  border-color: black;
+  color: black;
   border: solid;
   margin-bottom: 20px;
   border-radius: 10px;
@@ -170,4 +194,36 @@ dialog {
 
 dialog::backdrop {
   backdrop-filter: blur(6px) brightness(0.8);
+}
+
+
+/* Toggle for widgets page */
+.toggle {
+  background-color: var(--linkbox-background-color);
+  border: solid;
+}
+
+.toggle:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+.collapsible {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .5s;
+}
+
+.toggle:after {
+  content: "\02795";
+  /* Unicode character for "plus" sign (+) */
+  font-size: 13px;
+  color: white;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2796";
+  /* Unicode character for "minus" sign (-) */
 }
