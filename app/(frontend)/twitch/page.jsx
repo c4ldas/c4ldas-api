@@ -8,7 +8,7 @@ import FooterComponent from "@/app/components/Footer";
 
 export default function Twitch({ _, searchParams }) {
   const error = searchParams.error;
-  const path = usePathname();
+  // const path = usePathname();
 
   const [cookie, setCookie] = useState({});
   const [origin, setOrigin] = useState();
@@ -97,7 +97,7 @@ export default function Twitch({ _, searchParams }) {
     <div className="container">
       <Header />
       <main id="main" className="main block">
-        <h1>This is the {path} page</h1>
+        <h1>Twitch Prediction</h1>
         {cookie.id && (
           <>
             <p><button id="remove-integration" type="submit" onClick={openDialog}>Remove integration</button></p>
@@ -105,7 +105,10 @@ export default function Twitch({ _, searchParams }) {
             <p><strong>Channel ID:</strong> {cookie.id}</p>
             <p><strong>Code (click to copy):</strong> <span style={{ cursor: "pointer" }} onClick={copyCode} >••••••••••••</span></p>
             <dialog id="copy-success" style={{ visibility: "visible", marginLeft: "10px" }}>Code copied to clipboard</dialog>
-
+            <div>
+              <p className="red"><strong>- Keep your code safe, otherwise other users could use it to open and close predictions on your account.</strong></p>
+              <p className="red"><strong>- Use Streamelements dashboard to create the commands, do not copy it on chat.</strong></p>
+            </div>
             <div style={{ padding: "2% 0%" }}>
               <p><strong>Create prediction (click to copy):</strong></p>
               <code
@@ -122,7 +125,7 @@ export default function Twitch({ _, searchParams }) {
               <code
                 style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
                 onClick={copyPrediction}
-                datacommand={`${predictionCommand}/close/${cookie.code}/?channel=$(channel)&winner=$(winner))`}
+                datacommand={`${predictionCommand}/close/${cookie.code}/?channel=$(channel)&winner=$(1))`}
               >
                 .me $(sender) ► $(customapi.{origin}/api/twitch/prediction/close/••••••••••••/...)
               </code>
@@ -160,9 +163,13 @@ export default function Twitch({ _, searchParams }) {
         )}
         {error && <p>Error: {error}</p>}
         {!cookie.id && (
-          <a href={baseURL + urlSearchParams.toString()}>
-            <button type="submit">Login with Twitch</button>
-          </a>
+          <>
+            <h3>This page will assist you to create prediction commands easily on Twitch chat, without any extra code.</h3>
+            <p>Click on the button below to login with Twitch.</p>
+            <a href={baseURL + urlSearchParams.toString()}>
+              <button type="submit">Login with Twitch</button>
+            </a>
+          </>
         )}
       </main>
       <FooterComponent />
