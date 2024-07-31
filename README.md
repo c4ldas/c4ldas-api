@@ -23,8 +23,8 @@ At the moment the structure of the application is:
 |  |
 |  |--(frontend)/    
 |  |  |-- homepage              # done
-|  |  |-- lol/                  # pending
-|  |  |-- tft/                  # pending
+|  |  |-- lol/                  # in progress
+|  |  |-- tft/                  # in progress
 |  |  |-- spotify/              # pending
 |  |  |-- steam/                # pending
 |  |  |-- twitch/               # in progress
