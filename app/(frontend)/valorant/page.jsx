@@ -10,7 +10,7 @@ export default function Valorant() {
         <div className="block">
           <h1 className="title">Valorant</h1>
           <h2 className="subtitle">
-            Here you'll find Valorant commands to be used on stream.
+            Here you will find Valorant commands to be used on stream.
             These commands can be used to display your real-time rank and elo in VALORANT, your last game results,
             and your account ID which is really helpful when configuring your Valorant rank command.
           </h2>
