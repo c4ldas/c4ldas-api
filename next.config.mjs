@@ -30,6 +30,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'media.valorant-api.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'user-images.githubusercontent.com',
+      },
     ],
   },
 };

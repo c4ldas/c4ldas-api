@@ -4,6 +4,7 @@ import Header from "@/app/components/Header";
 import Linkbox from "@/app/components/Linkbox";
 import FooterComponent from "@/app/components/Footer";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function Home() {
 
@@ -68,12 +69,12 @@ export default function Home() {
           <p><em>widget.js</em></p>
           <p><em>widget.json</em></p>
           <p>Each file goes directly to the corresponding tab in the custom widget on Streamelements. The only difference is the <em>widget.json</em>, which should be copied to FIELDS tab.</p>
-          <p><img src="https://user-images.githubusercontent.com/75918726/219300427-f0d2a41e-7a66-4baf-8e5b-d2cd716a78d3.png" alt="image" /></p>
+          <p><Image src="https://user-images.githubusercontent.com/75918726/219300427-f0d2a41e-7a66-4baf-8e5b-d2cd716a78d3.png" width={762} height={341} alt="image" /></p>
         </div>
         <h2 id="toggle-reset" className="toggle" onClick={collapseMenu}>How to reset the fields:</h2>
         <div id="collapsible-reset" className="collapsible">
-          <p>In case you want to reset the configuration of the widget to its default, you can go to DATA tab and replace the contents with { }</p>
-          <p><img src="https://user-images.githubusercontent.com/75918726/219302604-7b0d556f-fdc4-45ae-8484-f5edcfadd441.png" alt="image" /></p>
+          <p>In case you want to reset the configuration of the widget to its default, you can go to DATA tab and replace the contents with &#123; &#125;</p>
+          <p><Image src="https://user-images.githubusercontent.com/75918726/219302604-7b0d556f-fdc4-45ae-8484-f5edcfadd441.png" width={763} height={120} alt="image" /></p>
         </div>
         <div className="main">
           {error && <p className="red">{error}</p>}
