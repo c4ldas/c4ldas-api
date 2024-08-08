@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import Header from "/app/components/Header";
 import FooterComponent from "/app/components/Footer";
-import { color } from "/app/lib/colorLog";
 import { useEffect, useState } from "react";
 import Icon from "@mdi/react";
 import { mdiCurrencyUsd, mdiController } from "@mdi/js";
@@ -41,7 +40,7 @@ export default function Steam({ params, searchParams }) {
     };
 
     fetchData();
-  }, []);
+  });
 
   const style = {
     box: {
