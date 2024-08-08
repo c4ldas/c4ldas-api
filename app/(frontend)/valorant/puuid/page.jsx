@@ -19,7 +19,7 @@ export default function Puuid() {
       const request = await fetch(`/api/valorant/puuid?player=${player}&tag=${tag}`);
       const response = await request.json();
 
-      if (!response.data) throw new Error("Error: Could not find this player on the platform");
+      if (!response.data) throw new Error("Not found, please check the username and tagline are correct");
 
       setPuuid(response.data.puuid);
       setImage(response.data.card.large);
