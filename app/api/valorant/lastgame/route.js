@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-// import { getRank, urlById as rankById, urlByPlayer as rankByPlayer } from '../rank/route';
-import { tiers, urlById as rankById, urlByPlayer as rankByPlayer, getRank, validRegions } from '@/app/lib/valorant_rank';
+import { tiers, validRegions } from '@/app/lib/valorant_rank';
 import decrypt from "@/app/lib/encode_key";
 const env = process.env.ENVIRONMENT;
 
@@ -11,18 +10,14 @@ const apiToken = env == "dev" ?
 const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/lifetime/matches/${region}/${player}/${tag}?filter=competitive&size=1`
 const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/lifetime/matches/${region}/${id}?filter=competitive&size=1`
 
-// const validRegions = ["ap", "br", "eu", "kr", "latam", "na"];
-
 export async function GET(request) {
+  // Convert query strings (map format) to object format - Only works for this specific case!
+  const obj = Object.fromEntries(request.nextUrl.searchParams);
   try {
-    // Convert query strings (map format) to object format - Only works for this specific case!
-    const obj = Object.fromEntries(request.nextUrl.searchParams);
     const { region, player, tag, id } = obj;
-
     const validParams = checkParams(region, player, tag, id);
 
     const url = id ? urlById(region, id) : urlByPlayer(region, player, tag);
-    // const rank = id ? await getRank(rankById(region, id), apiToken) : await getRank(rankByPlayer(region, player, tag), apiToken);
 
     const lastMatchRequest = await fetch(url, {
       // cache: "force-cache",
@@ -36,7 +31,6 @@ export async function GET(request) {
 
     const lastMatch = await lastMatchRequest.json();
     const data = lastMatch.data[0];
-    console.log(data)
     const { team, tier, kills, deaths, assists, character, puuid } = data.stats;
     const map = data.meta.map.name;
     const started_at = data.meta.started_at;
@@ -61,7 +55,6 @@ export async function GET(request) {
     };
 
     if (obj.type == "text") {
-      // const results = `Map: ${playerInfo.map} / Outcome: ${playerInfo.outcome} / Score: ${playerInfo.rounds_won}x${playerInfo.rounds_lost} / KDA: ${playerInfo.stats.kills}/${playerInfo.stats.deaths}/${playerInfo.stats.assists} / Game Time: ${playerInfo.game_duration_minutes}min`;
       const results = `Map: ${map} / Outcome: ${outcome} / Score: ${rounds_won}x${rounds_lost} / KDA: ${kills}/${deaths}/${assists}`;
       return new Response(results, { status: 200 });
     }
