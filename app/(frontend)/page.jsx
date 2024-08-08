@@ -37,27 +37,9 @@ export default async function Home() {
         />
 
         <Linkbox
-          title="Valorant Rank"
-          description="Craft a chat command to reveal your real-time rank and elo in Valorant."
-          link="/valorant/rank"
-        />
-
-        <Linkbox
-          title="Valorant Last Game"
-          description="Have your last Valorant ranked game results displayed in chat."
-          link="/valorant/lastgame"
-        />
-
-        <Linkbox
-          title="Valorant - Find your PUUID"
-          description="Discover your Valorant account ID or someone else's. Helpful when configuring a Valorant rank command."
-          link="/valorant/puuid"
-        />
-
-        <Linkbox
-          title="Valorant - Official games of the day"
-          description="Set up a chat command to display real-time scores of today's official Valorant tournament matches."
-          link="/valorant/schedule"
+          title="Valorant"
+          description="Valorant commands to be used on Stream or overlays."
+          link="/valorant"
         />
 
         <Linkbox
@@ -66,12 +48,6 @@ export default async function Home() {
           link="/spotify"
           span=" Currently undergoing maintenance."
           spanClass="red"
-        />
-
-        <Linkbox
-          title="Steam Game"
-          description="Widget to show Steam game information."
-          link="/steam"
         />
 
         <Linkbox
