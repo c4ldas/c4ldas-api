@@ -2,20 +2,26 @@
 
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function Puuid() {
 
   const [puuid, setPuuid] = useState();
   const [image, setImage] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
+  // useEffect for isLoading when it is still getting data from API:
+
   async function getPuuid(event) {
-    event.preventDefault();
     try {
+      event.preventDefault();
       const player = document.getElementById("player").value;
       const tag = document.getElementById("tag").value;
+      setIsLoading(true);
+      clearResponse();
+
       const request = await fetch(`/api/valorant/puuid?player=${player}&tag=${tag}`);
       const response = await request.json();
 
@@ -24,12 +30,13 @@ export default function Puuid() {
       setPuuid(response.data.puuid);
       setImage(response.data.card.large);
       setError(null);
+      setIsLoading(false);
 
     } catch (error) {
-      console.log("Error: ", error.message);
       setError(error.message);
       setPuuid(null);
       setImage(null);
+      setIsLoading(false);
     }
   }
 
@@ -41,11 +48,18 @@ export default function Puuid() {
     setError(null);
   }
 
+  function clearResponse() {
+    setPuuid(null);
+    setImage(null);
+    setError(null);
+  }
+
   return (
     <div className="container">
       <Header />
       <main className="main block">
-        <h1>Find the puuid of your Valorant account</h1>
+        <h1>Valorant Puuid</h1>
+        <h2 className="subtitle">Enter your username and tagline to show your Puuid</h2>
 
         <form onSubmit={getPuuid}>
           <input type="text" id="player" name="player" placeholder="Username" required style={{ padding: "5px", fontSize: "1.2rem" }} />
@@ -54,6 +68,7 @@ export default function Puuid() {
           <button type="submit" style={{ padding: "5px", fontSize: "1.1rem", margin: "0 5px" }}>Get PUUID</button>
           <button type="reset" onClick={clearFields} style={{ padding: "5px", fontSize: "1.1rem", margin: "05px" }}>Clear Fields</button>
         </form>
+        {isLoading && <div id="loading" style={{ fontSize: "1.2rem", margin: "25px 0" }}>Loading...</div>}
         {puuid && (
           <>
             <div id="puuid" style={{ fontSize: "1.2rem", margin: "25px 0" }}>puuid: {puuid}</div>
@@ -61,7 +76,7 @@ export default function Puuid() {
           </>
         )}
 
-        {error && <div id="output" style={{ fontSize: "1.2rem", margin: "25px 0" }}>{error}</div>}
+        {error && <div id="error" style={{ fontSize: "1.2rem", margin: "25px 0" }}>{error}</div>}
 
       </main>
       <FooterComponent />
