@@ -2,7 +2,7 @@
 
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 export default function Puuid() {
@@ -11,8 +11,6 @@ export default function Puuid() {
   const [image, setImage] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-
-  // useEffect for isLoading when it is still getting data from API:
 
   async function getPuuid(event) {
     try {
@@ -58,7 +56,7 @@ export default function Puuid() {
     <div className="container">
       <Header />
       <main className="main block">
-        <h1>Valorant Puuid</h1>
+        <h1 className="title">Valorant Puuid</h1>
         <h2 className="subtitle">Enter your username and tagline to show your Puuid</h2>
 
         <form onSubmit={getPuuid}>
@@ -68,16 +66,17 @@ export default function Puuid() {
           <button type="submit" style={{ padding: "5px", fontSize: "1.1rem", margin: "0 5px" }}>Get PUUID</button>
           <button type="reset" onClick={clearFields} style={{ padding: "5px", fontSize: "1.1rem", margin: "05px" }}>Clear Fields</button>
         </form>
+
         {isLoading && <div id="loading" style={{ fontSize: "1.2rem", margin: "25px 0" }}>Loading...</div>}
+
+        {error && <div id="error" style={{ fontSize: "1.2rem", margin: "25px 0" }}>{error}</div>}
+
         {puuid && (
           <>
             <div id="puuid" style={{ fontSize: "1.2rem", margin: "25px 0" }}>puuid: {puuid}</div>
             <Image id="banner" src={image} alt="valorant account banner" width={268} height={640} />
           </>
         )}
-
-        {error && <div id="error" style={{ fontSize: "1.2rem", margin: "25px 0" }}>{error}</div>}
-
       </main>
       <FooterComponent />
     </div >
