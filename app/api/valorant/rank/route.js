@@ -15,10 +15,9 @@ const urlLeaderboardId = (region, id) => `https://api.henrikdev.xyz/valorant/v2/
 const urlLeaderboardPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v2/leaderboard/${region}?name=${player}&tag=${tag}`;
 
 export async function GET(request) {
+  // Convert query strings (map format) to object format - Only works for this specific case!
+  const obj = Object.fromEntries(request.nextUrl.searchParams);
   try {
-    // Convert query strings (map format) to object format - Only works for this specific case!
-    const obj = Object.fromEntries(request.nextUrl.searchParams);
-
     // Get the parameters from URL
     const { player, tag, id, channel, region = "br", msg = "(player) está (rank) com (pontos) pontos.", type = "text" } = obj;
     const game = "valorant";

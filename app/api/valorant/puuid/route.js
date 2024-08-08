@@ -10,16 +10,13 @@ const apiToken = env == "dev" ?
 const urlByPlayer = (player, tag) => `https://api.henrikdev.xyz/valorant/v1/account/${player}/${tag}?force=true`;
 
 export async function GET(request) {
+  // Convert query strings (map format) to object format - Only works for this specific case!
+  const obj = Object.fromEntries(request.nextUrl.searchParams);
   try {
-    // Convert query strings (map format) to object format - Only works for this specific case!
-    const obj = Object.fromEntries(request.nextUrl.searchParams);
-
     // Get the parameters from URL
     const { player = "", tag = "", type = "json" } = obj;
-    // const game = "valorant";
 
     const validParams = checkParams(player, tag);
-    // if (!validParams.status) return NextResponse.json({ error: validParams.error }, { status: 400 });
 
     const getData = await fetch(urlByPlayer(player, tag), {
       headers: {
