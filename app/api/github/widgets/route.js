@@ -15,14 +15,6 @@ export async function GET() {
 
 export async function getGithubWidgets() {
   try {
-    // Read from main README.md
-    // const readmeRequest = await fetch('https://raw.githubusercontent.com/c4ldas/streamelements-widgets/main/README.md', {
-    //   "headers": {
-    //     "Authorization": `Bearer ${process.env.GITHUB_API_KEY}`
-    //   }
-    // });
-    // const readme = await readmeRequest.text();
-
     // Get the directory list from the repository
     const request = await fetch('https://api.github.com/repos/c4ldas/streamelements-widgets/contents/', {
       "headers": {
@@ -64,7 +56,7 @@ export async function getGithubWidgets() {
     return widgetList;
 
   } catch (error) {
-    console.log("GithubServer():", error);
+    console.log("getGithubWidgets():", error);
     const response = { error: "Failed to list widgets from Github, please try again later" }
     throw response;
   }
