@@ -8,9 +8,10 @@ const apiToken = env == "dev" ?
   process.env.YOUTUBE_KEY;
 
 export async function GET(request) {
+  // Convert query strings (map format) to object format - Only works for this specific case!
+  const obj = Object.fromEntries(request.nextUrl.searchParams);
+
   try {
-    // Convert query strings (map format) to object format - Only works for this specific case!
-    const obj = Object.fromEntries(request.nextUrl.searchParams);
     let { username, type = "json" } = obj;
 
     // const innerTube = await Innertube.create(/* options */);
