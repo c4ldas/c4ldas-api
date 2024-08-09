@@ -97,7 +97,20 @@ export default function Twitch({ _, searchParams }) {
     <div className="container">
       <Header />
       <main id="main" className="main block">
-        <h1>Twitch Prediction</h1>
+        <h1 className="title">Twitch Prediction</h1>
+        {!cookie.id && (
+          <>
+            <p>
+              With this integration, you can create predictions on Twitch using chat commands.
+              So instead of opening the Twitch prediction panel, you can just type the command <code>!prediction</code> and the prediction will be created directly with the options you choose.
+            </p>
+            <p>Click on the button below to login with Twitch.</p>
+            <a href={baseURL + urlSearchParams.toString()}>
+              <button type="submit">Login with Twitch</button>
+            </a>
+          </>
+        )}
+
         {cookie.id && (
           <>
             <p><button id="remove-integration" type="submit" onClick={openDialog}>Remove integration</button></p>
@@ -141,12 +154,14 @@ export default function Twitch({ _, searchParams }) {
                 .me $(sender) ► $(customapi.{origin}/api/twitch/prediction/cancel/••••••••••••/...)
               </code>
             </div>
-            {/*
-            <details>
-              <summary>Click to show code:</summary>
-              <p><strong>{cookie.code}</strong></p>
-            </details>              
-            */}
+
+            <h2>How to use it:</h2>
+            <h3>Create a prediction:</h3>
+            <span style={{ border: "1px solid black", padding: "5px" }}>!prediction option1 option2</span>
+            <h3>Close prediction:</h3>
+            <span style={{ border: "1px solid black", padding: "5px" }}>!close winnerOption</span>
+            <h3>Cancel prediction:</h3>
+            <span style={{ border: "1px solid black", padding: "5px" }}>!cancel</span>
 
             {/* <!-- pop-up dialog box, containing a form --> */}
             <dialog id="dialog" className="dialog">
@@ -162,15 +177,6 @@ export default function Twitch({ _, searchParams }) {
           </>
         )}
         {error && <p>Error: {error}</p>}
-        {!cookie.id && (
-          <>
-            <h3>This page will assist you to create prediction commands easily on Twitch chat, without any extra code.</h3>
-            <p>Click on the button below to login with Twitch.</p>
-            <a href={baseURL + urlSearchParams.toString()}>
-              <button type="submit">Login with Twitch</button>
-            </a>
-          </>
-        )}
       </main>
       <FooterComponent />
     </div >
