@@ -6,7 +6,7 @@ export async function GET(request, { params }) {
   try {
     const obj = Object.fromEntries(request.nextUrl.searchParams);
     const code = params.code;
-    const { channel, question } = obj;
+    const { channel, question, time = 300 } = obj;
 
     // Get each option from the object
     const options = Object.keys(obj)
@@ -22,7 +22,7 @@ export async function GET(request, { params }) {
     const openPrediction = await getOpenPrediction(token.access_token, token.id);
 
     if (openPrediction) return NextResponse.json({ status: "failed", message: "Prediction already created" }, { status: 400 });
-    const result = await createPrediction(token.access_token, token.id, question, options);
+    const result = await createPrediction(token.access_token, token.id, question, options, time);
 
     return NextResponse.json(result, { status: 200 });
 

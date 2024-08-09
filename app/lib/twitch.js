@@ -55,7 +55,7 @@ async function getUserData(accessToken) {
   }
 }
 
-async function createPrediction(accessToken, broadcasterId, question, options) {
+async function createPrediction(accessToken, broadcasterId, question, options, time) {
   try {
     const request = await fetch('https://api.twitch.tv/helix/predictions', {
       method: 'POST',
@@ -67,7 +67,7 @@ async function createPrediction(accessToken, broadcasterId, question, options) {
       body: JSON.stringify({
         'broadcaster_id': broadcasterId,
         'title': question !== null ? question : 'Quem ganha esse mapa?',
-        'prediction_window': 300,
+        'prediction_window': time,
         'outcomes': options.map(option => { return { "title": option } })
       })
     });
