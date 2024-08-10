@@ -1,6 +1,5 @@
 "use client"
 
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCookies } from "cookies-next";
 import Header from "@/app/components/Header";
@@ -8,7 +7,6 @@ import FooterComponent from "@/app/components/Footer";
 
 export default function Twitch({ _, searchParams }) {
   const error = searchParams.error;
-  // const path = usePathname();
 
   const [cookie, setCookie] = useState({});
   const [origin, setOrigin] = useState();
@@ -30,8 +28,6 @@ export default function Twitch({ _, searchParams }) {
 
   async function openDialog() {
     const dialog = document.querySelector("#dialog");
-    const main = document.querySelector("#main").getBoundingClientRect();;
-    // dialog.style.marginTop = (main.height) + "px";
     dialog.style.marginLeft = "auto";
     dialog.showModal();
   }
@@ -62,29 +58,12 @@ export default function Twitch({ _, searchParams }) {
 
   function copyCode(event) {
     const dialog = document.getElementById("copy-success");
-    const position = event.target.getBoundingClientRect();
-    navigator.clipboard.writeText(cookie.code);
-
-    // Show the dialog next to the clicked element
-    dialog.style.top = (position.top - position.height) + "px";
-    dialog.style.marginLeft = (event.clientX + position.width) + "px";
-    dialog.show();
-
-    // Close the dialog after 2 seconds
-    setTimeout(() => {
-      dialog.close();
-    }, 2000);
-  }
-
-  function copyPrediction(event) {
-    const dialog = document.getElementById("copy-success");
-    const position = event.target.getBoundingClientRect();
     const command = event.target.getAttribute("datacommand");
     navigator.clipboard.writeText(command);
 
     // Show the dialog next to the clicked element
-    dialog.style.top = (position.top - position.height) + "px";
-    dialog.style.marginLeft = (event.clientX) + "px";
+    dialog.style.top = (event.clientY - 70) + "px";
+    dialog.style.marginLeft = (event.clientX + 50) + "px";
     dialog.show();
 
     // Close the dialog after 2 seconds
@@ -98,7 +77,7 @@ export default function Twitch({ _, searchParams }) {
       <Header />
       <main id="main" className="main block">
         <h1 className="title">Twitch Prediction</h1>
-        {!cookie.id && (
+        {!cookie.twitch_id && (
           <>
             <p>
               With this integration, you can create predictions on Twitch using chat commands.
@@ -111,13 +90,13 @@ export default function Twitch({ _, searchParams }) {
           </>
         )}
 
-        {cookie.id && (
+        {cookie.twitch_id && (
           <>
             <p><button id="remove-integration" type="submit" onClick={openDialog}>Remove integration</button></p>
-            <p><strong>Channel name:</strong> {cookie.username} </p>
-            <p><strong>Channel ID:</strong> {cookie.id}</p>
-            <p><strong>Code (click to copy):</strong> <span style={{ cursor: "pointer" }} onClick={copyCode} >••••••••••••</span></p>
-            <dialog id="copy-success" style={{ visibility: "visible", marginLeft: "10px" }}>Code copied to clipboard</dialog>
+            <p><strong>Channel name:</strong> {cookie.twitch_username} </p>
+            <p><strong>Channel ID:</strong> {cookie.twitch_id}</p>
+            <p><strong>Code (click to copy):</strong> <span style={{ cursor: "pointer" }} onClick={copyCode} datacommand={cookie.twitch_code}>••••••••••••</span></p>
+
             <div>
               <p className="red"><strong>- Keep your code safe, otherwise other users could use it to open and close predictions on your account.</strong></p>
               <p className="red"><strong>- Use Streamelements dashboard to create the commands, do not copy it on chat.</strong></p>
@@ -126,8 +105,8 @@ export default function Twitch({ _, searchParams }) {
               <p><strong>Create prediction (click to copy):</strong></p>
               <code
                 style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
-                onClick={copyPrediction}
-                datacommand={`${predictionCommand}/create/${cookie.code}/?channel=$(channel)&option1=$(1)&option2=$(2)&question=$(queryescape $(3:|Quem ganha esse mapa?)))`}
+                onClick={copyCode}
+                datacommand={`${predictionCommand}/create/${cookie.twitch_code}/?channel=$(channel)&option1=$(1)&option2=$(2)&question=$(queryescape $(3:|Quem ganha esse mapa?)))`}
               >
                 .me $(sender) ► $(customapi.{origin}/api/twitch/prediction/create/••••••••••••/...)
               </code>
@@ -137,8 +116,8 @@ export default function Twitch({ _, searchParams }) {
               <p><strong>Close prediction (click to copy):</strong></p>
               <code
                 style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
-                onClick={copyPrediction}
-                datacommand={`${predictionCommand}/close/${cookie.code}/?channel=$(channel)&winner=$(1))`}
+                onClick={copyCode}
+                datacommand={`${predictionCommand}/close/${cookie.twitch_code}/?channel=$(channel)&winner=$(1))`}
               >
                 .me $(sender) ► $(customapi.{origin}/api/twitch/prediction/close/••••••••••••/...)
               </code>
@@ -148,8 +127,8 @@ export default function Twitch({ _, searchParams }) {
               <p><strong>Cancel prediction (click to copy):</strong></p>
               <code
                 style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
-                onClick={copyPrediction}
-                datacommand={`${predictionCommand}/cancel/${cookie.code}/?channel=$(channel))`}
+                onClick={copyCode}
+                datacommand={`${predictionCommand}/cancel/${cookie.twitch_code}/?channel=$(channel))`}
               >
                 .me $(sender) ► $(customapi.{origin}/api/twitch/prediction/cancel/••••••••••••/...)
               </code>
@@ -164,6 +143,7 @@ export default function Twitch({ _, searchParams }) {
             <span style={{ border: "1px solid black", padding: "5px" }}>!cancel</span>
 
             {/* <!-- pop-up dialog box, containing a form --> */}
+            <dialog id="copy-success" style={{ visibility: "visible", marginLeft: "10px" }}>Code copied to clipboard</dialog>
             <dialog id="dialog" className="dialog">
               <div id="dialog-title">
                 Are you sure you want to remove the integration?<br />

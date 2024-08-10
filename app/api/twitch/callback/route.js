@@ -1,10 +1,8 @@
-// import { NextResponse } from "next/server";
 import { twitchSaveToDatabase, twitchCheckUser } from "@/app/lib/database";
 import { getTokenCode, getUserData } from "@/app/lib/twitch";
 import { cookies } from "next/headers";
 
 export async function GET(request) {
-
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
   const { code } = obj;
@@ -28,9 +26,9 @@ export async function GET(request) {
   const saved = await twitchSaveToDatabase(data);
   if (!saved) return Response.redirect(`${origin}/twitch?error=Error while saving to database`);
 
-  cookies().set('id', data.id);
-  cookies().set('username', data.username);
-  cookies().set('code', data.code);
+  cookies().set('twitch_id', data.id);
+  cookies().set('twitch_username', data.username);
+  cookies().set('twitch_code', data.code);
 
   return Response.redirect(`${origin}/twitch`);
 }
