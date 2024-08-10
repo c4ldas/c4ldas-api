@@ -112,6 +112,34 @@ async function spotifySaveToDatabase(data) {
 }
 
 
+async function spotifyRemoveIntegration(id, username) {
+  let client;
+
+  try {
+    const removeQuery = {
+      text: 'DELETE FROM spotify WHERE id = $1 AND display_name = $2',
+      values: [id, username],
+    }
+    client = await connectToDatabase();
+    const { rowCount } = await client.query(removeQuery);
+    console.log("removeQuery: ", rowCount);
+
+    if (rowCount === 0) {
+      throw { error: "User not registered!" };
+    }
+    return true;
+
+  } catch (error) {
+    console.log("spotifyRemoveIntegration(): ", error);
+    throw error.message;
+
+  } finally {
+    if (client) client.release();
+    // console.log("Client released");
+  }
+}
+
+
 async function twitchSaveToDatabase(data) {
   let client;
 
@@ -218,4 +246,4 @@ async function twitchRemoveIntegration(id, username, code) {
 }
 
 
-export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase, twitchSaveToDatabase, twitchCheckUser, twitchGetTokenDatabase, twitchRemoveIntegration };
+export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase, spotifyRemoveIntegration, twitchSaveToDatabase, twitchCheckUser, twitchGetTokenDatabase, twitchRemoveIntegration };
