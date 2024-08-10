@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 import { getTokenCode, getUserData } from "@/app/lib/spotify";
 import { spotifySaveToDatabase } from "@/app/lib/database";
+import { cookies } from "next/headers";
 
 export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
@@ -8,10 +8,12 @@ export async function GET(request) {
   const { code } = obj;
   const origin = request.nextUrl.origin;
 
-  if (!code) return NextResponse.json({ error: "Code not found" }, { status: 400 });
+  if (!code) return Response.redirect(`${origin}/spotify?error=Code not found`);
 
   const token = await getTokenCode(code);
   const user = await getUserData(token.access_token);
+
+
 
   const data = {
     id: user.id,
@@ -22,8 +24,12 @@ export async function GET(request) {
 
 
   const saved = await spotifySaveToDatabase(data);
-  if (!saved) return NextResponse.json({ error: "Failed to save to database, try again later." }, { status: 500 });
+  if (!saved) return Response.redirect(`${origin}/spotify?error=Error while saving to database`);
+  // if (!saved) return NextResponse.json({ error: "Failed to save to database, try again later." }, { status: 500 });
+  cookies().set('spotify_id', data.id);
+  cookies().set('spotify_display_name', data.display_name);
 
-  return Response.redirect(`${origin}/spotify?id=${user.id}&display_name=${user.display_name}`);
+
+  return Response.redirect(`${origin}/spotify`);
 
 }
