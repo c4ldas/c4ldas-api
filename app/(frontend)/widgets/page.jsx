@@ -76,6 +76,7 @@ export default function Home() {
           <p>In case you want to reset the configuration of the widget to its default, you can go to DATA tab and replace the contents with &#123; &#125;</p>
           <p><Image src="https://user-images.githubusercontent.com/75918726/219302604-7b0d556f-fdc4-45ae-8484-f5edcfadd441.png" width={763} height={120} alt="image" /></p>
         </div>
+        <h2>Widget List:</h2>
         <div className="main">
           {error && <p className="red">{error}</p>}
           {widgets && widgets.map((widget) => (
