@@ -14,60 +14,60 @@ At the moment the structure of the application is:
 <pre>
 /
 |- public/
-|  |-- images/  
-|  |-- css/  
-|  
+|  |-- images/
+|  |-- css/
+|
 |- app/
-|  |--components/  
-|  |--lib/   
+|  |--components/
+|  |--lib/
 |  |
-|  |--(frontend)/    
-|  |  |-- homepage              # done
-|  |  |-- lol/                  # done
-|  |  |-- tft/                  # done
-|  |  |-- spotify/              # done
-|  |  |-- twitch/               # done
+|  |--(frontend)/
+|  |  |-- homepage             # done
+|  |  |-- lol/                 # done
+|  |  |-- tft/                 # done
+|  |  |-- spotify/             # done
+|  |  |-- twitch/              # done
+|  |  |-- youtube/             # pending
 |  |  |
-|  |  |-- valorant/             # done
-|  |  |    |-- puuid/           # done
-|  |  |    |-- lastgame/        # pending
-|  |  |    |-- rank/            # pending
-|  |  |    |-- schedule/        # pending
+|  |  |-- valorant/            # done
+|  |  |    |-- puuid/          # done
+|  |  |    |-- lastgame/       # pending
+|  |  |    |-- rank/           # pending
+|  |  |    |-- schedule/       # pending
 |  |  |
-|  |  |-- youtube/              # pending
-|  |      
-|  |--api/    
-|     |-- spotify/          
-|     |    |-- musica/          # done
-|     |    |-- callback/        # done
-|     |    |-- logout/          # done
-|     |    
-|     |-- twitch/        
-|     |    |-- prediction/
-|     |    |      |-- get/      # done
-|     |    |      |-- create/   # done
-|     |    |      |-- close/    # done
-|     |    |      |-- cancel/   # done
-|     |    |      
-|     |    |-- callback/        # done
-|     |    |-- logout/          # done
+|  |
+|  |--api/
+|     |-- spotify/
+|     |    |-- musica/         # done
+|     |    |-- callback/       # done
+|     |    |-- logout/         # done
 |     |
-|     |-- youtube/       
-|     |    |-- search/          # done
-|     |    |-- channel/         # done
+|     |-- twitch/
+|     |    |-- prediction/
+|     |    |     |-- get/      # done
+|     |    |     |-- create/   # done
+|     |    |     |-- close/    # done
+|     |    |     |-- cancel/   # done
+|     |    |
+|     |    |-- callback/       # done
+|     |    |-- logout/         # done
+|     |
+|     |-- youtube/
+|     |    |-- search/         # done
+|     |    |-- channel/        # done
 |     |             
-|     |-- steam/                 
-|     |    |-- game/            # done
-|     |             
-|     |-- valorant/              
-|     |    |-- lastgame/        # done
-|     |    |-- rank/            # done
-|     |    |-- puuid/           # done
-|     |    |-- schedule/        # done
-|     |             
+|     |-- steam/
+|     |    |-- game/           # done
+|     |
+|     |-- valorant/
+|     |    |-- lastgame/       # done
+|     |    |-- rank/           # done
+|     |    |-- puuid/          # done
+|     |    |-- schedule/       # done
+|     |
 |     |-- lol/        
-|     |    |-- rank/            # done
-|     |             
+|     |    |-- rank/           # done
+|     |
 |     |-- tft/        
-|     |    |-- rank/            # done
+|     |    |-- rank/           # done
 </pre>
