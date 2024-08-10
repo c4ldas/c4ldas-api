@@ -25,7 +25,7 @@ At the moment the structure of the application is:
 |  |  |-- homepage              # done
 |  |  |-- lol/                  # done
 |  |  |-- tft/                  # done
-|  |  |-- spotify/              # in progress
+|  |  |-- spotify/              # done
 |  |  |-- twitch/               # done
 |  |  |
 |  |  |-- valorant/             # done
@@ -40,6 +40,7 @@ At the moment the structure of the application is:
 |     |-- spotify/          
 |     |    |-- musica/          # done
 |     |    |-- callback/        # done
+|     |    |-- logout/          # done
 |     |    
 |     |-- twitch/        
 |     |    |-- prediction/
