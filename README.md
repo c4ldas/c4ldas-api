@@ -28,6 +28,7 @@ At the moment the structure of the application is:
 |  |  |-- spotify/             # done
 |  |  |-- twitch/              # done
 |  |  |-- youtube/             # pending
+|  |  |-- widgets/             # done
 |  |  |
 |  |  |-- valorant/            # done
 |  |  |    |-- puuid/          # done
