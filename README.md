@@ -23,13 +23,12 @@ At the moment the structure of the application is:
 |  |
 |  |--(frontend)/    
 |  |  |-- homepage              # done
-|  |  |-- lol/                  # pending
+|  |  |-- lol/                  # done
 |  |  |-- tft/                  # done
 |  |  |-- spotify/              # in progress
-|  |  |-- steam/                # pending
 |  |  |-- twitch/               # done
 |  |  |
-|  |  |-- valorant/             # pending
+|  |  |-- valorant/             # done
 |  |  |    |-- puuid/           # done
 |  |  |    |-- lastgame/        # pending
 |  |  |    |-- rank/            # pending
