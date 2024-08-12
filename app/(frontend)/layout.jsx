@@ -22,6 +22,11 @@ export const metadata = {
   description: "Just a webpage",
   backgroundColor: "#3c3c3c",
 
+  // Google verification
+  verification: {
+    google: "wVXxQkHea9Zos1LW8_q9VVXEEkl3zin6kocrTnK3syA",
+  },
+
   // Favicon
   icons: {
     icon: "/images/favicon.png",
