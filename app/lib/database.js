@@ -13,7 +13,6 @@ async function connectToDatabase() {
   }
 }
 
-
 async function testConnectionDatabase() {
   let client;
   try {
@@ -51,7 +50,6 @@ async function testConnectionDatabase() {
   }
 }
 
-
 async function spotifyGetRefreshTokenDatabase(id) {
   let client;
 
@@ -78,7 +76,6 @@ async function spotifyGetRefreshTokenDatabase(id) {
     // console.log("Client released");
   }
 }
-
 
 async function spotifySaveToDatabase(data) {
   let client;
@@ -111,7 +108,6 @@ async function spotifySaveToDatabase(data) {
   }
 }
 
-
 async function spotifyRemoveIntegration(id, username) {
   let client;
 
@@ -138,7 +134,6 @@ async function spotifyRemoveIntegration(id, username) {
     // console.log("Client released");
   }
 }
-
 
 async function twitchSaveToDatabase(data) {
   let client;
@@ -170,7 +165,6 @@ async function twitchSaveToDatabase(data) {
   }
 }
 
-
 async function twitchCheckUser(id) {
   let client;
 
@@ -192,7 +186,6 @@ async function twitchCheckUser(id) {
     // console.log("Client released");
   }
 }
-
 
 async function twitchGetTokenDatabase(code, channel) {
   let client;
@@ -216,7 +209,6 @@ async function twitchGetTokenDatabase(code, channel) {
     // console.log("Client released");
   }
 }
-
 
 async function twitchRemoveIntegration(id, username, code) {
   let client;
@@ -244,6 +236,5 @@ async function twitchRemoveIntegration(id, username, code) {
     // console.log("Client released");
   }
 }
-
 
 export { testConnectionDatabase, spotifyGetRefreshTokenDatabase, spotifySaveToDatabase, spotifyRemoveIntegration, twitchSaveToDatabase, twitchCheckUser, twitchGetTokenDatabase, twitchRemoveIntegration };
