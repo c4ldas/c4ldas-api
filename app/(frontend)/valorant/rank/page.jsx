@@ -63,9 +63,9 @@ export default function Valorant({ params, searchParams }) {
       <main className="main block">
         <h1>Valorant Rank</h1>
         <h3>How to use this endpoint on Streamelements</h3>
-        <div style={{ paddingTop: "10px" }}><code className="code">$(touser) ► $(customapi.{origin}/api/valorant/rank?channel=$(channel)&type=text&player=<span className="red">PLAYERNAME</span>&tag=<span className="red">TAG</span>&msg=<span className="red">"MESSAGE"</span>)</code></div>
+        <div style={{ paddingTop: "10px" }}><code className="code">$(touser) ► $(customapi.{origin}/api/valorant/rank?channel=$(channel)&type=text&player=<span className="red">PLAYERNAME</span>&tag=<span className="red">TAG</span>&msg=&quot;<span className="red">MESSAGE</span>&quot;)</code></div>
 
-        <div style={{ paddingTop: "10px" }}><code className="code">$(touser) ► $(customapi.{origin}/api/valorant/rank?channel=$(channel)&type=text&id=<span className="red">ID</span>&msg=<span className="red">"MESSAGE"</span>)</code></div>
+        <div style={{ paddingTop: "10px" }}><code className="code">$(touser) ► $(customapi.{origin}/api/valorant/rank?channel=$(channel)&type=text&id=<span className="red">ID</span>&msg=&quot;<span className="red">MESSAGE</span>&quot;)</code></div>
 
         <h3>Example:</h3>
         <div><strong>Player: </strong>LOUD Coreano</div>
@@ -73,7 +73,7 @@ export default function Valorant({ params, searchParams }) {
 
         <h3>Parameters:</h3>
 
-        <div>MESSAGE is a custom message to be sent on chat. It is optional and can be omitted. If ommited, the default message is "<span className="blue">(player) está (rank) com (pontos) pontos.</span>"</div>
+        <div>MESSAGE is a custom message to be sent on chat. It is optional and can be omitted. If ommited, the default message is &quot;<span className="blue">(player) está (rank) com (pontos) pontos.</span>&quot;</div>
         <div>MESSAGE text can contain the following variables: (player), (pontos), (rank).</div>
         <div>If the rank is Immortal/Radiant, you can also use (posicao) and (vitorias) to display your position and number of victories, respectively.</div>
         <div>If no message is added, the following default message will be displayed (using the example user):</div>
