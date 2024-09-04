@@ -17,9 +17,10 @@ const urlLeaderboardPlayer = (region, player, tag) => `https://api.henrikdev.xyz
 export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
+  // Get the parameters from URL
+  const { player, tag, id, channel, region = "br", msg = "(player) está (rank) com (pontos) pontos.", type = "text" } = obj;
+
   try {
-    // Get the parameters from URL
-    const { player, tag, id, channel, region = "br", msg = "(player) está (rank) com (pontos) pontos.", type = "text" } = obj;
     const game = "valorant";
 
     const validParams = await checkParams(player, tag, id, channel, region);
@@ -34,8 +35,9 @@ export async function GET(request) {
       if (data.data.currenttier <= 23) { // Below Immortal and Radiant
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
-        const response = await sendResponse(data, type, msg);
-        return NextResponse.json(response, { status: 200 });
+        return sendResponse(data, type, msg);
+        // const response = await sendResponse(data, type, msg);
+        // return NextResponse.json(response, { status: 200 });
       }
 
       // Get leaderboard
@@ -43,15 +45,17 @@ export async function GET(request) {
       if (leaderboard.status !== 200) {
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
-        const response = await sendResponse(data, type, msg);
-        return NextResponse.json(response, { status: 200 });
+        return sendResponse(data, type, msg);
+        // const response = await sendResponse(data, type, msg);
+        // return NextResponse.json(response, { status: 200 });
       };
       data.data.leaderboardRank = leaderboard.data[0].leaderboardRank;
       data.data.numberOfWins = leaderboard.data[0].numberOfWins;
 
       // Send response
-      const response = await sendResponse(data, type, msg);
-      return NextResponse.json(response, { status: 200 })
+      return sendResponse(data, type, msg);
+      // const response = await sendResponse(data, type, msg);
+      // return NextResponse.json(response, { status: 200 })
     }
 
     // Check if player and tag are provided
@@ -62,8 +66,10 @@ export async function GET(request) {
       if (data.data.currenttier <= 23) { // Below Immortal and Radiant
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
-        const response = await sendResponse(data, type, msg);
-        return NextResponse.json(response, { status: 200 });
+
+        return sendResponse(data, type, msg);
+        // const response = await sendResponse(data, type, msg);
+        // return NextResponse.json(response, { status: 200 });
       }
 
       // Get leaderboard
@@ -71,24 +77,25 @@ export async function GET(request) {
       if (leaderboard.status !== 200) {
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
-        const response = await sendResponse(data, type, msg);
-        return NextResponse.json(response, { status: 200 });
+        return sendResponse(data, type, msg);
+        // const response = await sendResponse(data, type, msg);
+        // return NextResponse.json(response, { status: 200 });
       };
 
       data.data.leaderboardRank = leaderboard.data[0].leaderboardRank;
       data.data.numberOfWins = leaderboard.data[0].numberOfWins;
 
       // Send response
-      const response = await sendResponse(data, type, msg);
-      //console.log(response);
-      return NextResponse.json(response, { status: 200 })
+      return sendResponse(data, type, msg);
+      // const response = await sendResponse(data, type, msg);
+      // return NextResponse.json(response, { status: 200 })
     }
 
     // If id or player/tag are not provided, return error
-    return NextResponse.json({ error: "Id or player / tag are required" }, { status: 400 })
+    return NextResponse.json({ error: "Id or player / tag are required" }, { status: 200 })
   } catch (error) {
-    console.log("This is the error: ", error);
-    return NextResponse.json({ error: error.error }, { status: 400 })
+    console.log("Valorant Rank: ", error.message);
+    return NextResponse.json({ error: "Not found. Please check the username/tag or id", player: player, tag: tag }, { status: 200 })
   }
 }
 
@@ -113,7 +120,7 @@ async function sendResponse(data, type, msg) {
 
   if (type != "text") {
     data.message = formattedMessage;
-    return data;
+    return NextResponse.json(data, { status: 200 });
   }
-  return formattedMessage;
+  return new Response(formattedMessage, { status: 200 });
 }
