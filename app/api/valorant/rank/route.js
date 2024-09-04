@@ -111,6 +111,9 @@ async function sendResponse(data, type, msg) {
 
   color.log("green", formattedMessage);
 
-  if (type != "text") return data;
+  if (type != "text") {
+    data.message = formattedMessage;
+    return data;
+  }
   return formattedMessage;
 }
