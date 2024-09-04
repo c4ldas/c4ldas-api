@@ -11,7 +11,7 @@ export default function Valorant({ params, searchParams }) {
   const [id, setId] = useState('');
   const [tag, setTag] = useState('');
   const [player, setPlayer] = useState('');
-  const [msg, setMsg] = useState("(player) está (rank) com (pontos) pontos");
+  const [msg, setMsg] = useState(`"(player) está (rank) com (pontos) pontos"`);
 
   useEffect(() => {
     setOrigin(window.location.origin);
