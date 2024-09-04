@@ -8,6 +8,7 @@
   --translate: translateX(-2px);
   --slider-background-color: #ccc;
   --hover-color: hsla(171, 60%, 52%, 0.1);
+  --popup-color: white;
 }
 
 .dark {
@@ -20,6 +21,7 @@
   --translate: translateX(24px);
   --slider-background-color: #1b1c1d;
   --hover-color: hsla(0, 0%, 50%, 0.1);
+  --popup-color: black;
 }
 
 :root {
@@ -242,11 +244,13 @@ a:visited {
 }
 
 .response-code {
-  /* visibility: hidden; */
+  visibility: hidden;
   border: solid;
   grid-row-start: 8;
   grid-column-start: 1;
   grid-column-end: 4;
+  cursor: pointer;
+  padding: 10px;
 }
 
 
