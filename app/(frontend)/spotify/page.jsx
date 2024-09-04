@@ -61,8 +61,10 @@ export default function Spotify({ _, searchParams }) {
     navigator.clipboard.writeText(command);
 
     // Show the dialog next to the clicked element
-    dialog.style.top = (event.clientY - 70) + "px";
-    dialog.style.marginLeft = (event.clientX + 50) + "px";
+    dialog.style.top = (event.pageY - 70) + "px";
+    dialog.style.marginLeft = (event.pageX) + "px";
+    // dialog.style.top = (event.clientY - 70) + "px";
+    // dialog.style.marginLeft = (event.clientX + 50) + "px";
     dialog.show();
 
     // Close the dialog after 2 seconds
@@ -98,7 +100,7 @@ export default function Spotify({ _, searchParams }) {
             <code style={{ border: "1px solid black", padding: "10px" }}>Rick Astley - Never Gonna Give You Up</code>
 
             {/* <!-- pop-up dialog box, containing a form --> */}
-            <dialog id="copy-success" style={{ visibility: "visible", marginLeft: "10px" }}>Code copied to clipboard</dialog>
+            <dialog id="copy-success" style={{ visibility: "visible", marginLeft: "10px", backgroundColor: "var(--popup-color)" }}>Code copied to clipboard</dialog>
             <dialog id="dialog" className="dialog">
               <div id="dialog-title">
                 Are you sure you want to remove the integration?<br />
