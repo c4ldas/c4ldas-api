@@ -52,7 +52,7 @@ export default function Valorant({ params, searchParams }) {
     }, 250);
 
     const values = id ? `id=${id}` : `player=${player}&tag=${tag}`;
-    const responseCode = `$(sender) ► $\{customapi.${origin}/api/valorant/rank?channel=$(channel)&type=text&${values}&msg=${msg}\}`;
+    const responseCode = `.me $(sender) ► $\{customapi.${origin}/api/valorant/rank?channel=$(channel)&type=text&${values}&msg=${msg}\}`;
     document.querySelector('#response-code').innerText = responseCode;
   }
 
