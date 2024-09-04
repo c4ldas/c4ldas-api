@@ -20,6 +20,11 @@ export default function LeagueOfLegends({ params, searchParams }) {
         <h3>How to use this endpoint on Streamelements</h3>
         <code>$(touser) ► $(customapi.{origin}/api/lol/rank?channel=$(channel)&region=<span className="red">REGION</span>&player=<span className="red">PLAYERNAME</span>&tag=<span className="red">TAG</span>&type=text)</code>
         <br />
+        <h3>Example:</h3>
+        <div><strong>Username: </strong>c4ldas#na10</div>
+        <br />
+        <div><strong>Player: </strong>c4ldas</div>
+        <div><strong>Tag: </strong>na10</div>
         <h3>Regions available:</h3>
         <table style={{ textAlign: "center", padding: "8px", border: "1px solid #ddd" }}>
           <tbody>
@@ -103,6 +108,3 @@ export default function LeagueOfLegends({ params, searchParams }) {
     </div >
   );
 }
-
-
-
