@@ -11,7 +11,7 @@ export default function Valorant({ params, searchParams }) {
   const [id, setId] = useState('');
   const [tag, setTag] = useState('');
   const [player, setPlayer] = useState('');
-  const [msg, setMsg] = useState(`"(player) está (rank) com (pontos) pontos"`);
+  const [msg, setMsg] = useState("(player) está (rank) com (pontos) pontos");
 
   useEffect(() => {
     setOrigin(window.location.origin);
@@ -45,15 +45,36 @@ export default function Valorant({ params, searchParams }) {
 
   async function generateCode(e) {
     e.preventDefault();
+    document.querySelector('#response-code').style.visibility = 'hidden';
+    setTimeout(() => {
+      document.querySelector('#response-code').style.visibility = 'visible';
 
-    // const player = document.querySelector("#playername").value;
-    // const tag = document.querySelector("#tagline").value;
-    // const msg = document.querySelector("#message").value;
+    }, 250);
 
     const values = id ? `id=${id}` : `player=${player}&tag=${tag}`;
-    //const messageValue = msg ? `&msg=${msg}` : '';
-    const responseCode = `$(sender) ► $(customapi.${origin}/api/valorant/rank?channel=$(channel)&type=text&${values}&msg=${msg})`;
+    const responseCode = `$(sender) ► $\{customapi.${origin}/api/valorant/rank?channel=$(channel)&type=text&${values}&msg=${msg}\}`;
     document.querySelector('#response-code').innerText = responseCode;
+  }
+
+  function copyToClipboard(event) {
+    const copyText = document.querySelector("#response-code");
+    navigator.clipboard.writeText(copyText.innerText);
+
+    const dialog = document.getElementById("popup");
+
+    // Show the dialog next to the clicked element
+    console.log(event)
+    console.log("clientX:", event.clientX);
+    console.log("clientY:", event.clientY);
+    dialog.style.top = (event.pageY - 70) + "px";
+    dialog.style.marginLeft = (event.pageX) + "px";
+    dialog.show();
+    console.log(dialog)
+
+    // Close the dialog after 2 seconds
+    setTimeout(() => {
+      dialog.close();
+    }, 2000);
   }
 
 
@@ -94,8 +115,9 @@ export default function Valorant({ params, searchParams }) {
           <input type="submit" id="generate-code" className="generate-code" value="Generate chat code" />
           {isLoading && (<div id="loading" className="loading">Loading...</div>)}
           <div id="response" className="response"></div>
-          <div id="response-code" className="response-code" ></div>
+          <div id="response-code" className="response-code" onClick={copyToClipboard}></div>
         </form>
+        <dialog id="popup" style={{ backgroundColor: "var(--popup-color)" }}>Copied to clipboard</dialog>
       </main >
       <FooterComponent />
     </div >
