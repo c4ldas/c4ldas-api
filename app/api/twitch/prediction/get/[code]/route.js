@@ -8,11 +8,11 @@ export async function GET(request, { params }) {
     const code = params.code;
     const channel = obj.channel;
 
-    if (!channel) return NextResponse.json({ status: "failed", error: "Channel missing" }, { status: 400 });
+    if (!channel) return NextResponse.json({ status: "failed", error: "Channel missing" }, { status: 200 });
 
     const token = await twitchGetTokenDatabase(code, channel);
     const result = await getOpenPrediction(token.access_token, token.id);
-    if (!result) return NextResponse.json({ status: "failed", message: "No open prediction" }, { status: 400 });
+    if (!result) return NextResponse.json({ status: "failed", message: "No open prediction" }, { status: 200 });
 
     return NextResponse.json(result, { status: 200 });
 
