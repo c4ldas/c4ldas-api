@@ -11,7 +11,7 @@ export default function Valorant({ params, searchParams }) {
   const [id, setId] = useState('');
   const [tag, setTag] = useState('');
   const [player, setPlayer] = useState('');
-  const [msg, setMsg] = useState('(player) está (rank) com (pontos) pontos');
+  const [msg, setMsg] = useState(`"(player) está (rank) com (pontos) pontos"`);
 
   useEffect(() => {
     setOrigin(window.location.origin);
@@ -46,13 +46,13 @@ export default function Valorant({ params, searchParams }) {
   async function generateCode(e) {
     e.preventDefault();
 
-    const player = document.querySelector("#playername").value;
-    const tag = document.querySelector("#tagline").value;
-    const msg = document.querySelector("#message").value;
+    // const player = document.querySelector("#playername").value;
+    // const tag = document.querySelector("#tagline").value;
+    // const msg = document.querySelector("#message").value;
 
     const values = id ? `id=${id}` : `player=${player}&tag=${tag}`;
-    const messageValue = msg ? `&msg=${msg}` : '';
-    const responseCode = `$(sender) ► $(customapi.${origin}/api/valorant/rank?channel=$(channel)&type=text&${values}${messageValue})`;
+    //const messageValue = msg ? `&msg=${msg}` : '';
+    const responseCode = `$(sender) ► $(customapi.${origin}/api/valorant/rank?channel=$(channel)&type=text&${values}&msg=${msg})`;
     document.querySelector('#response-code').innerText = responseCode;
   }
 
@@ -73,7 +73,7 @@ export default function Valorant({ params, searchParams }) {
 
         <h3>Parameters:</h3>
 
-        <div>MESSAGE is a custom message to be sent on chat. It is optional and can be omitted. If ommited, the default message is &quot;<span className="blue">(player) está (rank) com (pontos) pontos.</span>&quot;</div>
+        <div>MESSAGE is a custom message to be sent on chat and it is optional. If ommited, the default message is &quot;<span className="blue">(player) está (rank) com (pontos) pontos.</span>&quot;</div>
         <div>MESSAGE text can contain the following variables: (player), (pontos), (rank).</div>
         <div>If the rank is Immortal/Radiant, you can also use (posicao) and (vitorias) to display your position and number of victories, respectively.</div>
         <div>If no message is added, the following default message will be displayed (using the example user):</div>
