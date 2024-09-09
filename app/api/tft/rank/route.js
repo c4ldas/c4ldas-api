@@ -32,26 +32,35 @@ export async function GET(request) {
 
     const response = { gameName, tagLine, tier, rank, leaguePoints, wins, losses };
 
-    if (type == "text") {
-      const message = msg
-        .replace(/\(player\)/g, response.gameName)
-        .replace(/\(rank\)/g, response.tier + " " + response.rank)
-        .replace(/\(points\)/g, response.leaguePoints)
-        .replace(/\(wins\)/g, response.wins)
-        .replace(/\(losses\)/g, response.losses);
-
-      return NextResponse.json(message, { status: 200 });
-
-      // return NextResponse.json(`${response.gameName}: ${response.tier} ${response.rank} - ${response.leaguePoints} points`, { status: 200 })
-    }
-
-    return NextResponse.json(response, { status: 200 });
+    return sendResponse(response, type, msg);
 
   } catch (error) {
+    console.log(error);
+    return sendResponse("", type, "", error);
+  }
+}
+
+async function sendResponse(response, type, msg, error) {
+
+  if (error) {
     if (type == "text") {
       const { message, player, tag, } = error.error;
-      return NextResponse.json(`Error: ${message}. Player: ${player}, tag: ${tag}`);
+      return new Response(`Error: ${message}. Player: ${player}, tag: ${tag}`);
     }
+
     return NextResponse.json(error, { status: error.code });
   }
+
+  if (type == "text") {
+    const message = msg
+      .replace(/\(player\)/g, response.gameName)
+      .replace(/\(rank\)/g, response.tier + " " + response.rank)
+      .replace(/\(points\)/g, response.leaguePoints)
+      .replace(/\(wins\)/g, response.wins)
+      .replace(/\(losses\)/g, response.losses);
+
+    return new Response(message, { status: 200 });
+  }
+
+  return NextResponse.json(response, { status: 200 });
 }
