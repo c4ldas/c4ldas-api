@@ -5,8 +5,7 @@ export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
 
-  const { region, player, tag } = obj;
-  const type = obj.type || "text";
+  const { region, player, tag, type = "text", msg = "(player): (rank) - (points) points" } = obj;
   const game = "lol";
   const queueType = "RANKED_SOLO_5x5";
 
@@ -33,19 +32,35 @@ export async function GET(request) {
 
     const response = { gameName, tagLine, tier, rank, leaguePoints, wins, losses };
 
-    if (type == "text") {
-      return NextResponse.json(`${response.gameName}: ${response.tier} ${response.rank} - ${response.leaguePoints} points`, { status: 200 })
-    }
-
-    return NextResponse.json(response, { status: 200 });
+    return sendResponse(response, type, msg);
 
   } catch (error) {
-    if (type == "text") {
-      console.log(error)
-      const { message, player, tag, } = error.error;
-      return NextResponse.json(`Error: ${message}. Player: ${player}, tag: ${tag}`);
-    }
     console.log(error);
-    return NextResponse.json(error, { status: error.code });
+    return sendResponse("", type, "", error);
   }
+}
+
+async function sendResponse(response, type, msg, error) {
+
+  if (error) {
+    if (type == "text") {
+      const { message, player, tag, } = error.error;
+      return new Response(`Error: ${message}. Player: ${player}, tag: ${tag}`, { status: 200 });
+    }
+
+    return NextResponse.json(error, { status: 200 });
+  }
+
+  if (type == "text") {
+    const message = msg
+      .replace(/\(player\)/g, response.gameName)
+      .replace(/\(rank\)/g, response.tier + " " + response.rank)
+      .replace(/\(points\)/g, response.leaguePoints)
+      .replace(/\(wins\)/g, response.wins)
+      .replace(/\(losses\)/g, response.losses);
+
+    return new Response(message, { status: 200 });
+  }
+
+  return NextResponse.json(response, { status: 200 });
 }
