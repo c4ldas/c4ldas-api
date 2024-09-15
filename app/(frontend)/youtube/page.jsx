@@ -55,7 +55,7 @@ export default function Youtube({ params, searchParams }) {
         <h1>Youtube - Find your Channel ID</h1>
 
         <form id="form" onSubmit={handleSubmit} className="form-inline" style={{ paddingTop: "10px" }}>
-          <input style={{ marginRight: "10px" }} type="text" id="handle" className="handle" placeholder="Channel handle with @" onChange={(e) => { setHandle(e.target.value) }} required={true} />
+          <input style={{ marginRight: "10px" }} type="text" id="handle" className="youtube-handle" placeholder="Channel handle with @" onChange={(e) => { setHandle(e.target.value) }} required={true} />
           <input type="submit" id="formatted" className="formatted" value="Get Channel Info" />
           {isLoading && (<div id="loading" className="loading">Loading...</div>)}
           <div id="response" className="response" style={{ visibility: "hidden" }}>

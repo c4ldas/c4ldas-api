@@ -140,11 +140,16 @@ a:visited {
   grid-gap: 10px 10px;
 }
 
+.form-inline {
+  display: inline-block;
+}
+
 .playername,
 .tagline,
 .puuid,
 .regionName,
-.message {
+.message,
+.youtube-handle {
   font-size: 1.2rem;
   padding: 10px;
   height: 3em;
