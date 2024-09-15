@@ -140,53 +140,52 @@ a:visited {
   grid-gap: 10px 10px;
 }
 
-
-.playername {
-  font-size: 1.2rem;
-  padding: 10px;
-  height: 3em;
-  border: none;
-  border-radius: 3px;
-  grid-row-start: 1;
-  grid-column-start: 1;
-  grid-column-end: 3;
-  box-shadow: rgba(55, 47, 47, 0.48) 0px 2px 10px 0px, rgba(55, 47, 47, 0.8) -6px -2px 10px 0px;
-}
-
-.tagline {
-  font-size: 1.2rem;
-  padding: 10px;
-  height: 3em;
-  border: none;
-  border-radius: 3px;
-  grid-row-start: 1;
-  grid-column-start: 3;
-  grid-column-end: 4;
-  box-shadow: rgba(55, 47, 47, 0.48) 0px 2px 10px 0px, rgba(55, 47, 47, 0.8) -6px -2px 10px 0px;
-}
-
-.puuid {
-  font-size: 1.2rem;
-  padding: 10px;
-  height: 3em;
-  border: none;
-  border-radius: 3px;
-  grid-row-start: 2;
-  grid-column-start: 1;
-  grid-column-end: 4;
-  box-shadow: rgba(55, 47, 47, 0.48) 0px 2px 10px 0px, rgba(55, 47, 47, 0.8) -6px -2px 10px 0px;
-}
-
+.playername,
+.tagline,
+.puuid,
+.regionName,
 .message {
   font-size: 1.2rem;
   padding: 10px;
   height: 3em;
   border: none;
   border-radius: 3px;
+}
+
+.playername {
+  grid-row-start: 1;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  box-shadow: rgba(55, 47, 47, 0.48);
+  /* box-shadow: rgba(55, 47, 47, 0.48) 0px 2px 10px 0px, rgba(55, 47, 47, 0.8) -6px -2px 10px 0px; */
+}
+
+.tagline {
+  grid-row-start: 1;
+  grid-column-start: 3;
+  grid-column-end: 4;
+  box-shadow: rgba(55, 47, 47, 0.48);
+}
+
+.regionName {
+  grid-row-start: 2;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  box-shadow: rgba(55, 47, 47, 0.48);
+}
+
+.puuid {
+  grid-row-start: 2;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  box-shadow: rgba(55, 47, 47, 0.48);
+}
+
+.message {
   grid-row-start: 3;
   grid-column-start: 1;
   grid-column-end: 4;
-  box-shadow: rgba(55, 47, 47, 0.48) 0px 2px 10px 0px, rgba(55, 47, 47, 0.8) -6px -2px 10px 0px;
+
 }
 
 
