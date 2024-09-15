@@ -47,20 +47,20 @@ async function sendResponse(response, type, msg, error) {
       const { message, player, tag, } = error.error;
       return new Response(`Error: ${message}. Player: ${player}, tag: ${tag}`, { status: 200 });
     }
-
     return NextResponse.json(error, { status: 200 });
   }
 
-  if (type == "text") {
-    const message = msg
-      .replace(/\(player\)/g, response.gameName)
-      .replace(/\(rank\)/g, response.tier + " " + response.rank)
-      .replace(/\(points\)/g, response.leaguePoints)
-      .replace(/\(wins\)/g, response.wins)
-      .replace(/\(losses\)/g, response.losses);
+  const message = msg
+    .replace(/\(player\)/g, response.gameName)
+    .replace(/\(rank\)/g, response.tier + " " + response.rank)
+    .replace(/\(points\)/g, response.leaguePoints)
+    .replace(/\(wins\)/g, response.wins)
+    .replace(/\(losses\)/g, response.losses);
 
+  if (type == "text") {
     return new Response(message, { status: 200 });
   }
 
+  response.message = message;
   return NextResponse.json(response, { status: 200 });
 }
