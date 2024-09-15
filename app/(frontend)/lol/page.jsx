@@ -32,8 +32,6 @@ export default function LeagueOfLegends({ params, searchParams }) {
     setOrigin(window.location.origin);
   }, []);
 
-
-
   const [isLoading, setIsLoading] = useState(false);
   const [region, setRegion] = useState('br1');
   const [tag, setTag] = useState('');
@@ -99,23 +97,6 @@ export default function LeagueOfLegends({ params, searchParams }) {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   return (
     <div className="container">
       <Header />
@@ -145,7 +126,6 @@ export default function LeagueOfLegends({ params, searchParams }) {
         <form id="form" onSubmit={handleSubmit} className="form" style={{ paddingTop: "10px" }}>
           <input type="text" id="playername" className="playername" placeholder="Playername" onChange={(e) => { setPlayer(e.target.value) }} required={true} />
           <input type="text" id="tagline" className="tagline" placeholder="Tag" onChange={(e) => { setTag(e.target.value) }} required={true} />
-
           <select id="region" className="regionName" onChange={(e) => { setRegion(e.target.value), console.log("onChange:", e.target.value) }} required={true}>
             {regions.map((region, index) => (<option key={index} value={region.code}>{region.region_name}</option>))}
           </select>
@@ -159,8 +139,6 @@ export default function LeagueOfLegends({ params, searchParams }) {
           <div id="response-code" className="response-code" onClick={copyToClipboard}></div>
         </form>
         <dialog id="popup" style={{ backgroundColor: "var(--popup-color)" }}>Copied to clipboard</dialog>
-
-
       </main>
       <FooterComponent />
     </div >
