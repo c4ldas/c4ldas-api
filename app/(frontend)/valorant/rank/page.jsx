@@ -46,10 +46,7 @@ export default function Valorant({ params, searchParams }) {
   async function generateCode(e) {
     e.preventDefault();
     document.querySelector('#response-code').style.visibility = 'hidden';
-    setTimeout(() => {
-      document.querySelector('#response-code').style.visibility = 'visible';
-
-    }, 250);
+    setTimeout(() => document.querySelector('#response-code').style.visibility = 'visible', 250);
 
     const values = id ? `id=${id}` : `player=${player}&tag=${tag}`;
     const responseCode = `.me $(sender) ► $\{customapi.${origin}/api/valorant/rank?channel=$(channel)&type=text&${values}&msg="${msg}"\}`;
@@ -63,18 +60,12 @@ export default function Valorant({ params, searchParams }) {
     const dialog = document.getElementById("popup");
 
     // Show the dialog next to the clicked element
-    console.log(event)
-    console.log("clientX:", event.clientX);
-    console.log("clientY:", event.clientY);
     dialog.style.top = (event.pageY - 70) + "px";
     dialog.style.marginLeft = (event.pageX) + "px";
     dialog.show();
-    console.log(dialog)
 
     // Close the dialog after 2 seconds
-    setTimeout(() => {
-      dialog.close();
-    }, 2000);
+    setTimeout(() => dialog.close(), 2000);
   }
 
 
