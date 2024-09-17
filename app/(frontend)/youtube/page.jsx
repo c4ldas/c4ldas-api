@@ -3,6 +3,7 @@
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Youtube({ params, searchParams }) {
   const [handle, setHandle] = useState('');
@@ -24,6 +25,8 @@ export default function Youtube({ params, searchParams }) {
     const response = await request.json();
     document.querySelector('#youtube-url').href = `https://youtube.com/channel/${response.channelId}`;
     document.querySelector('#youtube-thumbnail').src = response.thumbnails.medium.url;
+    document.querySelector('#youtube-thumbnail').width = response.thumbnails.medium.width;
+    document.querySelector('#youtube-thumbnail').height = response.thumbnails.medium.height;
     document.querySelector('#youtube-display-name').innerText = response.title;
     document.querySelector('#youtube-id').innerText = response.channelId;
     document.querySelector('#youtube-created-at').innerText = response.publishedAt?.split("T")[0] || "N/A";
@@ -60,7 +63,7 @@ export default function Youtube({ params, searchParams }) {
           {isLoading && (<div id="loading" className="loading">Loading...</div>)}
           <div id="response" className="response" style={{ visibility: "hidden" }}>
             <h2><strong>Channel Information:</strong></h2>
-            <a href="#" id="youtube-url" target="_blank"><img id="youtube-thumbnail" style={{ borderRadius: "50%" }} src=""></img></a>
+            <a href="#" id="youtube-url" target="_blank"><Image id="youtube-thumbnail" style={{ borderRadius: "50%" }} alt="youtube-thumbnail" src="/images/youtube.svg" width={1} height={1}></Image></a>
             <div><strong>Display name: </strong><span id="youtube-display-name"></span></div>
             <div><strong>ID (click to copy): </strong><span id="youtube-id" onClick={copyToClipboard} style={{ cursor: "pointer" }}></span></div>
             <div><strong>Created at: </strong><span id="youtube-created-at"></span></div>
