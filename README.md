@@ -34,7 +34,7 @@ At the moment the structure of the application is:
 |  |  |    |-- puuid/          # done
 |  |  |    |-- lastgame/       # in progress
 |  |  |    |-- rank/           # done
-|  |  |    |-- schedule/       # pending
+|  |  |    |-- schedule/       # done
 |  |  |
 |  |
 |  |--api/
