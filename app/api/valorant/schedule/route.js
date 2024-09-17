@@ -37,7 +37,45 @@ const validLeagues = {
   champions: 'Champions',
   ascension_americas: 'Ascension Americas',
   game_changers_championship: 'Game Changers Championship',
-  vct_emea: 'VCT EMEA'
+  vct_emea: 'VCT EMEA',
+  game_changers_emea: 'Game Changers EMEA',
+  challengers_na: "Challengers NA",
+  game_changers_na: "Game Changers NA",
+  vct_pacific: "VCT Pacific",
+  challengers_jpn: "Challengers Japan",
+  challengers_kr: "Challengers Korea",
+  challengers_latam: "Challengers LATAM",
+  challengers_latam_n: "Challengers LATAM North",
+  challengers_latam_s: "Challengers LATAM South",
+  challengers_apac: "Challengers APAC",
+  challengers_sea_id: "Challengers SEA Indonesia",
+  challengers_sea_ph: "Challengers SEA Philippines",
+  challengers_sea_sg_and_my: "Challengers SEA Singapore & Malaysia",
+  challengers_sea_th: "Challengers SEA Thailand",
+  challengers_sea_hk_and_tw: "Challengers SEA Hong Kong & Taiwan",
+  challengers_sea_vn: "Challengers SEA Vietnam",
+  valorant_oceania_tour: "Valorant Oceania Tour",
+  challengers_south_asia: "Challengers South Asia",
+  game_changers_sea: "Game Changers SEA",
+  game_changers_east_asia: "Game Changers East Asia",
+  game_changers_jpn: "Game Changers Japan",
+  game_changers_kr: "Game Changers Korea",
+  game_changers_latam: "Game Changers LATAM",
+  masters: "Masters",
+  last_chance_qualifier_apac: "Last Chance Qualifier APAC",
+  last_chance_qualifier_east_asia: "Last Chance Qualifier East Asia",
+  last_chance_qualifier_emea: "Last Chance Qualifier EMEA",
+  last_chance_qualifier_na: "Last Chance Qualifier NA",
+  vrl_spain: "VRL Spain",
+  vrl_northern_europe: "VRL Northern Europe",
+  vrl_dach: "VRL DACH",
+  vrl_france: "VRL France",
+  vrl_east: "VRL East",
+  vrl_turkey: "VRL Turkey",
+  vrl_cis: "VRL CIS",
+  mena_resilence: "MENA Resilience",
+  challengers_italy: "Challengers Italy",
+  challengers_portugal: "Challengers Portugal"
 }
 
 const timeZone = Temporal.TimeZone.from('America/Sao_Paulo'); // Using Brazil time zone
@@ -45,13 +83,12 @@ const timeZone = Temporal.TimeZone.from('America/Sao_Paulo'); // Using Brazil ti
 export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
-  const { channel, league, type = "text" } = obj;
+  const { channel, league, type = "text", msg = "No games for (league) today" } = obj;
   const todayDate = Temporal.Now.plainDateISO(timeZone).toString(); // Date for Brazil time zone
-  const matches = [];
+  // const matches = [];
 
   try {
     const validParams = await checkParams(league, channel);
-    // color.log("green", `Valid Params: ${JSON.stringify(validParams)}`);
     if (!validParams.status) return sendResponse({ error: validParams.error }, 400, type, channel);
 
     const request = await fetch(url(league), {
@@ -71,22 +108,31 @@ export async function GET(request) {
       }
     }).filter(Boolean) // Remove undefined values
 
-    return sendResponse(todayGames, 200, type, channel)
+    // TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST 
+    // const gameDateTime = timeZone.getPlainDateTimeFor(response["data"][0].date).toString();
+    // const gameDate = timeZone.getPlainDateTimeFor(response["data"][0].date).toString().split('T')[0];
+    // const gameTime = Temporal.PlainTime.from(gameDateTime).hour;
+    // const result = [{ teams: response["data"][0].match.teams, date_original: response["data"][0].date, date_brazil: gameDate, time_brazil: gameTime }]
+    // return sendResponse(result, 200, type, channel)
+    // TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST 
+
+    return sendResponse(todayGames, 200, type, channel, league, msg)
+
   } catch (error) {
-    color.log("red", error)
-    return NextResponse.json({ error: { message: "An error has occurred. Please try again later.", code: error.code } }, { status: 500 });
+    color.log("red: ", error)
+    return NextResponse.json({ error: { message: "An error has occurred. Please try again later.: ", code: error.code } }, { status: 500 });
   }
 }
 
 async function checkParams(league, channel) {
-  // if ((!player || !tag) && !id) return { status: false, error: "Missing player / tag or id" };
   if (!channel) return { status: false, error: "Missing channel" };
   if (!(league in validLeagues)) return { status: false, error: `Invalid league name. Valid leagues: ${Object.keys(validLeagues).join(", ")}` };
   return { status: true, error: null };
 }
 
-async function sendResponse(response, status, type, channel) {
+async function sendResponse(response, status, type, channel, league, msg) {
   const matches = [];
+
   if (type == "text" && response.length > 0) {
     response.forEach((match) => {
       const nameTeam1 = match.teams[0].name;
@@ -95,10 +141,20 @@ async function sendResponse(response, status, type, channel) {
       const winsTeam2 = match.teams[1].game_wins;
       matches.push(`${match.time_brazil}h - ${nameTeam1} ${winsTeam1}x${winsTeam2} ${nameTeam2}`)
     })
-    return new Response(matches.toString().replaceAll(',', ' // '), { status: status });
+    // Format the response like below:
+    /* Team1 0x2 Team2 // Team3 2x0 Team4 // Team5 1x1 Team6 */
+    const finalResponse = matches.toString().replaceAll(',', ' // ');
+    return new Response(finalResponse, { status: 200 });
+
   } else if (type == "text" && response.length == 0) {
-    return new Response("No games for  today", { status: status });
+
+    // Created a new custom message and send it when there are no games
+    const message = msg.replaceAll(/\(league\)/g, validLeagues[league])
+    return new Response(message, { status: 200 });
+
   }
 
+  // The below doesn't work because response is an array, not an object
+  // response.message = matches.length > 0 ? matches.toString().replaceAll(',', ' // ') : "No games for today";
   return NextResponse.json(response, { status: status });
 }
