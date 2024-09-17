@@ -187,7 +187,7 @@ export default function Valorant({ params, searchParams }) {
         </div>
 
         <h2>Test the command</h2>
-        <div>Select the league you want to use and click on "Show response" to check the response:</div>
+        <div>Select the league you want to use and click on <span className="blue">Show response</span> button to check the response:</div>
         <form id="form" onSubmit={handleSubmit} className="form" style={{ paddingTop: "10px" }}>
 
           <select id="region" className="regionName" onChange={handleLeagueChange} value={leagueName}>
