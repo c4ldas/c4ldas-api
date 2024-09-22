@@ -144,8 +144,8 @@ export default function Valorant({ params, searchParams }) {
     <div className="container">
       <Header />
       <main className="main block">
-        <h1>Valorant Rank</h1>
-        <div>This endpoint shows the Valorant games of the current day based on the selected league. Games and scores are updated automatically, but can take some minutes to reflect.</div>
+        <h1>Valorant Schedule</h1>
+        <div>This endpoint shows the official Valorant games of the current day based on the selected league. Games and scores are updated automatically, but can take some minutes to reflect.</div>
         <h3>How to use this endpoint on Streamelements</h3>
         <div style={{ paddingTop: "10px" }}><code onClick={copyToClipboard} id="code" className="code">$(touser) ► $(customapi.{origin}/api/valorant/schedule?channel=$(channel)&league=<span className="red">LEAGUE_NAME</span>)</code></div>
 
