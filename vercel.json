@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/(frontend)/widgets",
+      "destination": "/widgets",
       "has": [
         {
           "type": "host",
