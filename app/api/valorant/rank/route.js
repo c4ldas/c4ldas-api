@@ -102,9 +102,12 @@ export async function GET(request) {
 async function checkParams(player, tag, id, channel, region) {
   if ((!player || !tag) && !id) return { status: false, error: "Missing player / tag or id" };
   if (!channel) return { status: false, error: "Missing channel" };
-  if (!validRegions.includes(region)) return { status: false, error: `Invalid region. Valid regions: ${validRegions.join(", ")}` };
+
+  const validRegionCodes = validRegions.map((item) => item.code);
+  if (!validRegionCodes.includes(region)) return { status: false, error: `Invalid or missing region. Valid regions: ${validRegionCodes.join(", ")}` };
   return { status: true, error: null };
 }
+
 
 async function sendResponse(data, type, msg) {
 
