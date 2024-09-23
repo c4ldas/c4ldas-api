@@ -7,8 +7,8 @@ const apiToken = env == "dev" ?
   decrypt(process.env.VALORANT_TOKEN) :
   process.env.VALORANT_TOKEN;
 
-const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/lifetime/matches/${region}/${player}/${tag}?filter=competitive&size=1`
-const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/lifetime/matches/${region}/${id}?filter=competitive&size=1`
+const urlByPlayer = (region, player, tag) => `https://api.henrikdev.xyz/valorant/v1/stored-matches/${region}/${player}/${tag}?mode=competitive&size=1`
+const urlById = (region, id) => `https://api.henrikdev.xyz/valorant/v1/by-puuid/stored-matches/${region}/${id}?mode=competitive&size=1`
 
 export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
@@ -54,10 +54,13 @@ export async function GET(request) {
       rounds_won, rounds_lost, outcome, outcome_pt, has_won, map
     };
 
+    const message = `Map: ${map} / Outcome: ${outcome} / Score: ${rounds_won}x${rounds_lost} / KDA: ${kills}/${deaths}/${assists}`;
+
     if (obj.type == "text") {
-      const results = `Map: ${map} / Outcome: ${outcome} / Score: ${rounds_won}x${rounds_lost} / KDA: ${kills}/${deaths}/${assists}`;
-      return new Response(results, { status: 200 });
+      /* const results = `Map: ${map} / Outcome: ${outcome} / Score: ${rounds_won}x${rounds_lost} / KDA: ${kills}/${deaths}/${assists}`; */
+      return new Response(message, { status: 200 });
     }
+    playerInfo.message = message;
     return NextResponse.json(playerInfo, { status: 200 });
 
   } catch (error) {
