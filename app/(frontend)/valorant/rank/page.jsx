@@ -70,7 +70,6 @@ export default function Valorant({ params, searchParams }) {
     setTimeout(() => dialog.close(), 2000);
   }
 
-
   return (
     <div className="container">
       <Header />
