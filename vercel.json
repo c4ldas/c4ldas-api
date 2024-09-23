@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/app/(frontend)/widgets",
+      "has": [
+        {
+          "type": "host",
+          "value": "newsite.c4ldas.com.br"
+        }
+      ]
+    }
+  ]
+}
