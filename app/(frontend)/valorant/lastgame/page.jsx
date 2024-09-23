@@ -117,7 +117,6 @@ export default function Valorant({ searchParams }) {
     document.querySelector('#response-code').innerText = responseCode;
   }
 
-
   function copyToClipboard(event) {
     const copyText = document.querySelector("#response-code");
     navigator.clipboard.writeText(copyText.innerText);
@@ -132,7 +131,6 @@ export default function Valorant({ searchParams }) {
     // Close the dialog after 2 seconds
     setTimeout(() => dialog.close(), 2000);
   }
-
 
   return (
     <div className="container">
