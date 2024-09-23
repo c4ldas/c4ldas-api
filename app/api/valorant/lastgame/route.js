@@ -76,3 +76,4 @@ function checkParams(region, player, tag, id) {
 
   return { status: true, error: null };
 }
+
