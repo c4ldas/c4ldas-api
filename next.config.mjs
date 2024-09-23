@@ -36,23 +36,6 @@ const nextConfig = {
       },
     ],
   },
-
-  rewrites() {
-    return {
-      beforeFiles: [
-        {
-          source: '/:path*',
-          has: [
-            {
-              type: 'host',
-              value: 'widgets.c4ldas.com.br'
-            }
-          ],
-          destination: '/widgets/:path*'
-        },
-      ]
-    }
-  }
 };
 
 export default nextConfig;
