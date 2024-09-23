@@ -172,14 +172,14 @@ a:visited {
   box-shadow: rgba(55, 47, 47, 0.48);
 }
 
-.regionName {
+.puuid {
   grid-row-start: 2;
   grid-column-start: 1;
   grid-column-end: 4;
   box-shadow: rgba(55, 47, 47, 0.48);
 }
 
-.puuid {
+.regionName {
   grid-row-start: 3;
   grid-column-start: 1;
   grid-column-end: 4;

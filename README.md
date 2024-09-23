@@ -32,7 +32,7 @@ At the moment the structure of the application is:
 |  |  |
 |  |  |-- valorant/            # done
 |  |  |    |-- puuid/          # done
-|  |  |    |-- lastgame/       # in progress
+|  |  |    |-- lastgame/       # done
 |  |  |    |-- rank/           # done
 |  |  |    |-- schedule/       # done
 |  |  |

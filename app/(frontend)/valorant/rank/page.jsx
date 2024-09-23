@@ -3,6 +3,7 @@
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
 import { useState, useEffect } from "react";
+import { validRegions } from "@/app/lib/valorant_rank";
 
 export default function Valorant({ params, searchParams }) {
 
@@ -11,7 +12,7 @@ export default function Valorant({ params, searchParams }) {
   const [id, setId] = useState('');
   const [tag, setTag] = useState('');
   const [player, setPlayer] = useState('');
-  const [region, setRegion] = useState('br');
+  const [regionName, setRegionName] = useState('br');
   const [msg, setMsg] = useState(`(player) está (rank) com (pontos) pontos`);
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function Valorant({ params, searchParams }) {
         channel: "$(channel)",
         type: 'json',
         msg: msg,
-        ...(id ? { id: id } : { player: player, tag: tag, region: region }) // If id value exists, only send id, otherwise, send player and tag values
+        ...(id ? { id: id } : { player: player, tag: tag, region: regionName }) // If id value exists, only send id, otherwise, send player and tag values
       }), {
       method: "GET",
     })
@@ -49,7 +50,7 @@ export default function Valorant({ params, searchParams }) {
     document.querySelector('#response-code').style.visibility = 'hidden';
     setTimeout(() => document.querySelector('#response-code').style.visibility = 'visible', 250);
 
-    const values = id ? `id=${id}` : `player=${player}&tag=${tag}&region=${region}`;
+    const values = id ? `id=${id}` : `player=${player}&tag=${tag}&region=${regionName}`;
     const responseCode = `.me $(sender) ► $\{customapi.${origin}/api/valorant/rank?channel=$(channel)&type=text&${values}&msg="${msg}"\}`;
     document.querySelector('#response-code').innerText = responseCode;
   }
@@ -76,7 +77,7 @@ export default function Valorant({ params, searchParams }) {
       <main className="main block">
         <h1>Valorant Rank</h1>
         <h3>How to use this endpoint on Streamelements</h3>
-        <div style={{ paddingTop: "10px" }}><code className="code">$(touser) ► $(customapi.{origin}/api/valorant/rank?channel=$(channel)&type=text&player=<span className="red">PLAYERNAME</span>&tag=<span className="red">TAG</span>&msg=&quot;<span className="red">MESSAGE</span>&quot;)</code></div>
+        <div style={{ paddingTop: "10px" }}><code className="code">$(touser) ► $(customapi.{origin}/api/valorant/rank?channel=$(channel)&type=text&region=<span className="red">REGION</span>&player=<span className="red">PLAYERNAME</span>&tag=<span className="red">TAG</span>&msg=&quot;<span className="red">MESSAGE</span>&quot;)</code></div>
 
         <div style={{ paddingTop: "10px" }}><code className="code">$(touser) ► $(customapi.{origin}/api/valorant/rank?channel=$(channel)&type=text&id=<span className="red">ID</span>&msg=&quot;<span className="red">MESSAGE</span>&quot;)</code></div>
 
@@ -99,8 +100,13 @@ export default function Valorant({ params, searchParams }) {
         <form id="form" onSubmit={handleSubmit} className="form" style={{ paddingTop: "10px" }}>
           <input type="text" id="playername" className="playername" placeholder="Playername" onChange={(e) => { setPlayer(e.target.value) }} disabled={id} required={!id} />
           <input type="text" id="tagline" className="tagline" placeholder="Tag" onChange={(e) => { setTag(e.target.value) }} disabled={id} required={!id} />
-          <input type="text" id="regionName" className="regionName" placeholder="Region" onChange={(e) => { setRegion(e.target.value) }} disabled={id} required={!id} />
           <input type="text" id="puuid" className="puuid" placeholder="ID" onChange={(e) => { setId(e.target.value) }} disabled={player || tag} required={!player && !tag} />
+          <select id="region" className="regionName" onChange={(e) => { setRegionName(e.target.value) }} value={regionName} disabled={id}>
+            {validRegions.map((region) => (
+              <option key={region.code} value={region.code}>{region.region_name}</option>
+            ))}
+          </select>
+
           <input type="text" id="message" className="message" placeholder="Message: (player) está (rank) com (pontos) pontos" onChange={(e) => { setMsg(e.target.value) }} />
           <h5 className="variables">Available variables: (player) (rank) (pontos)</h5>
           <h5 className="radiant">Immortal/Radiant variables: (player) (rank) (pontos) (posicao) (vitorias)</h5>

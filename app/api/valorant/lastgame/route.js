@@ -70,8 +70,9 @@ export async function GET(request) {
 }
 
 function checkParams(region, player, tag, id) {
+  const validRegionCodes = validRegions.map((item) => item.code);
   if ((!player || !tag) && !id) throw ({ error: { message: "Missing player / tag or id", player: player, tag: tag, id: id, region: region, status: 400, } });
-  if (!validRegions.includes(region)) throw ({ error: { message: "Invalid or missing region", player: player, tag: tag, region: region, regions_available: validRegions, status: 400, } });
+  if (!validRegionCodes.includes(region)) throw ({ error: { message: "Invalid or missing region", player: player, tag: tag, region: region, regions_available: validRegionCodes.join(", "), status: 400, } });
 
   return { status: true, error: null };
 }
