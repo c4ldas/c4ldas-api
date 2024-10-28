@@ -65,7 +65,7 @@ export default async function Home() {
         <Linkbox
           title="Streamelements Overlay Sharing Tool"
           description="Share custom overlays with colleagues using one-time-use codes for effortless installation in their Streamelements accounts."
-          link="https://seapi.c4ldas.com.br/overlays"
+          link="https://seapi.c4ldas.com.br"
         />
 
         <Linkbox
