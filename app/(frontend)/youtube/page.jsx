@@ -5,14 +5,28 @@ import FooterComponent from "@/app/components/Footer";
 import { useState } from "react";
 import Image from "next/image";
 
+const data = {
+  "channelId": "N/A",
+  "title": "N/A",
+  "publishedAt": "N/A",
+  "thumbnails": {
+    "medium": {
+      "url": "",
+      "width": "",
+      "height": ""
+    }
+  }
+}
+
 export default function Youtube({ params, searchParams }) {
   const [handle, setHandle] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [response, setResponse] = useState(data);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
-    document.querySelector('#response').style.visibility = "hidden";
+    document.querySelector('#response').display = "none";
 
     const request = await fetch("/api/youtube/channel?" +
       new URLSearchParams({
@@ -23,14 +37,14 @@ export default function Youtube({ params, searchParams }) {
     })
 
     const response = await request.json();
-    document.querySelector('#youtube-url').href = `https://youtube.com/channel/${response.channelId}`;
+    setResponse(response);
+
+    document.querySelector('#youtube-url').href = response.channelId ? `https://youtube.com/channel/${response.channelId}` : "";
     document.querySelector('#youtube-thumbnail').src = response.thumbnails.medium.url;
-    document.querySelector('#youtube-thumbnail').width = response.thumbnails.medium.width;
-    document.querySelector('#youtube-thumbnail').height = response.thumbnails.medium.height;
     document.querySelector('#youtube-display-name').innerText = response.title;
     document.querySelector('#youtube-id').innerText = response.channelId;
-    document.querySelector('#youtube-created-at').innerText = response.publishedAt?.split("T")[0] || "N/A";
-    document.querySelector('#response').style.visibility = "visible";
+    document.querySelector('#youtube-created-at').innerText = response.publishedAt?.split("T")[0];
+    document.querySelector('#response').style.display = "block";
     setIsLoading(false);
   }
 
@@ -61,9 +75,11 @@ export default function Youtube({ params, searchParams }) {
           <input style={{ marginRight: "10px" }} type="text" id="handle" className="youtube-handle" placeholder="Channel handle with @" onChange={(e) => { setHandle(e.target.value) }} required={true} />
           <input type="submit" id="formatted" className="formatted" value="Get Channel Info" />
           {isLoading && (<div id="loading" className="loading">Loading...</div>)}
-          <div id="response" className="response" style={{ visibility: "hidden" }}>
+          <div id="response" className="response" style={{ display: "none" }}>
             <h2><strong>Channel Information:</strong></h2>
-            <a href="#" id="youtube-url" target="_blank"><Image id="youtube-thumbnail" style={{ borderRadius: "50%" }} alt="youtube-thumbnail" src="/images/youtube.svg" width={1} height={1}></Image></a>
+            <a href="#" id="youtube-url" target="_blank">
+              <Image id="youtube-thumbnail" className="youtube-thumbnail" alt="youtube-thumbnail" src="/images/youtube.svg" width={240} height={240} quality={100}></Image>
+            </a>
             <div><strong>Display name: </strong><span id="youtube-display-name"></span></div>
             <div><strong>ID (click to copy): </strong><span id="youtube-id" onClick={copyToClipboard} style={{ cursor: "pointer" }}></span></div>
             <div><strong>Created at: </strong><span id="youtube-created-at"></span></div>
