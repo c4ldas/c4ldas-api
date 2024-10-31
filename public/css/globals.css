@@ -255,7 +255,9 @@ a:visited {
   padding: 10px;
 }
 
-
+.youtube-thumbnail {
+  border-radius: 50%;
+}
 
 
 
