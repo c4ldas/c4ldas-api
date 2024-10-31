@@ -8,6 +8,9 @@ export default function FooterComponent() {
         <Link href="/">
           <Image className="icons" src="/images/home.svg" width={20} height={20} alt="home" />
         </Link>
+        <Link href="https://twitter.com/c4ldas" target="_blank">
+          <Image className="icons" src="/images/twitter.svg" width={20} height={20} alt="twitch" />
+        </Link>
         <Link href="https://twitch.tv/c4ldas" target="_blank">
           <Image className="icons" src="/images/twitch.svg" width={20} height={20} alt="twitch" />
         </Link>
@@ -21,6 +24,6 @@ export default function FooterComponent() {
           <Image className="icons" src="/images/github.svg" width={20} height={20} alt="github" />
         </Link>
       </nav>
-    </footer>
+    </footer >
   )
 }
