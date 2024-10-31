@@ -27,7 +27,7 @@ At the moment the structure of the application is:
 |  |  |-- tft/                 # done
 |  |  |-- spotify/             # done
 |  |  |-- twitch/              # done
-|  |  |-- youtube/             # in progress
+|  |  |-- youtube/             # done
 |  |  |-- widgets/             # done
 |  |  |
 |  |  |-- valorant/            # done
@@ -55,7 +55,7 @@ At the moment the structure of the application is:
 |     |
 |     |-- youtube/
 |     |    |-- search/         # done
-|     |    |-- channel/        # in progress
+|     |    |-- channel/        # done
 |     |             
 |     |-- steam/
 |     |    |-- game/           # done
