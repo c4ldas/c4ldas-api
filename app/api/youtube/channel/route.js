@@ -22,13 +22,13 @@ export async function GET(request) {
 
     const results = await channelInfo.items[0] || {
       snippet: {
-        publishedAt: null,
-        channelId: null,
-        title: null,
-        description: null,
+        publishedAt: "N/A",
+        channelId: "N/A",
+        title: "N/A",
+        description: "N/A",
         thumbnails: {
           medium: {
-            url: "https://www.c4ldas.com.br/api/youtube/not-found.png",
+            url: "/images/not-found.png",
           },
         },
       },
@@ -62,7 +62,7 @@ async function getChannelByHandle(username) {
   } catch (error) {
     // console.log(error)
     // const errorMessage = JSON.parse(error.info);
-    console.log("Youtube getChannelByHandle:", error);
+    console.log("Youtube getChannelByHandle:", error.message);
     return 0;
   }
 }
