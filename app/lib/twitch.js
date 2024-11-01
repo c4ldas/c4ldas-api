@@ -36,6 +36,25 @@ async function getTokenCode(code) {
   }
 }
 
+async function getNewToken(refreshToken) {
+  try {
+    const request = await fetch("https://id.twitch.tv/oauth2/token", {
+      method: "POST",
+      body: new URLSearchParams({
+        client_id: TWITCH_CLIENT_ID,
+        client_secret: TWITCH_CLIENT_SECRET,
+        refresh_token: refreshToken,
+        grant_type: "refresh_token",
+      }),
+    });
+    const response = await request.json();
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw { status: "failed", message: error.message };
+  }
+}
+
 async function getUserData(accessToken) {
   try {
     const request = await fetch("https://api.twitch.tv/helix/users", {
@@ -204,4 +223,4 @@ async function sendResponse(song, type, channel) {
   }
 }
 
-export { getTokenCode, getUserData, createPrediction, cancelPrediction, getOpenPrediction, closePrediction };
+export { getTokenCode, getNewToken, getUserData, createPrediction, cancelPrediction, getOpenPrediction, closePrediction };
