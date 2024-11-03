@@ -66,7 +66,7 @@ export default function Valorant({ params, searchParams }) {
   const [origin, setOrigin] = useState('');
   const [leagueName, setLeagueName] = useState('challengers_br');
   const [availableLeagues, setAvailableLeagues] = useState(leagues);
-
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     setOrigin(window.location.origin);
@@ -87,7 +87,8 @@ export default function Valorant({ params, searchParams }) {
       new URLSearchParams({
         channel: "$(channel)",
         type: 'text',
-        league: leagueName
+        league: leagueName,
+        msg: msg
       }), {
       method: "GET",
     })
@@ -103,7 +104,7 @@ export default function Valorant({ params, searchParams }) {
     document.querySelector('#response-code').style.visibility = 'hidden';
     setTimeout(() => document.querySelector('#response-code').style.visibility = 'visible', 250);
 
-    const responseCode = `.me $(touser) ► $\{customapi.${origin}/api/valorant/schedule?channel=$(channel)&league=${leagueName}\}`;
+    const responseCode = `.me $(touser) ► $\{customapi.${origin}/api/valorant/schedule?channel=$(channel)&league=${leagueName}${msg ? `&msg=${msg}` : ''}\}`;
     document.querySelector('#response-code').innerText = responseCode;
   }
 
