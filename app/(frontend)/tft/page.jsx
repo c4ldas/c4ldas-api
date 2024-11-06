@@ -129,7 +129,7 @@ export default function TFT({ params, searchParams }) {
             {regions.map((region, index) => (<option key={index} value={region.code}>{region.region_name}</option>))}
           </select>
 
-          <input type="text" id="message" className="message" placeholder="Message: (player) está (rank) com (points) pontos" onChange={(e) => { setMsg(e.target.value) }} />
+          <input type="text" id="message" className="message" placeholder="Message: (player): (rank) - (points) points" onChange={(e) => { setMsg(e.target.value) }} />
           <h5 className="variables">Available variables: (player), (rank), (points), (wins), (losses)</h5>
           <input type="submit" id="formatted" className="formatted" value="Show formatted message" />
           <input type="submit" id="generate-code" className="generate-code" value="Generate chat code" />
