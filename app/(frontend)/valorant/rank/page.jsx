@@ -50,7 +50,7 @@ export default function Valorant({ params, searchParams }) {
     document.querySelector('#response-code').style.visibility = 'hidden';
     setTimeout(() => document.querySelector('#response-code').style.visibility = 'visible', 250);
 
-    const values = id ? `id=${id}` : `player=${player}&tag=${tag}&region=${regionName}`;
+    const values = id ? `id=${id}` : `player="${player}"&tag=${tag}&region=${regionName}`;
     const responseCode = `.me $(sender) ► $\{customapi.${origin}/api/valorant/rank?channel=$(channel)&type=text&${values}&msg="${msg}"\}`;
     const formattedResponseCode = responseCode
       .replace(/\//g, '\u200B/')
