@@ -1,15 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h2>Info</h2>
 
-<h2> Justification</h2>
+I have decided to rewrite the code of my webpage and APIs. The webpage is still the same address, https://c4ldas.com.br. 
 
-I have decided to rewrite my code running on https://c4ldas.com.br and the APIs created on that for Next.js. The current page is written using Nodejs/Express.js and deployed in Replit.com using Core account plan.
-The main idea is to learn more about Nextjs and its features. Also, I can move the hosting to Vercel (which is free for hobby accounts) and have the benefits of it, like caching, CDN, etc.
+The main idea was to learn more about Next.js and its features. Also, I could move the hosting to Vercel (which is free for hobby accounts) and have the benefits of caching, CDN, etc. 
+The previous page was hosted in [Replit](https://replit.com) with a Core account (called Hacker in the past). The code of that is still in [c4ldas/apis](https://github.com/c4ldas/apis) repository and the website can be reached (not for long) in https://c4ldas-api.replit.app.
 
-Using App Router on Next.js currently and storing front pages on /(frontend) directory to clear as much as possible the app folder.
+<h2>Webpage</h2>
+
+The webpage and the APIs are in https://c4ldas.com.br or https://repl.c4ldas.com.br.
 
 <h2> Structure </h2>
 
-At the moment the structure of the application is:
+This is the structure of the application:
 
 <pre>
 /
@@ -22,53 +24,53 @@ At the moment the structure of the application is:
 |  |--lib/
 |  |
 |  |--(frontend)/
-|  |  |-- homepage             # done
-|  |  |-- lol/                 # done
-|  |  |-- tft/                 # done
-|  |  |-- spotify/             # done
-|  |  |-- twitch/              # done
-|  |  |-- youtube/             # done
-|  |  |-- widgets/             # done
+|  |  |-- homepage          
+|  |  |-- lol/              
+|  |  |-- tft/              
+|  |  |-- spotify/          
+|  |  |-- twitch/           
+|  |  |-- youtube/          
+|  |  |-- widgets/          
 |  |  |
-|  |  |-- valorant/            # done
-|  |  |    |-- puuid/          # done
-|  |  |    |-- lastgame/       # done
-|  |  |    |-- rank/           # done
-|  |  |    |-- schedule/       # done
+|  |  |-- valorant/         
+|  |  |    |-- puuid/       
+|  |  |    |-- lastgame/    
+|  |  |    |-- rank/        
+|  |  |    |-- schedule/    
 |  |  |
 |  |
 |  |--api/
 |     |-- spotify/
-|     |    |-- musica/         # done
-|     |    |-- callback/       # done
-|     |    |-- logout/         # done
+|     |    |-- musica/      
+|     |    |-- callback/    
+|     |    |-- logout/      
 |     |
 |     |-- twitch/
 |     |    |-- prediction/
-|     |    |     |-- get/      # done
-|     |    |     |-- create/   # done
-|     |    |     |-- close/    # done
-|     |    |     |-- cancel/   # done
+|     |    |     |-- get/   
+|     |    |     |-- create/
+|     |    |     |-- close/ 
+|     |    |     |-- cancel/
 |     |    |
-|     |    |-- callback/       # done
-|     |    |-- logout/         # done
+|     |    |-- callback/    
+|     |    |-- logout/      
 |     |
 |     |-- youtube/
-|     |    |-- search/         # done
-|     |    |-- channel/        # done
+|     |    |-- search/      
+|     |    |-- channel/     
 |     |             
 |     |-- steam/
-|     |    |-- game/           # done
+|     |    |-- game/        
 |     |
 |     |-- valorant/
-|     |    |-- lastgame/       # done
-|     |    |-- rank/           # done
-|     |    |-- puuid/          # done
-|     |    |-- schedule/       # done
+|     |    |-- lastgame/    
+|     |    |-- rank/        
+|     |    |-- puuid/       
+|     |    |-- schedule/    
 |     |
 |     |-- lol/        
-|     |    |-- rank/           # done
+|     |    |-- rank/        
 |     |
 |     |-- tft/        
-|     |    |-- rank/           # done
+|     |    |-- rank/        
 </pre>
