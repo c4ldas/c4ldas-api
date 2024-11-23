@@ -1,6 +1,5 @@
 import { tiers, urlById, urlByPlayer, getRank, validRegions } from '@/app/lib/valorant_rank';
 import { NextResponse } from "next/server";
-import { color } from "@/app/lib/colorLog";
 
 import decrypt from "@/app/lib/encode_key";
 
@@ -25,7 +24,6 @@ export async function GET(request) {
 
     const validParams = await checkParams(player, tag, id, channel, region);
     if (!validParams.status) return NextResponse.json({ error: validParams.error }, { status: 400 });
-
 
     // Check if id is provided
     if (id) {
@@ -107,11 +105,11 @@ async function sendResponse(data, type, msg) {
     .replace(/\(vitorias\)/g, vitorias)
     .replace(/\(posicao\)/g, posicao);
 
-  color.log("green", formattedMessage);
-
   if (type != "text") {
     data.message = formattedMessage;
+    console.log(formattedMessage);
     return NextResponse.json(data, { status: 200 });
   }
+  console.log(formattedMessage);
   return new Response(formattedMessage, { status: 200 });
 }
