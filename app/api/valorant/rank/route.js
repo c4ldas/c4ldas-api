@@ -36,8 +36,6 @@ export async function GET(request) {
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
         return sendResponse(data, type, msg);
-        // const response = await sendResponse(data, type, msg);
-        // return NextResponse.json(response, { status: 200 });
       }
 
       // Get leaderboard
@@ -46,16 +44,12 @@ export async function GET(request) {
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
         return sendResponse(data, type, msg);
-        // const response = await sendResponse(data, type, msg);
-        // return NextResponse.json(response, { status: 200 });
       };
       data.data.leaderboardRank = leaderboard.data[0].leaderboardRank;
       data.data.numberOfWins = leaderboard.data[0].numberOfWins;
 
       // Send response
       return sendResponse(data, type, msg);
-      // const response = await sendResponse(data, type, msg);
-      // return NextResponse.json(response, { status: 200 })
     }
 
     // Check if player and tag are provided
@@ -68,8 +62,6 @@ export async function GET(request) {
         data.data.numberOfWins = 0;
 
         return sendResponse(data, type, msg);
-        // const response = await sendResponse(data, type, msg);
-        // return NextResponse.json(response, { status: 200 });
       }
 
       // Get leaderboard
@@ -78,8 +70,6 @@ export async function GET(request) {
         data.data.leaderboardRank = 0;
         data.data.numberOfWins = 0;
         return sendResponse(data, type, msg);
-        // const response = await sendResponse(data, type, msg);
-        // return NextResponse.json(response, { status: 200 });
       };
 
       data.data.leaderboardRank = leaderboard.data[0].leaderboardRank;
@@ -87,8 +77,6 @@ export async function GET(request) {
 
       // Send response
       return sendResponse(data, type, msg);
-      // const response = await sendResponse(data, type, msg);
-      // return NextResponse.json(response, { status: 200 })
     }
 
     // If id or player/tag are not provided, return error
