@@ -57,7 +57,6 @@ export async function GET(request) {
     const message = `Map: ${map} / Outcome: ${outcome} / Score: ${rounds_won}x${rounds_lost} / KDA: ${kills}/${deaths}/${assists}`;
 
     if (obj.type == "text") {
-      /* const results = `Map: ${map} / Outcome: ${outcome} / Score: ${rounds_won}x${rounds_lost} / KDA: ${kills}/${deaths}/${assists}`; */
       return new Response(message, { status: 200 });
     }
     playerInfo.message = message;
@@ -65,7 +64,7 @@ export async function GET(request) {
 
   } catch (error) {
     console.log(error)
-    return NextResponse.json({ error: error.error }, { status: 500 /* error.error.status */ });
+    return NextResponse.json({ error: error.error }, { status: 500 });
   }
 }
 
