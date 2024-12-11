@@ -15,7 +15,6 @@ Response example:
 
 import { NextResponse } from "next/server";
 import { Temporal } from "@js-temporal/polyfill";
-import { color } from "@/app/lib/colorLog";
 import decrypt from "@/app/lib/encode_key";
 
 const env = process.env.ENVIRONMENT;
@@ -119,7 +118,7 @@ export async function GET(request) {
     return sendResponse(todayGames, 200, type, channel, league, msg)
 
   } catch (error) {
-    color.log("red: ", error)
+    console.log(error);
     return NextResponse.json({ error: { message: "An error has occurred. Please try again later.: ", code: error.code } }, { status: 500 });
   }
 }
@@ -149,7 +148,8 @@ async function sendResponse(response, status, type, channel, league, msg) {
   } else if (type == "text" && response.length == 0) {
 
     // Created a new custom message and send it when there are no games
-    const message = msg.replaceAll(/\(league\)/g, validLeagues[league])
+    const message = msg.replaceAll(/\(league\)/g, validLeagues[league]);
+    console.log(message);
     return new Response(message, { status: 200 });
 
   }
