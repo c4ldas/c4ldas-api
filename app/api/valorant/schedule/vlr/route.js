@@ -135,12 +135,13 @@ async function sendResponse(response, status, type, channel, league, msg) {
   } else if (type == "text" && response.length == 0) {
 
     // Created a new custom message and send it when there are no games
-    const message = msg.replaceAll(/\(league\)/g, validLeagues[league])
+    const message = msg.replaceAll(/\(league\)/g, validLeagues[league]);
+    console.log(message);
     return new Response(message, { status: 200 });
 
   }
 
   // The below doesn't work because response is an array, not an object
   // response.message = matches.length > 0 ? matches.toString().replaceAll(',', ' // ') : "No games for today";
-  return NextResponse.json(response, { status: status });
+  return NextResponse.json(response, { status: 200 });
 }
