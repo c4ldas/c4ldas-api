@@ -55,8 +55,13 @@ export async function GET(request) {
             const gameDateTime = timeZone.getPlainDateTimeFor(segment.unix_timestamp).toString();
             const gameDate = timeZone.getPlainDateTimeFor(segment.unix_timestamp).toString().split('T')[0];
             const gameTime = Temporal.PlainTime.from(gameDateTime).hour;
+            const gameMinute = Temporal.PlainTime.from(gameDateTime).minute;
+            if (gameMinute > 40) {
+              segment.time_brazil = gameTime + 1;
+            } else {
+              segment.time_brazil = gameTime;
+            }
             segment.date_brazil = gameDate;
-            segment.time_brazil = gameTime;
             return segment;
           };
         })
@@ -130,6 +135,7 @@ async function sendResponse(response, status, type, channel, league, msg) {
     // Format the response like below:
     /* Team1 0x2 Team2 // Team3 2x0 Team4 // Team5 1x1 Team6 */
     const finalResponse = matches.toString().replaceAll(',', ' // ');
+    console.log(finalResponse);
     return new Response(finalResponse, { status: 200 });
 
   } else if (type == "text" && response.length == 0) {
