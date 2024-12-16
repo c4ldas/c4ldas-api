@@ -27,6 +27,7 @@ const gameInfo = {
     name: "League of Legends",
     puuidUrl: "lol/summoner/v4/summoners/by-puuid",
     rankUrl: "lol/league/v4/entries/by-summoner",
+    activeGameUrl: "lol/spectator/v5/active-games/by-summoner",
     tokenName: "LOL_TOKEN"
   },
   tft: {
@@ -122,7 +123,7 @@ export async function getRank(request) {
       decrypt(process.env[gameInfo[game].tokenName]) :
       process.env[gameInfo[game].tokenName];
 
-    const rankRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].rankUrl}/${id}`, {
+    const rankRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].activeGameUrl}/${id}`, {
       method: "GET",
       // cache: "force-cache",
       next: { revalidate: 900 }, // 15 minutes
@@ -143,3 +144,31 @@ export async function getRank(request) {
   }
 }
 
+export async function getActiveGame(request) {
+  try {
+    const { puuid, region, game, player, tag } = request;
+
+    const apiToken = env == "dev" ?
+      decrypt(process.env[gameInfo[game].tokenName]) :
+      process.env[gameInfo[game].tokenName];
+
+    const apiRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].activeGameUrl}/${puuid}`, {
+      method: "GET",
+      // cache: "force-cache",
+      next: { revalidate: 0 }, // no cache
+      headers: {
+        "X-Riot-Token": apiToken
+      }
+    });
+
+    // if (!apiRequest.ok) {
+    //   throw ({ error: { message: apiRequest.statusText, player: player, tag: tag, code: apiRequest.status } });
+    // }
+
+    const response = await apiRequest.json();
+    return (response);
+
+  } catch (error) {
+    throw (error);
+  }
+}
