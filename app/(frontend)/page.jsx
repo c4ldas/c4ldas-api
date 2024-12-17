@@ -19,8 +19,8 @@ export default async function Home() {
         </div>
 
         <Linkbox
-          title="Twitch Prediction"
-          description="Effectively control Twitch predictions using intuitive chat commands, facilitating creation, closure, or cancellation."
+          title="Twitch"
+          description="Twitch commands to be used on Stream or overlays."
           link="/twitch"
         />
 
