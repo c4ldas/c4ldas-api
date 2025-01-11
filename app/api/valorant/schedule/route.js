@@ -37,6 +37,7 @@ const validLeagues = {
   ascension_americas: 'Ascension Americas',
   game_changers_championship: 'Game Changers Championship',
   vct_emea: 'VCT EMEA',
+  vct_china: 'VCT China',
   game_changers_emea: 'Game Changers EMEA',
   challengers_na: "Challengers NA",
   game_changers_na: "Game Changers NA",
