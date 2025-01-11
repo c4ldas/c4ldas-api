@@ -24,6 +24,7 @@ const moreLeagues = [
   { code: "game_changers_na", league_name: "Game Changers NA" },
   { code: "challengers_na", league_name: "Challengers NA" },
   { code: "vct_pacific", league_name: "VCT Pacific" },
+  { code: "vct_china", league_name: "VCT China" },
   { code: "challengers_jpn", league_name: "Challengers Japan" },
   { code: "challengers_kr", league_name: "Challengers Korea" },
   { code: "challengers_latam", league_name: "Challengers LATAM" },
