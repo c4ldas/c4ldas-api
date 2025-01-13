@@ -55,10 +55,10 @@ export const metadata = {
   },
 
   // Itunes
-  itunes: {
-    appId: "686449807",
-    appArgument: "t.me/@c4ldas",
-  },
+  // itunes: {
+  //   appId: "686449807",
+  //   appArgument: "t.me/@c4ldas",
+  // },
 
   // OpenGraph / Facebook
   openGraph: {
