@@ -56,7 +56,7 @@ export async function getGithubWidgets() {
     return widgetList;
 
   } catch (error) {
-    console.log("getGithubWidgets():", error);
+    console.log("getGithubWidgets():", error.message);
     const response = { error: "Failed to list widgets from Github, please try again later" }
     throw response;
   }
