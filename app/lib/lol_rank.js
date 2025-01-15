@@ -68,8 +68,7 @@ export async function getSummonerPuuid(request) {
 
     const puuidRequest = await fetch(`https://${server.name}.${apiURL}/riot/account/v1/accounts/by-riot-id/${player}/${tag}`, {
       method: "GET",
-      cache: "force-cache",
-      // next: { revalidate: 0 },
+      next: { revalidate: 3600 }, // 1 hour cache
       headers: {
         "X-Riot-Token": apiToken
       }
@@ -97,7 +96,7 @@ export async function getSummonerId(request) {
 
     const summonerRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].puuidUrl}/${puuid}`, {
       method: "GET",
-      cache: "force-cache",
+      next: { revalidate: 3600 }, // 1 hour cache
       headers: {
         "X-Riot-Token": apiToken
       }
@@ -144,7 +143,63 @@ export async function getRank(request) {
   }
 }
 
+
+export async function getPreviousGame(request) {
+  let data = {};
+  try {
+    const { puuid, region, game, player, tag } = request;
+    const server = servers.find(serverObj => serverObj.regions.includes(region));
+
+    const apiToken = env == "dev" ?
+      decrypt(process.env[gameInfo[game].tokenName]) :
+      process.env[gameInfo[game].tokenName];
+
+    const idRequest = await fetch(`https://${server.name}.${apiURL}/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=1`, {
+      method: "GET",
+      next: { revalidate: 10 }, // 10 seconds cache
+      headers: {
+        "X-Riot-Token": apiToken
+      }
+    });
+    const idResponse = await idRequest.json();
+
+    const previousGameId = idResponse[0];
+
+    // Get stats of last game
+    const gameRequest = await fetch(`https://${server.name}.${apiURL}/lol/match/v5/matches/${previousGameId}`, {
+      method: "GET",
+      // cache: "force-cache",
+      next: { revalidate: 10 }, // 10 seconds cache
+      headers: {
+        "X-Riot-Token": apiToken
+      }
+    });
+    const gameResponse = await gameRequest.json();
+
+    const userGameInfo = gameResponse.info.participants.find(user => user.puuid == puuid);
+
+    // check remake status
+    const remake = userGameInfo.gameEndedInEarlySurrender;
+
+    data.result = remake ? "remake" : userGameInfo.win ? "win" : "lose";
+    data.gameId = gameResponse.info.gameId;
+    data.replayId = gameResponse.metadata.matchId;
+    data.gameStartTime = gameResponse.info.gameStartTimestamp;
+    data.gameLength = gameResponse.info.gameEndTimestamp - gameResponse.info.gameStartTimestamp;
+    data.gameDuration = formatDuration(data.gameLength);
+    data.championName = userGameInfo.championName;
+    data.kda = `${userGameInfo.kills}/${userGameInfo.deaths}/${userGameInfo.assists}`;
+
+    return data;
+
+  } catch (error) {
+    throw (error);
+  }
+}
+
+
 export async function getActiveGame(request) {
+  let data = {};
   try {
     const { puuid, region, game, player, tag } = request;
 
@@ -154,8 +209,7 @@ export async function getActiveGame(request) {
 
     const apiRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].activeGameUrl}/${puuid}`, {
       method: "GET",
-      // cache: "force-cache",
-      next: { revalidate: 0 }, // no cache
+      next: { revalidate: 0 }, // 10 seconds cache
       headers: {
         "X-Riot-Token": apiToken
       }
@@ -166,9 +220,73 @@ export async function getActiveGame(request) {
     // }
 
     const response = await apiRequest.json();
-    return (response);
+
+
+    // If not in a game, send inGame as false
+    // Otherwise, send inGame as true and game information
+    if (response.status && response.status.status_code == 404) {
+      data.inGame = false;
+
+    } else {
+      data.inGame = true;
+      data.gameId = response.gameId;
+      data.replayId = `${response.platformId}_${response.gameId}`;
+      data.gameStartTime = response.gameStartTime;
+      const championInfo = response.participants.find(user => user.puuid == puuid);
+      data.championName = await getChampionName({ key: championInfo.championId });
+    }
+    return data;
 
   } catch (error) {
     throw (error);
   }
+}
+
+
+
+async function getChampionName(request) {
+  try {
+    let championName = "New Champion";
+    const { key } = request;
+    const versionRequest = await fetch("https://ddragon.leagueoflegends.com/api/versions.json", {
+      next: { revalidate: 3600 * 12 } // 12 hour cache
+    });
+    const versionResponse = await versionRequest.json();
+
+    const version = versionResponse[0];
+
+    const championRequest = await fetch(`https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`, {
+      next: { revalidate: 3600 * 12 } // 12 hour cache
+    });
+    const championResponse = await championRequest.json();
+    const data = championResponse.data;
+
+    for (const champion in data) {
+      if (data[champion].key == key) championName = data[champion].name;
+    }
+
+    return championName;
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Format game duration in "1h 1m 1s" format
+function formatDuration(milliseconds) {
+  const totalSeconds = Math.round(milliseconds / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  let result = "";
+  if (hours > 0) {
+    result += `${hours}h `;
+  }
+  if (minutes > 0 || hours > 0) { // Include minutes if there are hours
+    result += `${minutes}m `;
+  }
+  result += `${seconds}s`;
+
+  return result.trim();
 }
