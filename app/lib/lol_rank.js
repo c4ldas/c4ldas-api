@@ -68,7 +68,7 @@ export async function getSummonerPuuid(request) {
 
     const puuidRequest = await fetch(`https://${server.name}.${apiURL}/riot/account/v1/accounts/by-riot-id/${player}/${tag}`, {
       method: "GET",
-      next: { revalidate: 3600 }, // 1 hour cache
+      next: { revalidate: 3600 * 12 }, // 12 hour cache
       headers: {
         "X-Riot-Token": apiToken
       }
@@ -86,6 +86,7 @@ export async function getSummonerPuuid(request) {
   }
 }
 
+
 export async function getSummonerId(request) {
   try {
     const { puuid, region, game, player, tag } = request;
@@ -96,7 +97,7 @@ export async function getSummonerId(request) {
 
     const summonerRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].puuidUrl}/${puuid}`, {
       method: "GET",
-      next: { revalidate: 3600 }, // 1 hour cache
+      next: { revalidate: 3600 * 12 }, // 12 hours cache
       headers: {
         "X-Riot-Token": apiToken
       }
@@ -113,6 +114,7 @@ export async function getSummonerId(request) {
     throw (error);
   }
 }
+
 
 export async function getRank(request) {
   try {
@@ -156,7 +158,7 @@ export async function getPreviousGame(request) {
 
     const idRequest = await fetch(`https://${server.name}.${apiURL}/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=1`, {
       method: "GET",
-      next: { revalidate: 10 }, // 10 seconds cache
+      next: { revalidate: 0 }, // 0 seconds cache
       headers: {
         "X-Riot-Token": apiToken
       }
@@ -169,7 +171,7 @@ export async function getPreviousGame(request) {
     const gameRequest = await fetch(`https://${server.name}.${apiURL}/lol/match/v5/matches/${previousGameId}`, {
       method: "GET",
       // cache: "force-cache",
-      next: { revalidate: 10 }, // 10 seconds cache
+      next: { revalidate: 0 }, // 0 seconds cache
       headers: {
         "X-Riot-Token": apiToken
       }
@@ -209,7 +211,7 @@ export async function getActiveGame(request) {
 
     const apiRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].activeGameUrl}/${puuid}`, {
       method: "GET",
-      next: { revalidate: 0 }, // 10 seconds cache
+      next: { revalidate: 0 }, // 0 seconds cache
       headers: {
         "X-Riot-Token": apiToken
       }
@@ -243,7 +245,6 @@ export async function getActiveGame(request) {
 }
 
 
-
 async function getChampionName(request) {
   try {
     let championName = "New Champion";
@@ -271,6 +272,7 @@ async function getChampionName(request) {
     throw error;
   }
 }
+
 
 // Format game duration in "1h 1m 1s" format
 function formatDuration(milliseconds) {
