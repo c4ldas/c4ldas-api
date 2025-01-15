@@ -1,7 +1,29 @@
 import { NextResponse } from "next/server";
-import { getSummonerPuuid, getActiveGame } from "@/app/lib/lol_rank.js";
+import { getSummonerPuuid, getActiveGame, getPreviousGame } from "@/app/lib/lol_rank.js";
 
 export async function GET(request) {
+  let data = {
+    "inGame": false,
+    "player": "",
+    "tag": "",
+    "currentGame": {
+      "gameId": 0,
+      "replayId": null,
+      "gameStartTime": 0,
+      "championName": ""
+    },
+    "previousGame": {
+      "gameId": 0,
+      "replayId": null,
+      "gameStartTime": 0,
+      "gameLength": 0,
+      "gameDuration": 0,
+      "result": "",
+      "championName": "",
+      "kda": ""
+    }
+  }
+
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
 
@@ -12,44 +34,33 @@ export async function GET(request) {
     const puuidRequest = await getSummonerPuuid({ player, tag, region, game });
     const { puuid, gameName, tagLine } = puuidRequest;
     const gameInfo = await getActiveGame({ puuid, region, game, player, tag });
+    const previousGame = await getPreviousGame({ puuid, region, game, player, tag });
 
-    if (gameInfo.status) {
-      const data = {
-        "inGame": false,
-        "info": {
-          "player": player,
-          "tag": tagLine,
-          "gameId": 0,
-          "replayId": 0,
-          "gameStartTime": 0,
-          "gameLength": 0
-        }
-      };
-      return sendResponse(data, type);
-    }
+    data.player = gameName;
+    data.tag = tagLine;
+    data.inGame = gameInfo.inGame;
+    data.currentGame.gameId = gameInfo.gameId || 0;
+    data.currentGame.replayId = gameInfo.replayId || null;
+    data.currentGame.gameStartTime = gameInfo.gameStartTime || 0;
+    data.currentGame.championName = gameInfo.championName || null;
 
-    const data = {
-      "inGame": true,
-      "info": {
-        "player": player,
-        "tag": tagLine,
-        "gameId": gameInfo.gameId,
-        "matchId": `${region.toUpperCase()}_${gameInfo.gameId}`,
-        "gameStartTime": gameInfo.gameStartTime,
-        "gameLength": gameInfo.gameLength
-      }
-    };
+    data.previousGame.gameId = previousGame.gameId;
+    data.previousGame.replayId = previousGame.replayId;
+    data.previousGame.gameStartTime = previousGame.gameStartTime;
+    data.previousGame.gameLength = previousGame.gameLength;
+    data.previousGame.gameDuration = previousGame.gameDuration;
+    data.previousGame.result = previousGame.result;
+    data.previousGame.championName = previousGame.championName;
+    data.previousGame.kda = previousGame.kda;
 
     return sendResponse(data, type);
 
   } catch (error) {
-    console.log(error);
-    return sendResponse("", type, "", error);
+    return sendResponse("", type, error);
   }
 }
 
 async function sendResponse(response, type, error) {
-
   if (error) {
     if (type == "text") {
       const { message, player, tag, } = error.error;
@@ -58,9 +69,8 @@ async function sendResponse(response, type, error) {
     return NextResponse.json(error, { status: 200 });
   }
 
-  const message = `${response.info.player}#${response.info.tag} is ${response.inGame ? "in game" : "not in game"}`;
-
   if (type == "text") {
+    const message = `${response.player}#${response.tag} is ${response.inGame ? "in game" : "not in game"}. Previous game result: ${response.previousGame.result}`;
     return new Response(message, { status: 200 });
   }
 
