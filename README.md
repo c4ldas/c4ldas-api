@@ -37,7 +37,6 @@ This is the structure of the application:
 |  |  |    |-- lastgame/    
 |  |  |    |-- rank/        
 |  |  |    |-- schedule/    
-|  |  |
 |  |
 |  |--api/
 |     |-- spotify/
