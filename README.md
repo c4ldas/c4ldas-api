@@ -69,7 +69,8 @@ This is the structure of the application:
 |     |    |-- schedule/    
 |     |
 |     |-- lol/        
-|     |    |-- rank/        
+|     |    |-- rank/
+|     |    |-- active-game/
 |     |
 |     |-- tft/        
 |     |    |-- rank/        
