@@ -125,7 +125,7 @@ async function closePrediction(accessToken, broadcasterId, predictionId, winner)
     if (response.status) throw new Error('Failed to close prediction', { status: response.status });
 
     // console.log("Close prediction:", response);
-    return { status: "success", message: `Prediction closed successfully. Winner: ${winner.title}` };
+    return { status: "success", message: `Prediction closed successfully. Chosen option: ${winner.title}` };
 
   } catch (error) {
     console.log(error);
