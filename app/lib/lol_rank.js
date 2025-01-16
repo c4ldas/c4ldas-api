@@ -41,11 +41,11 @@ const gameInfo = {
 const servers = [
   {
     name: "americas",
-    regions: ["br1", "la1", "la2", "na1", "br"]
+    regions: ["br", "br1", "la1", "la2", "na1"]
   },
   {
     name: "asia",
-    regions: ["jp1", "kr", "oc1"]
+    regions: ["jp1", "kr", "me1", "oc1", "ph2", "sg2", "th2", "tw2", "vn2"]
   },
   {
     name: "europe",
