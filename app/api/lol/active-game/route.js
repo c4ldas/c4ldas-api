@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSummonerPuuid, getActiveGame, getPreviousGame } from "@/app/lib/lol_rank.js";
 
 export async function GET(request) {
-  let data = {
+  const data = {
     "inGame": false,
     "player": "",
     "tag": "",
@@ -66,7 +66,7 @@ async function sendResponse(response, type, error) {
       const { message, player, tag, } = error.error;
       return new Response(`Error: ${message}. Player: ${player}, tag: ${tag}`, { status: 200 });
     }
-    return NextResponse.json(error, { status: 200 });
+    return NextResponse.json(error, { status: 400 });
   }
 
   if (type == "text") {
