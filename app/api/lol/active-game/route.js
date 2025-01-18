@@ -66,7 +66,7 @@ async function sendResponse(response, type, error) {
       const { message, player, tag, } = error.error;
       return new Response(`Error: ${message}. Player: ${player}, tag: ${tag}`, { status: 200 });
     }
-    return NextResponse.json(error, { status: 400 });
+    return NextResponse.json(error, { status: 200 });
   }
 
   if (type == "text") {
