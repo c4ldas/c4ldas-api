@@ -1,22 +1,3 @@
-/*
-Riot Endpoints used by this API:
-`https://${serverName}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${player}/${tag}`
-`https://${region}.api.riotgames.com/{game}/summoner/v4/summoners/by-puuid/${puuid}`
-`https://${region}.api.riotgames.com/{game}/league/v4/entries/by-summoner/${summonerId}`
-
-Example response from this API:
-{
-  "gameName": "YoDa",
-  "tagLine": "BR1",
-  "tier": "DIAMOND",
-  "rank": "I",
-  "leaguePoints": 60,
-  "wins": 26,
-  "losses": 26
-}
-
-*/
-
 import decrypt from "./encode_key";
 const env = process.env.ENVIRONMENT;
 
@@ -223,7 +204,6 @@ export async function getActiveGame(request) {
 
     const response = await apiRequest.json();
 
-
     // If not in a game, send inGame as false
     // Otherwise, send inGame as true and game information
     if (response.status && response.status.status_code == 404) {
@@ -245,30 +225,38 @@ export async function getActiveGame(request) {
 }
 
 
-async function getChampionName(request) {
+async function getChampionName(data) {
   try {
-    let championName = "New Champion";
-    const { key } = request;
-    const versionRequest = await fetch("https://ddragon.leagueoflegends.com/api/versions.json", {
+    const { key } = data;
+    const request = await fetch("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json", {
       next: { revalidate: 3600 * 12 } // 12 hour cache
     });
-    const versionResponse = await versionRequest.json();
+    const response = await request.json();
 
-    const version = versionResponse[0];
+    const champion = response.find(item => item.id == key)?.name || "New Champion";
+    return champion;
 
-    const championRequest = await fetch(`https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`, {
-      next: { revalidate: 3600 * 12 } // 12 hour cache
-    });
-    const championResponse = await championRequest.json();
-    const data = championResponse.data;
-
-    for (const champion in data) {
-      if (data[champion].key == key) championName = data[champion].name;
-    }
-
-    return championName;
+    // const versionRequest = await fetch("https://ddragon.leagueoflegends.com/api/versions.json", {
+    //   next: { revalidate: 3600 * 12 } // 12 hour cache
+    // });
+    // const versionResponse = await versionRequest.json();
+    // 
+    // const version = versionResponse[0];
+    // 
+    // const championRequest = await fetch(`https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`, {
+    //   next: { revalidate: 3600 * 12 } // 12 hour cache
+    // });
+    // const championResponse = await championRequest.json();
+    // const data = championResponse.data;
+    // 
+    // for (const champion in data) {
+    //   if (data[champion].key == key) championName = data[champion].name;
+    // }
+    // 
+    // return championName;
 
   } catch (error) {
+    console.log("getChampionName():", error.message);
     throw error;
   }
 }
