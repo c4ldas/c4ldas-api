@@ -179,7 +179,7 @@ export async function getPreviousGame(request) {
     data.gameStartTime = gameResponse.info.gameStartTimestamp;
     data.gameLength = gameResponse.info.gameEndTimestamp - gameResponse.info.gameStartTimestamp;
     data.gameDuration = formatDuration(data.gameLength);
-    data.championName = userGameInfo.championName;
+    data.championName = await getChampionName({ key: championInfo.championId }); // userGameInfo.championName;
     data.kda = `${userGameInfo.kills}/${userGameInfo.deaths}/${userGameInfo.assists}`;
 
     return data;
