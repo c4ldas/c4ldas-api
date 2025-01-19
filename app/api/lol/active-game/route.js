@@ -62,11 +62,14 @@ export async function GET(request) {
 
 async function sendResponse(response, type, error) {
   if (error) {
+    console.log(`sendResponse error: ${JSON.stringify(error)}`);
+
     if (type == "text") {
-      const { message, player, tag, } = error.error;
+      const { message, player, tag, } = error;
       return new Response(`Error: ${message}. Player: ${player}, tag: ${tag}`, { status: 200 });
     }
-    return NextResponse.json(error, { status: 200 });
+
+    return NextResponse.json(error, { status: error.code });
   }
 
   if (type == "text") {
