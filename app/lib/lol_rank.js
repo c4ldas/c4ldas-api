@@ -137,6 +137,8 @@ export async function getPreviousGame(request) {
       decrypt(process.env[gameInfo[game].tokenName]) :
       process.env[gameInfo[game].tokenName];
 
+
+    // Get id of the last game
     const idRequest = await fetch(`https://${server.name}.${apiURL}/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=1`, {
       method: "GET",
       next: { revalidate: 0 }, // 0 seconds cache
