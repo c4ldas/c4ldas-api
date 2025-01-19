@@ -56,7 +56,7 @@ export async function getSummonerPuuid(request) {
     });
 
     if (!puuidRequest.ok) {
-      throw ({ error: { message: puuidRequest.statusText, player: player, tag: tag, code: puuidRequest.status } });
+      throw ({ error: { message: "Failed to get summoner puuid, try again later", player: player, tag: tag, code: puuidRequest.status } });
     }
 
     const puuidResponse = await puuidRequest.json();
@@ -85,7 +85,7 @@ export async function getSummonerId(request) {
     });
 
     if (!summonerRequest.ok) {
-      throw ({ error: { message: summonerRequest.statusText, player: player, tag: tag, code: summonerRequest.status } });
+      throw ({ error: { message: "Failed to get summoner id, try again later", player: player, tag: tag, code: summonerRequest.status } });
     }
 
     const summonerResponse = await summonerRequest.json();
@@ -115,7 +115,7 @@ export async function getRank(request) {
     });
 
     if (!rankRequest.ok) {
-      throw ({ error: { message: rankRequest.statusText, player: player, tag: tag, code: rankRequest.status } });
+      throw ({ error: { message: "Failed to get player rank, try again later", player: player, tag: tag, code: rankRequest.status } });
     }
 
     const rankResponse = await rankRequest.json();
@@ -144,8 +144,12 @@ export async function getPreviousGame(request) {
         "X-Riot-Token": apiToken
       }
     });
-    const idResponse = await idRequest.json();
 
+    if (!idRequest.ok) {
+      throw ({ message: "Failed to get previous game id, try again later", player: player, tag: tag, code: idRequest.status });
+    }
+
+    const idResponse = await idRequest.json();
     const previousGameId = idResponse[0];
 
     // Get stats of last game
@@ -157,6 +161,11 @@ export async function getPreviousGame(request) {
         "X-Riot-Token": apiToken
       }
     });
+
+    if (!gameRequest.ok) {
+      throw ({ message: "Failed to get previous game info, try again later", player: player, tag: tag, code: gameRequest.status });
+    }
+
     const gameResponse = await gameRequest.json();
 
     const userGameInfo = gameResponse.info.participants.find(user => user.puuid == puuid);
@@ -176,6 +185,7 @@ export async function getPreviousGame(request) {
     return data;
 
   } catch (error) {
+    console.log(`getPreviousGame error: ${error}`)
     throw (error);
   }
 }
@@ -198,9 +208,9 @@ export async function getActiveGame(request) {
       }
     });
 
-    // if (!apiRequest.ok) {
-    //   throw ({ error: { message: apiRequest.statusText, player: player, tag: tag, code: apiRequest.status } });
-    // }
+    if (!apiRequest.ok) {
+      throw ({ message: "Failed to get active game, try again later", player: player, tag: tag, code: apiRequest.status });
+    }
 
     const response = await apiRequest.json();
 
