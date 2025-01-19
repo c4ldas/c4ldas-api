@@ -208,7 +208,7 @@ export async function getActiveGame(request) {
       }
     });
 
-    if (!apiRequest.ok) {
+    if (apiRequest.status != 404 && !apiRequest.ok) {
       throw ({ message: "Failed to get active game, try again later", player: player, tag: tag, code: apiRequest.status });
     }
 
