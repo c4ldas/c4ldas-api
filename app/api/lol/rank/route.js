@@ -25,7 +25,7 @@ export async function GET(request) {
     const summonerIdRequest = await getSummonerId({ puuid, region, game, player, tag });
     const { id, accountId, summonerLevel } = summonerIdRequest;
 
-    const rankRequest = await getRank({ id, gameName, region, game });
+    const rankRequest = await getRank({ id, gameName, tag, region, game });
 
     const soloRank = rankRequest.find((response) => response.queueType === queueType);
     const { tier, rank, leaguePoints, wins, losses } = soloRank || nullValues;

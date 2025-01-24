@@ -99,7 +99,7 @@ export async function getSummonerId(request) {
 
 export async function getRank(request) {
   try {
-    const { id, gameName, region, game } = request;
+    const { id, gameName, tag, region, game } = request;
 
     const apiToken = env == "dev" ?
       decrypt(process.env[gameInfo[game].tokenName]) :
@@ -115,7 +115,7 @@ export async function getRank(request) {
     });
 
     if (!rankRequest.ok) {
-      throw ({ error: { message: "Failed to get player rank, try again later", player: player, tag: tag, code: rankRequest.status } });
+      throw ({ error: { message: "Failed to get player rank, try again later", player: gameName, tag: tag, code: rankRequest.status } });
     }
 
     const rankResponse = await rankRequest.json();
