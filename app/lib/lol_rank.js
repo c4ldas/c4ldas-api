@@ -105,7 +105,7 @@ export async function getRank(request) {
       decrypt(process.env[gameInfo[game].tokenName]) :
       process.env[gameInfo[game].tokenName];
 
-    const rankRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].activeGameUrl}/${id}`, {
+    const rankRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].rankUrl}/${id}`, {
       method: "GET",
       // cache: "force-cache",
       next: { revalidate: 900 }, // 15 minutes
