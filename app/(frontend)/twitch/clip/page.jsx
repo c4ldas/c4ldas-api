@@ -3,6 +3,7 @@
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 
 export default function TwitchClip({ params, searchParams }) {
@@ -36,13 +37,15 @@ export default function TwitchClip({ params, searchParams }) {
     <div className="container">
       <Header />
       <main className="main block">
-        <h1>Twitch clip command</h1>
-        <div>This endpoint allows you to create a clip on your channel using a chat command.</div>
+        <h1>Twitch clip</h1>
 
         <h3>How to use this endpoint on Streamelements</h3>
         <div>Just copy the code below to the command you want to use (i.e.: <code>!clip</code>):</div>
+        <br />
 
         <div style={{ paddingTop: "10px", cursor: "pointer" }}><code id="code" className="code" onClick={copyToClipboard}>$(touser) ► $(customapi.{origin}/api/twitch/clip?type=text&channel=$(channel))</code></div>
+        <h3>Example response:</h3>
+        <Image src="/images/clip.png" width={452} height={830} alt="Clip Screenshot" />
 
         <dialog id="popup" style={{ backgroundColor: "var(--popup-color)" }}>Copied to clipboard</dialog>
       </main>
