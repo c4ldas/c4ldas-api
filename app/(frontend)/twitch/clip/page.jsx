@@ -45,7 +45,7 @@ export default function TwitchClip({ params, searchParams }) {
 
         <div style={{ paddingTop: "10px", cursor: "pointer" }}><code id="code" className="code" onClick={copyToClipboard}>$(touser) ► $(customapi.{origin}/api/twitch/clip?type=text&channel=$(channel))</code></div>
         <h3>Example response:</h3>
-        <Image src="/images/clip.png" width={452} height={830} alt="Clip Screenshot" />
+        <Image src="/images/clip.png" width={440} height={740} alt="Clip Screenshot" />
 
         <dialog id="popup" style={{ backgroundColor: "var(--popup-color)" }}>Copied to clipboard</dialog>
       </main>
