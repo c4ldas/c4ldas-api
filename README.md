@@ -24,53 +24,57 @@ This is the structure of the application:
 |  |--lib/
 |  |
 |  |--(frontend)/
-|  |  |-- homepage          
-|  |  |-- lol/              
-|  |  |-- tft/              
-|  |  |-- spotify/          
-|  |  |-- twitch/           
-|  |  |-- youtube/          
-|  |  |-- widgets/          
+|  |  |-- homepage
+|  |  |-- lol/
+|  |  |-- tft/
+|  |  |-- spotify/
+|  |  |-- youtube/
+|  |  |-- widgets/
 |  |  |
-|  |  |-- valorant/         
-|  |  |    |-- puuid/       
-|  |  |    |-- lastgame/    
-|  |  |    |-- rank/        
-|  |  |    |-- schedule/    
+|  |  |-- twitch/
+|  |  |    |-- clip/
+|  |  |    |-- prediction/
+|  |  |
+|  |  |-- valorant/
+|  |  |    |-- puuid/
+|  |  |    |-- lastgame/
+|  |  |    |-- rank/
+|  |  |    |-- schedule/
 |  |
 |  |--api/
 |     |-- spotify/
-|     |    |-- musica/      
-|     |    |-- callback/    
-|     |    |-- logout/      
+|     |    |-- musica/
+|     |    |-- callback/
+|     |    |-- logout/
 |     |
 |     |-- twitch/
 |     |    |-- prediction/
-|     |    |     |-- get/   
+|     |    |     |-- get/
 |     |    |     |-- create/
-|     |    |     |-- close/ 
+|     |    |     |-- close/
 |     |    |     |-- cancel/
 |     |    |
-|     |    |-- callback/    
-|     |    |-- logout/      
+|     |    |-- clip/
+|     |    |-- callback/
+|     |    |-- logout/
 |     |
 |     |-- youtube/
-|     |    |-- search/      
-|     |    |-- channel/     
-|     |             
+|     |    |-- search/
+|     |    |-- channel/
+|     |
 |     |-- steam/
-|     |    |-- game/        
+|     |    |-- game/
 |     |
 |     |-- valorant/
-|     |    |-- lastgame/    
-|     |    |-- rank/        
-|     |    |-- puuid/       
-|     |    |-- schedule/    
+|     |    |-- lastgame/
+|     |    |-- rank/
+|     |    |-- puuid/
+|     |    |-- schedule/
 |     |
-|     |-- lol/        
+|     |-- lol/
 |     |    |-- rank/
 |     |    |-- active-game/
 |     |
-|     |-- tft/        
-|     |    |-- rank/        
+|     |-- tft/
+|     |    |-- rank/
 </pre>
