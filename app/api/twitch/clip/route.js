@@ -52,7 +52,7 @@ export async function GET(request) {
     const clipData = await createClip(userData.id, newToken.access_token);
 
     // Create a sleep to wait for the clip to be created
-    console.log("Waiting for clip to be created...");
+    console.log(`Waiting for clip to be created for ${channel}...`);
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     // Check if the clip is created
