@@ -9,7 +9,7 @@ import { NextResponse } from "next/server";
 
 const client_id = process.env.CLIP_TWITCH_CLIENT_ID;
 const client_secret = process.env.CLIP_TWITCH_CLIENT_SECRET;
-const channel = process.env.CLIP_CHANNEL;
+const clipChannel = process.env.CLIP_CHANNEL;
 const code = process.env.CLIP_CODE;
 const clipBaseURL = "https://clips.twitch.tv/";
 
@@ -18,13 +18,13 @@ export async function GET(request) {
   try {
 
     const obj = Object.fromEntries(request.nextUrl.searchParams);
-    const { user, type = "text" } = obj;
+    const { channel, type = "text" } = obj;
 
     // Check if the user is missing from the request
-    if (!user) return NextResponse.json({ status: "failed", message: "User missing" }, { status: 400 });
+    if (!channel) return NextResponse.json({ status: "failed", message: "User missing" }, { status: 400 });
 
     // Get the token from c4ldasbot user
-    const token = await twitchGetTokenDatabase(code, channel);
+    const token = await twitchGetTokenDatabase(code, clipChannel);
 
     // Check if the token is valid
     if (!token) return NextResponse.json({ status: "failed", error: "Code and channel do not match" }, { status: 200 });
@@ -35,7 +35,7 @@ export async function GET(request) {
     // Data to save to database
     const data = {
       id: token.id,
-      username: channel,
+      username: clipChannel,
       access_token: newToken.access_token,
       refresh_token: newToken.refresh_token,
       code: code
@@ -46,7 +46,7 @@ export async function GET(request) {
     if (!saveToDatabase) return NextResponse.json({ status: "failed", error: "Error while saving to database" }, { status: 200 });
 
     // Get user data
-    const userData = await getUserData(user, newToken.access_token);
+    const userData = await getUserData(channel, newToken.access_token);
 
     // Create a clip
     const clipData = await createClip(userData.id, newToken.access_token);
@@ -80,9 +80,9 @@ export async function POST(request) {
 
 // Get user data based on the username
 // curl -X GET `https://api.twitch.tv/helix/users?login=${user}` -H "Authorization: Bearer ACCESS_TOKEN" -H "Client-Id: CLIENT_ID"
-async function getUserData(user, token) {
+async function getUserData(channel, token) {
   try {
-    const request = await fetch(`https://api.twitch.tv/helix/users?login=${user}`, {
+    const request = await fetch(`https://api.twitch.tv/helix/users?login=${channel}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
