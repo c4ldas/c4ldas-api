@@ -16,6 +16,7 @@ export default function Twitch() {
         </div>
         <Linkbox title="Twitch Prediction" link="/twitch/prediction" description="Effectively control Twitch predictions using intuitive chat commands, facilitating creation, closure, or cancellation." />
         {/* <Linkbox title="Twitch Commercial (ads)" link="/twitch/commercial" description="Configure your Twitch commercial (ads) to be run at specified times." /> */}
+        <Linkbox title="Twitch Clip" link="/twitch/clip" description="Create Twitch clips for your channel using chat command" />
 
       </main>
       <FooterComponent />
