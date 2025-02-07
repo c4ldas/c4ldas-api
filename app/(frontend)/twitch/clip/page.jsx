@@ -5,7 +5,7 @@ import FooterComponent from "@/app/components/Footer";
 import { useState, useEffect } from "react";
 
 
-export default function LeagueOfLegends({ params, searchParams }) {
+export default function TwitchClip({ params, searchParams }) {
 
   const [origin, setOrigin] = useState('');
 
