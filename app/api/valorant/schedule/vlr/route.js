@@ -22,6 +22,7 @@ const vlrQuery = (query) => `https://vlrggapi.vercel.app/match?q=${query}`;
 const list = ["upcoming", "live_score", "results"];
 const validLeagues = {
   "tixinha_invitational": "Tixinha Invitational by BONOXS",
+  "vcb": "Gamers Club Challengers League 2025 Brazil: Split 1",
 }
 
 export async function GET(request) {
