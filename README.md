@@ -77,4 +77,7 @@ This is the structure of the application:
 |     |
 |     |-- tft/
 |     |    |-- rank/
+|     |
+|     |-- marvel-rivals/
+|     |    |-- rank/
 </pre>
