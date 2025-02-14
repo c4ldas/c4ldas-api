@@ -37,6 +37,12 @@ export default async function Home() {
         />
 
         <Linkbox
+          title="Marvel Rivals rank"
+          description="Create a chat command to display your rank in Marvel Rivals."
+          link="/marvel-rivals"
+        />
+
+        <Linkbox
           title="Valorant"
           description="Valorant commands to be used on Stream or overlays."
           link="/valorant"
