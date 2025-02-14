@@ -27,6 +27,7 @@ This is the structure of the application:
 |  |  |-- homepage
 |  |  |-- lol/
 |  |  |-- tft/
+|  |  |-- marvel-rivals/
 |  |  |-- spotify/
 |  |  |-- youtube/
 |  |  |-- widgets/
