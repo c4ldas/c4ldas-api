@@ -86,7 +86,7 @@ export default function MarvelRivals() {
       <Header />
       <main className="main block">
         <h1 className="title">Marvel Rivals Rank</h1>
-        <h2 className="subtitle">Enter your username to show your rank on Marvel Rivals. Click on "Generate chat code" to copy the code to your chat.</h2>
+        <h2 className="subtitle">Enter your username to show your rank on Marvel Rivals. Click on &quot;Generate chat code&quot; to copy the code to your chat.</h2>
 
         <form id="form" onSubmit={handleSubmit} className="form" style={{ paddingTop: "10px" }}>
           <input type="text" id="playername" className="playername" placeholder="Player name" onChange={(e) => setPlayer(e.target.value)} required={true} />
