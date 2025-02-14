@@ -37,14 +37,13 @@ export const tiers = [
 export async function GET(request) {
   const obj = Object.fromEntries(request.nextUrl.searchParams);
   let msg = obj.msg;
-  const { player, type = "text", lang = "pt" } = obj;
+  const { player, type = "text", lang = "pt", channel } = obj;
   if (!msg && lang == "pt") msg = "(player) está (rank) com score (score) e (vitorias) vitórias.";
   if (!msg && lang != "pt") msg = "(player) is (rank) with score (score) and (vitorias) wins.";
 
   // Check if player is provided
-  if (!player) {
-    return NextResponse.json({ error: "Player is required." }, { status: 200 });
-  }
+  if (!player) return NextResponse.json({ error: "Player is required." }, { status: 200 });
+  if (!channel || channel == "channel") return NextResponse.json({ error: "Missing channel." }, { status: 200 });
 
   // Get player id
   const idRequest = await fetch(`https://mrapi.org/api/player-id/${player}`, {
