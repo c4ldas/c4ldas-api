@@ -39,7 +39,7 @@ export async function GET(request) {
   let msg = obj.msg;
   const { player, type = "text", lang = "pt", channel } = obj;
   if (!msg && lang == "pt") msg = "(player) está (rank) com score (score) e (vitorias) vitórias.";
-  if (!msg && lang != "pt") msg = "(player) is (rank) with score (score) and (vitorias) wins.";
+  if (!msg && lang != "pt") msg = "(player) is (rank) with score (score) and (wins) wins.";
 
   // Check if player is provided
   if (!player) return NextResponse.json({ error: "Player is required." }, { status: 200 });
@@ -111,7 +111,8 @@ async function sendResponse(data, type, msg, lang) {
     .replace(/\(player\)/g, playerName)
     .replace(/\(rank\)/g, rank)
     .replace(/\(score\)/g, score)
-    .replace(/\(vitorias\)/g, wins);
+    .replace(/\(vitorias\)/g, wins)
+    .replace(/\(wins\)/g, wins);
 
   if (type != "text") {
     data.message = formattedMessage;
