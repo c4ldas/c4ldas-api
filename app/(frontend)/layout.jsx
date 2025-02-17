@@ -35,7 +35,7 @@ export const metadata = {
   },
 
   // Apple
-  appleWebApp: {
+  webApp: {
     title: "c4ldas webpage",
     statusBarStyle: "black",
     backgroundColor: "#2e2e2e",
@@ -54,29 +54,23 @@ export const metadata = {
     ]
   },
 
-  // Itunes
-  // itunes: {
-  //   appId: "686449807",
-  //   appArgument: "t.me/@c4ldas",
-  // },
-
   // OpenGraph / Facebook
   openGraph: {
     title: "c4ldas webpage",
     description: "Just a webpage",
     url: "https://c4ldas.com.br",
     creator: "@c4ldas",
-    images: "https://c4ldas-api.vercel.app/images/cover.png",
+    images: "/images/cover.png",
   },
 
   // Twitter
   twitter: {
     card: "summary_large_image",
     title: "c4ldas webpage",
-    description: "Twitter test",
+    description: "Just a webpage",
     site: "https://c4ldas.com.br",
     creator: "@c4ldas",
-    image: "https://c4ldas-api.vercel.app/images/cover.png",
+    image: "/images/cover.png",
   }
 };
 
