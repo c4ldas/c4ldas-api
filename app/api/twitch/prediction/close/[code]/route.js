@@ -12,16 +12,24 @@ export async function GET(request, { params }) {
     if (!winner) return NextResponse.json({ status: "failed", error: "Winner missing" }, { status: 400 });
 
     const token = await twitchGetTokenDatabase(code, channel);
-    if (!token) return NextResponse.json({ status: "failed", error: "Code and channel do not match" }, { status: 400 });
+    if (!token) {
+      console.log("Code and channel do not match");
+      return NextResponse.json({ status: "failed", error: "Code and channel do not match" }, { status: 400 });
+    }
 
     const openPrediction = await getOpenPrediction(token.access_token, token.id);
     if (!openPrediction) return NextResponse.json({ status: "failed", message: "No open prediction" }, { status: 400 });
 
     const winnerInfo = openPrediction.outcomes.find(outcome => outcome.title.toLowerCase() === winner.toLowerCase());
     console.log("Winner Id:", winnerInfo);
-    if (!winnerInfo) return NextResponse.json({ status: "failed", message: `Invalid winner option: '${winner}'` }, { status: 400 });
+
+    if (!winnerInfo) {
+      console.log("Invalid winner option:", winner);
+      return NextResponse.json({ status: "failed", message: `Invalid winner option: '${winner}'` }, { status: 400 });
+    }
 
     const result = await closePrediction(token.access_token, token.id, openPrediction.id, winnerInfo);
+    console.log("Close Prediction Result:", JSON.stringify(result));
     return NextResponse.json(result, { status: 200 });
 
   } catch (error) {
