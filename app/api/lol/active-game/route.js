@@ -66,16 +66,21 @@ async function sendResponse(response, type, error) {
 
     if (type == "text") {
       const { message, player, tag, } = error;
+      console.log(`Error /lol/active-game: ${message}. Player: ${player}, tag: ${tag}`);
       return new Response(`Error: ${message}. Player: ${player}, tag: ${tag}`, { status: 200 });
     }
 
+    console.log(`Error /lol/active-game: ${error.message}`);
     return NextResponse.json(error, { status: error.code });
   }
 
   if (type == "text") {
     const message = `${response.player}#${response.tag} is ${response.inGame ? "in game" : "not in game"}. Previous game result: ${response.previousGame.result}`;
+    console.log(message);
     return new Response(message, { status: 200 });
   }
 
+  const message = `${response.player}#${response.tag} is ${response.inGame ? "in game" : "not in game"}. Previous game result: ${response.previousGame.result}`;
+  console.log(message);
   return NextResponse.json(response, { status: 200 });
 }
