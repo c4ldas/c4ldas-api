@@ -12,7 +12,7 @@ https://vlrggapi.vercel.app/match?q=live_score
 https://vlrggapi.vercel.app/match?q=upcoming
 
 Response example:
-"Tixinha Invitational by BONOXS: 23h - Furia 0 x 0 ShindeN"
+17h - Los Grandes 0x0 SAGAZ // 17h - Stellae Gaming 0x0 Vila do Zana X // 20h - F4TALITY 0x0 2G Esports Academy
 */
 
 import { NextResponse } from "next/server";
@@ -39,9 +39,25 @@ const leagues = [
     value: "vcb"
   },
   {
+    name: "Champions Tour 2025: Americas Stage 1",
+    displayName: "VCT Americas",
+    value: "vct_americas"
+  },
+  {
+    // Confirm later if this is the correct name
+    name: "Champions Tour 2025: EMEA Stage 1",
+    displayName: "VCT EMEA",
+    value: "vct_emea"
+  },
+  {
     name: "Champions Tour 2025: Masters Bangkok",
     displayName: "Masters Bangkok",
     value: "masters_bangkok"
+  },
+  {
+    name: "Valorant Champions 2025",
+    displayName: "Champions 2025",
+    value: "valorant_champions_2025"
   }
 ];
 
@@ -108,29 +124,7 @@ export async function GET(request) {
     }).filter(Boolean);
 
 
-    // Parse time based on when the match was completed
-    function parseTimeCompleted(timeCompleted) {
-      // Extract days, hours, and minutes using a regular expression
-      const match = /(?:(\d+)d)?\s*(?:(\d+)h)?\s*(?:(\d+)m)?\s*ago/.exec(timeCompleted);
-      const [_, days = "0", hours = "0", minutes = "0"] = match;
 
-      // Convert extracted values into numbers
-      const duration = {
-        days: parseInt(days, 10),
-        hours: parseInt(hours, 10),
-        minutes: parseInt(minutes, 10),
-      };
-
-      // Get the current date-time in the system time zone
-      const now = Temporal.Now.zonedDateTimeISO();
-
-      // Subtract the duration from the current date-time
-      const matchTime = now.subtract(duration);
-
-      // Format the ZonedDateTime as "YYYY-MM-DD HH:mm:ss" (excluding milliseconds)
-      const formattedDateTime = matchTime.toPlainDateTime().toString().split('.')[0];
-      return `${formattedDateTime}Z`;
-    };
 
     return sendResponse(todayGames.flat(), 200, type, channel, league, msg)
 
@@ -150,6 +144,30 @@ async function checkParams(league, channel) {
 
   return { status: true, error: null };
 }
+
+// Parse time based on when the match was completed
+function parseTimeCompleted(timeCompleted) {
+  // Extract days, hours, and minutes using a regular expression
+  const match = /(?:(\d+)d)?\s*(?:(\d+)h)?\s*(?:(\d+)m)?\s*ago/.exec(timeCompleted);
+  const [_, days = "0", hours = "0", minutes = "0"] = match;
+
+  // Convert extracted values into numbers
+  const duration = {
+    days: parseInt(days, 10),
+    hours: parseInt(hours, 10),
+    minutes: parseInt(minutes, 10),
+  };
+
+  // Get the current date-time in the system time zone
+  const now = Temporal.Now.zonedDateTimeISO();
+
+  // Subtract the duration from the current date-time
+  const matchTime = now.subtract(duration);
+
+  // Format the ZonedDateTime as "YYYY-MM-DD HH:mm:ss" (excluding milliseconds)
+  const formattedDateTime = matchTime.toPlainDateTime().toString().split('.')[0];
+  return `${formattedDateTime}Z`;
+};
 
 async function sendResponse(response, status, type, channel, league, msg) {
   const matches = [];
