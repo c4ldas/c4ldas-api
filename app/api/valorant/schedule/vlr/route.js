@@ -1,6 +1,5 @@
 /*
-This endpoint shows the games of the day based on the tournament searched. This is aimed to unofficial Riot tournaments.
-The code is not very well written, but it works for a while.
+This endpoint shows the games of the day based on the tournament searched. This is aimed to official and unofficial Riot tournaments.
 
 Endpoint: 
 https://repl.c4ldas.com.br/api/valorant/schedule/vlr?channel=$(channel)&league=LEAGUE_NAME&type=text
@@ -13,6 +12,21 @@ https://vlrggapi.vercel.app/match?q=upcoming
 
 Response example:
 17h - Los Grandes 0x0 SAGAZ // 17h - Stellae Gaming 0x0 Vila do Zana X // 20h - F4TALITY 0x0 2G Esports Academy
+
+League format: 
+Franchised leagues (VCT - Valorant Champions Tour):
+- VCT Regionals - Americas, EMEA, Pacific, China
+- VCT Masters - Twice per year
+- VCT Champions - The biggest tournament of the year
+
+Non-franchised leagues:
+- Game Changers - Inclusive / feminine league that can promote to Challengers
+- Challengers
+- Ascension - League that gives access to the VCT Regionals
+
+Other leagues:
+- Tixinha Invitational by BONOXS
+
 */
 
 import { NextResponse } from "next/server";
@@ -53,6 +67,11 @@ const leagues = [
     name: "Champions Tour 2025: Masters Bangkok",
     displayName: "Masters Bangkok",
     value: "masters_bangkok"
+  },
+  {
+    name: "Champions Tour 2025: Masters Toronto",
+    displayName: "Masters Toronto",
+    value: "masters_toronto"
   },
   {
     name: "Valorant Champions 2025",
