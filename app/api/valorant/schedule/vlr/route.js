@@ -20,10 +20,31 @@ import { Temporal } from "@js-temporal/polyfill";
 
 const vlrQuery = (query) => `https://vlrggapi.vercel.app/match?q=${query}`;
 const list = ["upcoming", "live_score", "results"];
-const validLeagues = {
-  "tixinha_invitational": "Tixinha Invitational by BONOXS",
-  "vcb": "Gamers Club Challengers League 2025 Brazil: Split 1",
-}
+
+// Old array format
+// const validLeagues = {
+//   "tixinha_invitational": "Tixinha Invitational by BONOXS",
+//   "vcb": "Gamers Club Challengers League 2025 Brazil: Split 1",
+// }
+
+const leagues = [
+  {
+    name: "Tixinha Invitational by BONOXS",
+    displayName: "Tixinha Invitational by BONOXS",
+    value: "tixinha_invitational"
+  },
+  {
+    name: "Gamers Club Challengers League 2025 Brazil: Split 1",
+    displayName: "Challengers BR",
+    value: "vcb"
+  },
+  {
+    name: "Champions Tour 2025: Masters Bangkok",
+    displayName: "Masters Bangkok",
+    value: "masters_bangkok"
+  }
+];
+
 
 export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
@@ -42,9 +63,13 @@ export async function GET(request) {
       list.map(async (query) => {
         const request = await fetch(vlrQuery(query), { method: "GET" });
         const response = await request.json();
-        const segments = response.data.segments.map((segment) => {
 
-          if (segment.match_event == validLeagues[league] || segment.tournament_name == validLeagues[league]) {
+        // Check if the league name matches with the league name in the response
+        const leagueName = leagues.find(item => item.value === league).name;
+
+        const segments = response.data.segments.map((segment) => {
+          // if (segment.match_event == validLeagues[league] || segment.tournament_name == validLeagues[league]) { // Old array format
+          if (segment.match_event == leagueName || segment.tournament_name == leagueName) {
             if (!segment.unix_timestamp) {
               // create unix_timestamp based on property "time_completed": "3h 41m ago"
               segment.unix_timestamp = parseTimeCompleted(segment.time_completed); // 2024-12-12T19:59:48Z
@@ -117,12 +142,21 @@ export async function GET(request) {
 
 async function checkParams(league, channel) {
   if (!channel) return { status: false, error: "Missing channel" };
-  if (!(league in validLeagues)) return { status: false, error: `Invalid league name. Valid leagues: ${Object.keys(validLeagues).join(", ")}` };
+  // if (!(league in validLeagues)) return { status: false, error: `Invalid league name. Valid leagues: ${Object.keys(validLeagues).join(", ")}` }; // Old array format
+
+  if (!(leagues.find(item => item.value === league))) {
+    return { status: false, error: `Invalid league name. Valid leagues: ${leagues.map(league => league.value).join(", ")}` };
+  }
+
   return { status: true, error: null };
 }
 
 async function sendResponse(response, status, type, channel, league, msg) {
   const matches = [];
+
+  if (response.error) {
+    return NextResponse.json(response, { status: 200 });
+  }
 
   // First, sort the array by `br_hour` in ascending order
   response.sort((a, b) => a.br_hour - b.br_hour);
@@ -144,7 +178,9 @@ async function sendResponse(response, status, type, channel, league, msg) {
 
   } else if (type == "text" && response.length == 0) {
     // Created a new custom message and send it when there are no games
-    const message = msg.replaceAll(/\(league\)/g, validLeagues[league]);
+    // const message = msg.replaceAll(/\(league\)/g, validLeagues[league]); // Old array format
+    const leagueDisplayName = leagues.find(item => item.value === league).displayName; // new Object format
+    const message = msg.replaceAll(/\(league\)/g, leagueDisplayName);
     console.log(message);
     return new Response(message, { status: 200 });
   }
