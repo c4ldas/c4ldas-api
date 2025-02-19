@@ -81,4 +81,6 @@ This is the structure of the application:
 |     |
 |     |-- marvel-rivals/
 |     |    |-- rank/
+|     |
+|     |-- weather/
 </pre>
