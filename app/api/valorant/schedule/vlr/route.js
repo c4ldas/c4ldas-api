@@ -165,14 +165,12 @@ async function checkParams(league, channel) {
 // Parse time based on when the match was completed
 function parseTimeCompleted(timeCompleted) {
   // Extract days, hours, and minutes using a regular expression
-  // const match = /(?:(\d+)d)?\s*(?:(\d+)h)?\s*(?:(\d+)m)?\s*ago/.exec(timeCompleted);
   const match = /(?:(\d+)w)?\s*(?:(\d+)d)?\s*(?:(\d+)h)?\s*(?:(\d+)m)?\s*ago/.exec(timeCompleted); // Add weeks
   const [_, weeks = "0", days = "0", hours = "0", minutes = "0"] = match;
 
   // Convert extracted values into numbers
   const duration = {
-    // days: parseInt(days, 10),
-    days: parseInt(weeks, 10) * 7 + parseInt(days, 10), // Convert weeks to days
+    days: parseInt(weeks, 10) * 7 + parseInt(days, 10), // Convert weeks to days and add to days
     hours: parseInt(hours, 10),
     minutes: parseInt(minutes, 10),
   };
