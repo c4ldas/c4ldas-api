@@ -218,7 +218,7 @@ export async function getActiveGame(request) {
 
     // If not in a game, send inGame as false
     // Otherwise, send inGame as true and game information
-    if (response.status && response.status.status_code == 404) {
+    if (response.errorCode == "NOT_FOUND" && response.httpStatus == 404) {
       data.inGame = false;
 
     } else {
@@ -247,25 +247,6 @@ async function getChampionName(data) {
 
     const champion = response.find(item => item.id == key)?.name || "New Champion";
     return champion;
-
-    // const versionRequest = await fetch("https://ddragon.leagueoflegends.com/api/versions.json", {
-    //   next: { revalidate: 3600 * 12 } // 12 hour cache
-    // });
-    // const versionResponse = await versionRequest.json();
-    // 
-    // const version = versionResponse[0];
-    // 
-    // const championRequest = await fetch(`https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`, {
-    //   next: { revalidate: 3600 * 12 } // 12 hour cache
-    // });
-    // const championResponse = await championRequest.json();
-    // const data = championResponse.data;
-    // 
-    // for (const champion in data) {
-    //   if (data[champion].key == key) championName = data[champion].name;
-    // }
-    // 
-    // return championName;
 
   } catch (error) {
     console.log("getChampionName():", error.message);
