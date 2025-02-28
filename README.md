@@ -3,7 +3,7 @@
 I have decided to rewrite the code of my webpage and APIs. The webpage is still the same address, https://c4ldas.com.br. 
 
 The main idea was to learn more about Next.js and its features. Also, I could move the hosting to Vercel (which is free for hobby accounts) and have the benefits of caching, CDN, etc. 
-The previous page was hosted in [Replit](https://replit.com) with a Core account (called Hacker in the past). The code of that is still in [c4ldas/apis](https://github.com/c4ldas/apis) repository and the website can be reached (not for long) in https://c4ldas-api.replit.app.
+The previous page was hosted in [Replit](https://replit.com) with a Core account (called Hacker in the past). The code of that is still in [c4ldas/apis](https://github.com/c4ldas/apis) repository.
 
 <h2>Webpage</h2>
 
@@ -71,6 +71,7 @@ This is the structure of the application:
 |     |    |-- rank/
 |     |    |-- puuid/
 |     |    |-- schedule/
+|     |           |-- vlr/
 |     |
 |     |-- lol/
 |     |    |-- rank/
