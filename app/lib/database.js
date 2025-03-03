@@ -63,7 +63,7 @@ export async function spotifyGetRefreshTokenDatabase(id) {
     const { rows } = await client.query(refreshTokenQuery);
 
     if (!rows[0]) {
-      throw { error: "User not registered!" };
+      throw { error: "User not registered.", status: 401 };
     }
     return rows[0].refresh_token;
 
