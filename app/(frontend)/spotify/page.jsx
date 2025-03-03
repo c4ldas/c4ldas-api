@@ -24,7 +24,7 @@ export default function Spotify({ _, searchParams }) {
     client_id: '70b6001beb514083889ab4905dbf1384',
     scope: 'user-read-currently-playing user-read-playback-state',
     redirect_uri: `${origin}/api/spotify/callback`,
-    show_dialog: false
+    show_dialog: true
   });
 
   async function openDialog() {
@@ -79,7 +79,7 @@ export default function Spotify({ _, searchParams }) {
     <div className="container">
       <Header />
       <main id="main" className="main block">
-        <h1 className="title">Spotify Now Playing</h1>
+        <h1 className="title">Now Playing Song</h1>
         {cookie.spotify_id && (
           <>
             <p><button id="remove-integration" type="submit" onClick={openDialog}>Remove integration</button></p>
@@ -128,7 +128,8 @@ export default function Spotify({ _, searchParams }) {
         {!cookie.spotify_id && (
           <>
             <p>
-              With this integration, you can show on chat which song is currently playing on Spotify.
+              With this integration, you can generate a widget to show which song is currently playing.
+              {/* With this integration, you can show on chat which song is currently playing on Spotify. */}
             </p>
             <p>Click on the button below to login with Spotify.</p>
             <a href={baseURL + urlSearchParams.toString()}>
