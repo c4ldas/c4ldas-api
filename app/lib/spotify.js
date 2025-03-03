@@ -116,13 +116,35 @@ async function getSong(accessToken, type) {
     return music;
 
   } catch (error) {
-    console.log("getSong() error: ", error);
+    // console.log("getSong() error: ", error);
     throw (error);
   }
 }
 
+async function getNextSong(accessToken, type) {
+  try {
+    const request = await fetch("https://api.spotify.com/v1/me/player/queue", {
+      "method": "GET",
+      "next": { revalidate: 0 },
+      "headers": {
+        "Accept": "application/json",
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
+      }
+    });
 
-async function sendResponse(song, type, channel) {
+    if (request.status == 204) throw { error: "No song playing!", status: 204 };
+    const response = await request.json();
+    return response.queue[0].name;
+
+  } catch (error) {
+    // console.log("getNextSong() error: ", error.message);
+    // throw (error);
+    return null;
+  }
+}
+
+async function sendResponse(song, nextSong, type, channel) {
   try {
     const songName = song.item.name;
     const artists = song.item.artists.map(artist => artist.name).join(" & ");
@@ -141,6 +163,7 @@ async function sendResponse(song, type, channel) {
         "duration_ms": song.item.duration_ms,
         "popularity": song.item.popularity,
         "song_preview": song.item.preview_url,
+        "next_song": nextSong,
       }
 
       return NextResponse.json(data, { status: 200 });
@@ -158,4 +181,4 @@ async function sendResponse(song, type, channel) {
 }
 
 
-export { getSong, getUserData, getTokenCode, getAccessToken, sendResponse };
+export { getSong, getNextSong, getUserData, getTokenCode, getAccessToken, sendResponse };
