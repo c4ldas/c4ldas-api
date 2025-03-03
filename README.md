@@ -28,9 +28,10 @@ This is the structure of the application:
 |  |  |-- lol/
 |  |  |-- tft/
 |  |  |-- marvel-rivals/
-|  |  |-- spotify/
 |  |  |-- youtube/
 |  |  |-- widgets/
+|  |  |-- spotify/
+|  |  |    |-- musica/
 |  |  |
 |  |  |-- twitch/
 |  |  |    |-- clip/
