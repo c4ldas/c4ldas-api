@@ -37,13 +37,13 @@ export default function SpotifyNowPlaying({ userId }) {
       const data = await response.json();
 
       if (data.status === 204) {
-        console.log("No song playing (204)");
+        /* console.log("No song playing (204)"); */
         resetUI("Waiting for song to start...");
         return;
       }
 
       if (data.status === 401) {
-        console.log("User not registered (401)");
+        /* console.log("User not registered (401)"); */
         resetUI("User not registered!");
         return;
       }
