@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { getCookies } from "cookies-next";
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
+import SpotifyNowPlaying from "@/app/components/Spotify";
+import "@/public/css/spotify.css";
 
 export default function Spotify({ _, searchParams }) {
   const error = searchParams.error;
@@ -20,7 +22,7 @@ export default function Spotify({ _, searchParams }) {
   const urlSearchParams = new URLSearchParams({
     response_type: 'code',
     client_id: '70b6001beb514083889ab4905dbf1384',
-    scope: 'user-read-currently-playing',
+    scope: 'user-read-currently-playing user-read-playback-state',
     redirect_uri: `${origin}/api/spotify/callback`,
     show_dialog: false
   });
@@ -56,9 +58,9 @@ export default function Spotify({ _, searchParams }) {
   }
 
   function copyCode(event) {
+    console.log(event.target.textContent);
     const dialog = document.getElementById("copy-success");
-    const command = event.target.getAttribute("datacommand");
-    navigator.clipboard.writeText(command);
+    navigator.clipboard.writeText(event.target.textContent);
 
     // Show the dialog next to the clicked element
     dialog.style.top = (event.pageY - 70) + "px";
@@ -84,6 +86,13 @@ export default function Spotify({ _, searchParams }) {
             <p><strong>Display name:</strong> {cookie.spotify_display_name} </p>
             <p><strong>ID:</strong> {cookie.spotify_id}</p>
 
+            <h3>Widget URL (click to copy)</h3>
+            <code style={{ border: "1px solid black", padding: "10px", cursor: "pointer" }} onClick={copyCode}>{origin}/spotify/musica/{cookie.spotify_id}</code>
+
+            <h3>Preview (Open Spotify to see the preview):</h3>
+            <SpotifyNowPlaying userId={cookie.spotify_id} />
+
+            {/* 
             <h3>Create command (click to copy):</h3>
             <code
               style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
@@ -98,6 +107,7 @@ export default function Spotify({ _, searchParams }) {
 
             <h3>Chat response:</h3>
             <code style={{ border: "1px solid black", padding: "10px" }}>Rick Astley - Never Gonna Give You Up</code>
+            */}
 
             {/* <!-- pop-up dialog box, containing a form --> */}
             <dialog id="copy-success" style={{ visibility: "visible", marginLeft: "10px", backgroundColor: "var(--popup-color)" }}>Code copied to clipboard</dialog>
@@ -111,6 +121,7 @@ export default function Spotify({ _, searchParams }) {
                 <button id="cancel" type="reset" onClick={closeDialog}>Cancel</button>
               </div>
             </dialog>
+
           </>
         )}
 
