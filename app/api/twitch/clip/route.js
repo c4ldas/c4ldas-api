@@ -21,7 +21,7 @@ export async function GET(request) {
     const { channel, type = "text" } = obj;
 
     // Check if the user is missing from the request
-    if (!channel) return NextResponse.json({ status: "failed", message: "User missing" }, { status: 200 });
+    if (!channel) return NextResponse.json({ status: "failed", message: "Missing channel" }, { status: 200 });
 
     // Get the token from c4ldasbot user
     const token = await twitchGetTokenDatabase(code, clipChannel);
