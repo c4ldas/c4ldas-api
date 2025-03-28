@@ -57,6 +57,8 @@ This is the structure of the application:
 |     |    |     |-- cancel/
 |     |    |
 |     |    |-- clip/
+|     |    |-- replay/
+|     |    |-- commercial/
 |     |    |-- callback/
 |     |    |-- logout/
 |     |
