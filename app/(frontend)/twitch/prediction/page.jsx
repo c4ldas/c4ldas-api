@@ -48,11 +48,11 @@ export default function Twitch({ _, searchParams }) {
     setTimeout(async () => {
       const request = await fetch("/api/twitch/logout", { "method": "POST" });
       const response = await request.json();
-      dialogTitle.innerHTML = `${response.message}.<br/> Redirecting back to home page...`;
+      dialogTitle.innerHTML = `${response.message}.<br/> Redirecting back to page...`;
     }, 1500);
 
     setTimeout(() => {
-      window.location.assign("/twitch");
+      window.location.assign("/twitch/prediction");
     }, 3000);
   }
 
