@@ -30,5 +30,5 @@ export async function GET(request) {
   cookies().set('twitch_username', data.username);
   cookies().set('twitch_code', data.code);
 
-  return Response.redirect(`${origin}/twitch`);
+  return Response.redirect(`${origin}/twitch/prediction`);
 }
