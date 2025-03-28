@@ -5,6 +5,9 @@ const env = process.env.ENVIRONMENT;
 const TWITCH_REDIRECT_URI = process.env.TWITCH_REDIRECT_URI;
 let TWITCH_CLIENT_ID;
 let TWITCH_CLIENT_SECRET;
+const CLIP_TWITCH_CLIENT_ID = process.env.CLIP_TWITCH_CLIENT_ID;
+const GQL_TWITCH_CLIENT_ID = process.env.GQL_TWITCH_CLIENT_ID;
+const GQL_TWITCH_CLIENT_SECRET = process.env.GQL_TWITCH_CLIENT_SECRET;
 
 if (env == "dev") {
   TWITCH_CLIENT_ID = decrypt(process.env.TWITCH_CLIENT_ID);
@@ -55,13 +58,15 @@ async function getNewToken(refreshToken) {
   }
 }
 
-async function getUserData(accessToken) {
+async function getUserData(accessToken, channel) {
+  const url = channel ? `https://api.twitch.tv/helix/users?login=${channel}` : "https://api.twitch.tv/helix/users";
   try {
-    const request = await fetch("https://api.twitch.tv/helix/users", {
+    const request = await fetch(url, {
+      // const request = await fetch(`https://api.twitch.tv/helix/users?login=${channel}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
-        "Client-Id": TWITCH_CLIENT_ID,
+        "Client-Id": channel ? CLIP_TWITCH_CLIENT_ID : TWITCH_CLIENT_ID,
         "Authorization": `Bearer ${accessToken}`,
       },
     });
@@ -187,40 +192,138 @@ async function getOpenPrediction(accessToken, broadcasterId) {
   }
 }
 
-// Not used
-async function sendResponse(song, type, channel) {
+
+// Create a clip
+async function createClip(broadcaster_id, token) {
   try {
-    const songName = song.item.name;
-    const artists = song.item.artists.map(artist => artist.name).join(" & ");
-    const songIsPlaying = song.is_playing;
+    const request = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${broadcaster_id}`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        "Client-Id": CLIP_TWITCH_CLIENT_ID,
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    const response = await request.json();
 
-    if (type == "json") {
-      const data = {
-        "name": song.item.name,
-        "artists": song.item.artists.map(artist => artist.name).join(" & "),
-        "artists_array": song.item.artists,
-        "is_playing": song.is_playing,
-        "album": song.item.album.name,
-        "album_art": song.item.album.images,
-        "timestamp": song.timestamp,
-        "progress_ms": song.progress_ms,
-        "duration_ms": song.item.duration_ms,
-        "popularity": song.item.popularity,
-        "song_preview": song.item.preview_url,
-      }
+    if (response.error) throw { status: "failed", message: response.message };
+    return response.data[0];
 
-      return NextResponse.json(data, { status: 200 });
-    }
-
-    if (!songIsPlaying) {
-      return new Response("No song playing!", { status: 200 });
-    }
-
-    return new Response(`${artists} - ${songName}`, { status: 200 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error: error.error }, { status: 200 });
+    throw { status: "failed", message: error.message };
   }
 }
 
-export { getTokenCode, getNewToken, getUserData, createPrediction, cancelPrediction, getOpenPrediction, closePrediction };
+// Get clip data to check if it's created
+async function getClipData(clip_id, token) {
+  try {
+    const request = await fetch(`https://api.twitch.tv/helix/clips?id=${clip_id}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        "Client-Id": CLIP_TWITCH_CLIENT_ID,
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    const response = await request.json();
+    return response.data[0];
+
+  } catch (error) {
+    console.log(error);
+    throw { status: "failed", message: error.message };
+  }
+}
+
+
+// Edit the clip data to add the download URL
+// "assetID" is the ID from the thumbnail URL (from Get Clips endpoint), second last argument when split the "/" from the URL
+// curl -X POST 'https://gql.twitch.tv/gql' -H 'Client-ID: kimne78kx3ncx6brgo4mv6wki5h1ko'
+// -H 'Content-Type: application/json'
+// -H 'Authorization oAuth <CLIP_CREATOR_USERNAME_TOKEN>'
+// -d '[{"operationName":"ClipEdit_EditClipMedia","variables":{"input":{"slug":"ID","assetID":"ASSET_ID","title":"NEW_TITLE","segments":[{"durationSeconds":"DURATION","offsetSeconds":"OFFSET"}]}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"db8a234612a642d3b35e582fd54541e1b9602c6f39093403715555d47e718642"}}}]'
+async function editClipData(data) {
+  try {
+    let { slug, assetId, title, duration, originalTitle } = data;
+    duration = parseInt(duration);
+
+    title = title ? decodeURIComponent(title) : originalTitle;
+
+    const request = await fetch("https://gql.twitch.tv/gql", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        "Client-Id": GQL_TWITCH_CLIENT_ID,
+        "Authorization": `OAuth ${GQL_TWITCH_CLIENT_SECRET}`,
+      },
+      body: JSON.stringify([{
+        operationName: "ClipEdit_EditClipMedia",
+        variables: {
+          input: {
+            slug: slug,
+            assetID: assetId,
+            title: title,
+            segments: [
+              {
+                durationSeconds: duration,
+                offsetSeconds: 30 - duration, // offset is removed from the beginning of the clip
+              },
+            ],
+          },
+        },
+        extensions: {
+          persistedQuery: {
+            version: 1,
+            sha256Hash: "db8a234612a642d3b35e582fd54541e1b9602c6f39093403715555d47e718642",
+          },
+        },
+      }]),
+    });
+    const response = await request.json();
+    return response;
+
+  } catch (error) {
+    console.log(error);
+    throw { status: "failed", message: error.message };
+  }
+}
+
+// Get the Twitch download URL using Twitch GQL
+// curl -X POST 'https://gql.twitch.tv/gql' -H 'Client-ID: kimne78kx3ncx6brgo4mv6wki5h1ko' 
+// -H 'Content-Type: application/json' 
+// -d '[{"operationName":"VideoAccessToken_Clip","variables":{"slug":"CLIP_ID"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"36b89d2507fce29e5ca551df756d27c1cfe079e2609642b4390aa4c35796eb11"}}}]'
+async function getClipDownloadURL(slug) {
+  try {
+    const request = await fetch("https://gql.twitch.tv/gql", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        "Client-Id": GQL_TWITCH_CLIENT_ID,
+      },
+      body: JSON.stringify([{
+        operationName: "VideoAccessToken_Clip",
+        variables: { slug: slug },
+        extensions: {
+          persistedQuery: {
+            version: 1,
+            sha256Hash: "36b89d2507fce29e5ca551df756d27c1cfe079e2609642b4390aa4c35796eb11",
+          },
+        },
+      }]),
+    });
+    const response = await request.json();
+
+    const sig = response[0].data.clip.playbackAccessToken.signature;
+    const token = encodeURIComponent(response[0].data.clip.playbackAccessToken.value);
+    const mp4 = response[0].data.clip.videoQualities[0].sourceURL;
+
+    const downloadURL = `${mp4}?sig=${sig}&token=${token}`;
+    return downloadURL;
+
+  } catch (error) {
+    console.log(error);
+    throw { status: "failed", message: error.message };
+  }
+}
+
+export { getTokenCode, getNewToken, getUserData, createPrediction, cancelPrediction, getOpenPrediction, closePrediction, createClip, getClipData, editClipData, getClipDownloadURL };
