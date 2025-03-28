@@ -14,6 +14,7 @@ const CLIP_CHANNEL = process.env.CLIP_CHANNEL;
 const CLIP_CODE = process.env.CLIP_CODE;
 const clipBaseURL = "https://clips.twitch.tv/";
 
+export const maxDuration = 25; // Vercel config for max duration of the route
 
 export async function GET(request) {
   try {
@@ -63,7 +64,7 @@ export async function GET(request) {
 
     // Create a sleep to wait for the clip to be created
     console.log(`Waiting for clip to be created for ${channel}...`);
-    await new Promise((resolve) => setTimeout(resolve, 4500));
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     // Check if the clip is created
     let clipFailed = 0;
@@ -71,7 +72,7 @@ export async function GET(request) {
 
     while (!getClip && clipFailed < 3) {
       clipFailed++;
-      console.log(`Clip not created yet for ${channel}, retrying...`);
+      console.log(`Clip not yet created for ${channel}, retrying...`);
       await new Promise((resolve) => setTimeout(resolve, 500));
       getClip = await getClipData(clipData.id, newToken.access_token);
     }
@@ -86,14 +87,14 @@ export async function GET(request) {
 
     // Edit the clip
     const editClip = await editClipData({ slug, assetId, title, duration, originalTitle });
-    console.log(editClip);
+    // console.log(editClip);
     if (editClip[0].errors) { console.log("Error editing clip", editClip[0].data.error); }
 
     if (type === "text") return new Response(clipURL, { status: 200 });
 
     // Get the download URL
     console.log(`Generating download URL for clip ${clipData.id}...`);
-    await new Promise((resolve) => setTimeout(resolve, 3500));
+    await new Promise((resolve) => setTimeout(resolve, 4000));
     const downloadURL = await getClipDownloadURL(clipData.id);
     return NextResponse.json({ status: "success", data: { id: clipData.id, url: clipURL, download_url: downloadURL, title: editClip[0].data.editClipMedia.clip.title } }, { status: 200 });
 
