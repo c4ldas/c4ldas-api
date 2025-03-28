@@ -96,7 +96,7 @@ export async function GET(request) {
     console.log(`Generating download URL for clip ${clipData.id}...`);
     await new Promise((resolve) => setTimeout(resolve, 4000));
     const downloadURL = await getClipDownloadURL(clipData.id);
-    return NextResponse.json({ status: "success", data: { id: clipData.id, url: clipURL, download_url: downloadURL, title: editClip[0].data.editClipMedia.clip.title } }, { status: 200 });
+    return NextResponse.json({ status: "success", data: { id: clipData.id, url: clipURL, video_url: downloadURL, title: editClip[0].data.editClipMedia.clip.title } }, { status: 200 });
 
   } catch (error) {
     console.log(error);
