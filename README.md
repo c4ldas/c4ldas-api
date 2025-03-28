@@ -36,6 +36,8 @@ This is the structure of the application:
 |  |  |-- twitch/
 |  |  |    |-- clip/
 |  |  |    |-- prediction/
+|  |  |    |-- commercial/
+|  |  |    |-- replay/
 |  |  |
 |  |  |-- valorant/
 |  |  |    |-- puuid/
