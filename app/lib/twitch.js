@@ -75,7 +75,8 @@ async function getUserData(accessToken, channel) {
 
   } catch (error) {
     console.log(error);
-    throw { status: "failed", message: error.message };
+    return { status: "failed", message: error.message };
+    // throw { status: "failed", message: error.message };
   }
 }
 

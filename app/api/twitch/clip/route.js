@@ -41,13 +41,16 @@ export async function GET(request) {
     // Get user data
     let userData = await getUserData(token.access_token, channel);
 
+    // Check if token worked for user
     if (userData.status == "failed") {
+      let userId = token.id;
       console.log(`Token expired for ${CLIP_CHANNEL}, getting a new one...`);
       token = await getNewToken(token.refresh_token);
 
+
       // Data to save to database
       const data = {
-        id: token.id,
+        id: userId,
         username: CLIP_CHANNEL,
         access_token: token.access_token,
         refresh_token: token.refresh_token,
@@ -126,7 +129,9 @@ async function getNewToken(refreshToken) {
       }),
     });
     const response = await request.json();
+    console.log("getNewToken:", response);
     return response;
+
   } catch (error) {
     console.log(error);
     throw { status: "failed", message: error.message };
