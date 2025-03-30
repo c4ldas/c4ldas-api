@@ -85,7 +85,6 @@ export async function GET(request) {
   const obj = Object.fromEntries(request.nextUrl.searchParams);
   const { channel, league, type = "text", msg = "No games for (league) today" } = obj;
   const todayDate = Temporal.Now.plainDateISO(timeZone).toString(); // Date for Brazil time zone
-  // const matches = [];
 
   try {
     const validParams = await checkParams(league, channel);
@@ -108,14 +107,6 @@ export async function GET(request) {
       }
     }).filter(Boolean) // Remove undefined values
 
-    // TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST 
-    // const gameDateTime = timeZone.getPlainDateTimeFor(response["data"][0].date).toString();
-    // const gameDate = timeZone.getPlainDateTimeFor(response["data"][0].date).toString().split('T')[0];
-    // const gameTime = Temporal.PlainTime.from(gameDateTime).hour;
-    // const result = [{ teams: response["data"][0].match.teams, date_original: response["data"][0].date, date_brazil: gameDate, time_brazil: gameTime }]
-    // return sendResponse(result, 200, type, channel)
-    // TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST 
-
     return sendResponse(todayGames, 200, type, channel, league, msg)
 
   } catch (error) {
@@ -130,6 +121,7 @@ async function checkParams(league, channel) {
   return { status: true, error: null };
 }
 
+// Format and send the response
 async function sendResponse(response, status, type, channel, league, msg) {
   const matches = [];
 
@@ -144,18 +136,15 @@ async function sendResponse(response, status, type, channel, league, msg) {
     // Format the response like below:
     /* Team1 0x2 Team2 // Team3 2x0 Team4 // Team5 1x1 Team6 */
     const finalResponse = matches.toString().replaceAll(',', ' // ');
+    console.log(finalResponse);
     return new Response(finalResponse, { status: 200 });
 
   } else if (type == "text" && response.length == 0) {
-
-    // Created a new custom message and send it when there are no games
+    // Create a new custom message and send it when there are no games
     const message = msg.replaceAll(/\(league\)/g, validLeagues[league]);
     console.log(message);
     return new Response(message, { status: 200 });
-
   }
 
-  // The below doesn't work because response is an array, not an object
-  // response.message = matches.length > 0 ? matches.toString().replaceAll(',', ' // ') : "No games for today";
   return NextResponse.json(response, { status: status });
 }
