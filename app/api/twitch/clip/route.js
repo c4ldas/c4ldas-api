@@ -67,6 +67,7 @@ export async function GET(request) {
     console.log(`Creating clip for ${channel}...`);
 
     if (type != "full" && type != "overlay") {
+      console.log(`Clip created: ${CLIP_BASE_URL}${clipData.id}`);
       if (type === "text") return new Response(CLIP_BASE_URL + clipData.id, { status: 200 });
       if (type == "json") return NextResponse.json({ status: "success", data: { id: clipData.id, url: CLIP_BASE_URL + clipData.id } }, { status: 200 });
     }
