@@ -62,7 +62,6 @@ async function getUserData(accessToken, channel) {
   const url = channel ? `https://api.twitch.tv/helix/users?login=${channel}` : "https://api.twitch.tv/helix/users";
   try {
     const request = await fetch(url, {
-      // const request = await fetch(`https://api.twitch.tv/helix/users?login=${channel}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -71,6 +70,7 @@ async function getUserData(accessToken, channel) {
       },
     });
     const response = await request.json();
+    if (response.error) throw { status: "failed", message: response.message };
     return response.data[0];
 
   } catch (error) {
@@ -205,7 +205,6 @@ async function createClip(broadcaster_id, token) {
       },
     });
     const response = await request.json();
-
     if (response.error) throw { status: "failed", message: response.message };
     return response.data[0];
 
