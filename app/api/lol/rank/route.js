@@ -57,6 +57,8 @@ async function sendResponse(response, type, msg, error) {
     .replace(/\(wins\)/g, response.wins)
     .replace(/\(losses\)/g, response.losses);
 
+  console.log(message);
+
   if (type == "text") {
     return new Response(message, { status: 200 });
   }
