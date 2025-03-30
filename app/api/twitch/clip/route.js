@@ -47,7 +47,6 @@ export async function GET(request) {
       console.log(`Token expired for ${CLIP_CHANNEL}, getting a new one...`);
       token = await getNewToken(token.refresh_token);
 
-
       // Data to save to database
       const data = {
         id: userId,
@@ -129,7 +128,6 @@ async function getNewToken(refreshToken) {
       }),
     });
     const response = await request.json();
-    console.log("getNewToken:", response);
     return response;
 
   } catch (error) {

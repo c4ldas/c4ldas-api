@@ -63,6 +63,7 @@ async function getUserData(accessToken, channel) {
   try {
     const request = await fetch(url, {
       method: "GET",
+      next: { revalidate: 60 * 60 * 12 }, // 12 hours
       headers: {
         "Content-type": "application/json",
         "Client-Id": channel ? CLIP_TWITCH_CLIENT_ID : TWITCH_CLIENT_ID,
