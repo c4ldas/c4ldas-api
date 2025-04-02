@@ -24,12 +24,12 @@ export default async function PrivacyPolicy() {
         <p>
           We only ask for personal information when we truly need it to
           provide a service to you. We collect it by fair and lawful means,
-          with your knowledge and consent. We also let you know why we're
+          with your knowledge and consent. We also let you know why we are
           collecting it and how it will be used.
         </p>
         <p>
           We only retain collected information for as long as necessary to
-          provide you with your requested service. What data we store, we'll
+          provide you with your requested service. What data we store, we will
           protect within commercially acceptable best-practice means to
           prevent loss and theft, as well as unauthorised access,
           disclosure, copying, use or modification. The time period for
@@ -41,7 +41,7 @@ export default async function PrivacyPolicy() {
           was collected or for which it is to be further processed.
         </p>
         <p>
-          We don't share any personally identifying information publicly or
+          We don&apos;t share any personally identifying information publicly or
           with third-parties, except when required to by law.
         </p>
         <p>
