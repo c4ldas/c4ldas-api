@@ -100,8 +100,7 @@ async function getUserData(token) {
 
 async function getSong(accessToken, type) {
   try {
-
-    const musicFetch = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+    const request = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
       "method": "GET",
       "next": { revalidate: 0 },
       "headers": {
@@ -111,9 +110,9 @@ async function getSong(accessToken, type) {
       }
     });
 
-    if (musicFetch.status == 204) throw { error: "No song playing!", status: 204 };
-    const music = await musicFetch.json();
-    return music;
+    if (request.status == 204) throw { error: "No song playing!", status: 204 };
+    const response = await request.json();
+    return response;
 
   } catch (error) {
     // console.log("getSong() error: ", error);
@@ -158,11 +157,13 @@ async function sendResponse(song, nextSong, type, channel) {
         "is_playing": song.is_playing,
         "album": song.item.album.name,
         "album_art": song.item.album.images,
+        "album_url": song.item.album.external_urls.spotify,
         "timestamp": song.timestamp,
         "progress_ms": song.progress_ms,
         "duration_ms": song.item.duration_ms,
         "popularity": song.item.popularity,
         "song_preview": song.item.preview_url,
+        "song_url": song.item.external_urls.spotify,
         "next_song": nextSong,
       }
 

@@ -13,8 +13,10 @@ export default function SpotifyNowPlaying({ userId }) {
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [songName, setSongName] = useState("");
+  const [songUrl, setSongUrl] = useState("");
   const [artistName, setArtistName] = useState("");
   const [albumArt, setAlbumArt] = useState("");
+  const [albumUrl, setAlbumUrl] = useState("");
   const [nextSong, setNextSong] = useState("");
   const [timelineProgress, setTimelineProgress] = useState(0);
   const [showTimeline, setShowTimeline] = useState(true);
@@ -57,8 +59,10 @@ export default function SpotifyNowPlaying({ userId }) {
   // Function to update UI with new song data
   function updateUI(data) {
     setSongName(data.name || "Unknown Song");
+    setSongUrl(data.song_url || "");
     setArtistName(data.artists_array.map((artist) => artist.name).join(", ") || "Unknown Artist");
     setAlbumArt(data.album_art?.[1]?.url || "");
+    setAlbumUrl(data.album_url || "");
     setNextSong(data.next_song ? `Next song: ${data.next_song}` : "");
     setCurrentTime(data.progress_ms / 1000);
     setDuration(data.duration_ms / 1000);
@@ -69,8 +73,10 @@ export default function SpotifyNowPlaying({ userId }) {
   // Function to reset UI when there's no song or user error
   function resetUI(message) {
     setSongName(message);
+    setSongUrl("");
     setArtistName("");
     setAlbumArt("https://placeholder.pics/svg/96x96/646464-A7A7A7/000000/waiting");
+    setAlbumUrl("");
     setNextSong("");
     setCurrentTime(0);
     setDuration(0);
@@ -106,7 +112,7 @@ export default function SpotifyNowPlaying({ userId }) {
 
   return (
     <div id="spotify-container" className="spotify-container">
-      {albumArt && <img className="album-art" src={albumArt} alt="Album Art" />}
+      {albumArt && <a href={albumUrl}><img className="album-art" src={albumArt} alt="Album Art" /></a>}
       <div className="song-info">
         <div className="song-header">
           <p className={`song-name ${songName.length > 20 ? "scroll" : ""}`}>{songName}</p>
@@ -121,7 +127,7 @@ export default function SpotifyNowPlaying({ userId }) {
           </div>
         }
       </div>
-      <img className="spotify-logo" src="/images/spotify_logo_green.svg" alt="Spotify Logo" />
+      <a href={songUrl}><img className="spotify-logo" src="/images/spotify_logo_green.svg" alt="Spotify Logo" /></a>
     </div>
   );
 }
