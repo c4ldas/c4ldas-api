@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAccessToken, getSong, sendResponse } from "@/app/lib/spotify";
+import { getAccessToken, getNextSong, getSong, sendResponse } from "@/app/lib/spotify";
 import { spotifyGetRefreshTokenDatabase } from "@/app/lib/database";
 
 export async function GET(request, { params }) {
@@ -12,8 +12,9 @@ export async function GET(request, { params }) {
     const refreshToken = await spotifyGetRefreshTokenDatabase(id);
     const accessToken = await getAccessToken(refreshToken, type);
     const song = await getSong(accessToken, type);
+    const nextSong = await getNextSong(accessToken, type) || '';
 
-    return sendResponse(song, type, channel);
+    return sendResponse(song, nextSong, type, channel);
 
   } catch (error) {
     console.log("GET() error: ", error);
