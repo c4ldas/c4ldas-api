@@ -9,6 +9,8 @@
   --slider-background-color: #ccc;
   --hover-color: hsla(171, 60%, 52%, 0.1);
   --popup-color: white;
+  --anchor-color: hsla(180, 100%, 23%, 1);
+  --anchor-visited-color: hsla(300, 100%, 40%, 1);
 }
 
 .dark {
@@ -22,6 +24,8 @@
   --slider-background-color: #1b1c1d;
   --hover-color: hsla(0, 0%, 50%, 0.1);
   --popup-color: black;
+  --anchor-color: hsla(200, 100%, 80%, 1);
+  --anchor-visited-color: hsla(290, 100%, 60%, 1);
 }
 
 :root {
@@ -91,11 +95,13 @@ body {
 
 a {
   text-decoration: none;
-  color: hsla(240, 100%, 50%, .6);
+  /* color: hsla(240, 100%, 50%, .6); */
+  color: var(--anchor-color);
 }
 
 a:visited {
-  color: hsla(300, 100%, 25%, .6);
+  /* color: hsla(300, 100%, 25%, .6); */
+  color: var(--anchor-visited-color);
 }
 
 .icons {
