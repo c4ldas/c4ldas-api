@@ -138,6 +138,7 @@ export default function Spotify({ _, searchParams }) {
           </>
         )}
         {error && <p>Error: {error}</p>}
+        <p>By using "Now Playing Song" widget, you agree with <a href="/terms/end-user-agreement">End user agreement</a> and <a href="/terms/privacy-policy">Privacy policy</a></p>
       </main>
       <FooterComponent />
     </div >
