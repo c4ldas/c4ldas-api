@@ -206,7 +206,7 @@ async function createClip(broadcaster_id, token) {
         "Content-type": "application/json",
         "Client-Id": CLIP_TWITCH_CLIENT_ID,
         "Authorization": `Bearer ${token}`,
-        "X-Custom-Header": accessToken, // Forces Next.js to treat each token differently
+        "X-Custom-Header": token, // Forces Next.js to treat each token differently
       },
     });
     const response = await request.json();
