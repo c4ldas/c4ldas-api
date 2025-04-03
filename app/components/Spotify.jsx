@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import "@/public/css/spotify.css";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 export default function SpotifyNowPlaying({ userId }) {
   const { id: paramId } = useParams();
@@ -112,7 +113,7 @@ export default function SpotifyNowPlaying({ userId }) {
 
   return (
     <div id="spotify-container" className="spotify-container">
-      {albumArt && <a href={albumUrl}><img className="album-art" src={albumArt} alt="Album Art" /></a>}
+      {albumArt && <a href={albumUrl}><Image className="album-art" src={albumArt} alt="Album Art" /></a>}
       <div className="song-info">
         <div className="song-header">
           <p className={`song-name ${songName.length > 20 ? "scroll" : ""}`}>{songName}</p>
@@ -127,7 +128,7 @@ export default function SpotifyNowPlaying({ userId }) {
           </div>
         }
       </div>
-      <a href={songUrl}><img className="spotify-logo" src="/images/spotify_logo_green.svg" alt="Spotify Logo" /></a>
+      <a href={songUrl}><Image className="spotify-logo" src="/images/spotify_logo_green.svg" alt="Spotify Logo" /></a>
     </div>
   );
 }
