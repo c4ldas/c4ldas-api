@@ -38,17 +38,14 @@ export async function GET(request) {
     let token = await twitchGetTokenDatabase(CLIP_CODE, CLIP_CHANNEL);
     if (!token) return NextResponse.json({ status: "failed", error: "Code and channel do not match" }, { status: 200 });
 
-    console.log("old token:", token);
     // Get user data
     let userData = await getUserData(token.access_token, channel);
-    console.log("User data:", userData);
 
     // Check if token worked for user
     if (userData.status == "failed") {
       let userId = token.id;
       console.log(`Token expired for ${CLIP_CHANNEL}, getting a new one...`);
       token = await getNewToken(token.refresh_token);
-      console.log("new Token:", token);
 
       // Data to save to database
       const data = {
