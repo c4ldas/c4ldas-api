@@ -62,7 +62,7 @@ async function getUserData(accessToken, channel) {
   try {
     const request = await fetch(url, {
       method: "GET",
-      next: { revalidate: 60 * 60 * 12 }, // 12 hours
+      next: { revalidate: 0 }, // Remove cache
       headers: {
         "Content-type": "application/json",
         "Client-Id": channel ? CLIP_TWITCH_CLIENT_ID : TWITCH_CLIENT_ID,
@@ -214,7 +214,7 @@ async function createClip(broadcaster_id, token) {
     return response.data[0];
 
   } catch (error) {
-    console.log(error);
+    console.log("createClip:", error);
     throw { status: "failed", message: error.message };
   }
 }
