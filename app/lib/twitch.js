@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import decrypt from "@/app/lib/encode_key";
 
 const env = process.env.ENVIRONMENT;
@@ -68,8 +67,10 @@ async function getUserData(accessToken, channel) {
         "Content-type": "application/json",
         "Client-Id": channel ? CLIP_TWITCH_CLIENT_ID : TWITCH_CLIENT_ID,
         "Authorization": `Bearer ${accessToken}`,
+        "X-Custom-Header": accessToken, // Forces Next.js to treat each token differently
       },
     });
+
     const response = await request.json();
     if (response.error) throw { status: "failed", message: response.message };
     return response.data[0];
