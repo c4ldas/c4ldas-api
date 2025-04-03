@@ -120,6 +120,7 @@ export async function POST(request) {
 async function getNewToken(refreshToken) {
   try {
     const request = await fetch("https://id.twitch.tv/oauth2/token", {
+      next: { revalidate: 0 }, // Disable cache for this request
       method: "POST",
       body: new URLSearchParams({
         client_id: CLIP_TWITCH_CLIENT_ID,
