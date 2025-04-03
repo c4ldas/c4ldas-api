@@ -201,10 +201,12 @@ async function createClip(broadcaster_id, token) {
   try {
     const request = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${broadcaster_id}`, {
       method: "POST",
+      next: { revalidate: 0 }, // disable cache
       headers: {
         "Content-type": "application/json",
         "Client-Id": CLIP_TWITCH_CLIENT_ID,
         "Authorization": `Bearer ${token}`,
+        "X-Custom-Header": accessToken, // Forces Next.js to treat each token differently
       },
     });
     const response = await request.json();
