@@ -66,8 +66,7 @@ async function getUserData(accessToken, channel) {
       headers: {
         "Content-type": "application/json",
         "Client-Id": channel ? CLIP_TWITCH_CLIENT_ID : TWITCH_CLIENT_ID,
-        "Authorization": `Bearer ${accessToken}`,
-        "X-Custom-Header": accessToken, // Forces Next.js to treat each token differently
+        "Authorization": `Bearer ${accessToken}`
       },
     });
 
@@ -205,8 +204,7 @@ async function createClip(broadcaster_id, token) {
       headers: {
         "Content-type": "application/json",
         "Client-Id": CLIP_TWITCH_CLIENT_ID,
-        "Authorization": `Bearer ${token}`,
-        "X-Custom-Header": token, // Forces Next.js to treat each token differently
+        "Authorization": `Bearer ${token}`
       },
     });
     const response = await request.json();
