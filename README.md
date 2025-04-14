@@ -44,6 +44,11 @@ This is the structure of the application:
 |  |  |    |-- lastgame/
 |  |  |    |-- rank/
 |  |  |    |-- schedule/
+|  |  |    
+|  |  |-- terms
+|  |       |-- contact/
+|  |       |-- privacy-policy/
+|  |       |-- end-user-agreement/
 |  |
 |  |--api/
 |     |-- spotify/
