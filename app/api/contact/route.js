@@ -11,9 +11,10 @@ const waitTime = 60000; // 60 seconds
 
 
 ///////////////////////////////////////////////////////
-// Pending: Rate limit based on IP
-// When a message is sent, the IP is stored in the Map with a timer.
-// After 2 minutes, the timer runs and deletes the IP automatically.
+// Pending: 
+// - Rate limit based on IP
+// - When a message is sent, the IP is stored in the Map with a timer.
+// - After 2 minutes, the timer runs and deletes the IP automatically.
 // 
 // const forwardedFor = request.headers.get("x-forwarded-for");
 // const ip = forwardedFor?.split(",")[0] || "unknown";
