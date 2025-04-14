@@ -5,20 +5,39 @@ const DOMAIN = process.env.MAILGUN_DOMAIN;
 const MAIL_FROM = process.env.MAILGUN_MAIL_FROM; // @${DOMAIN}
 const MAIL_TO = process.env.MAILGUN_MAIL_TO;
 const SUBJECT = "Website c4ldas.com.br";
-const TEXT = "This is a test message";
 
 let lastMessageEpoch;
 const waitTime = 60000; // 60 seconds
 
 
+///////////////////////////////////////////////////////
+// Pending: Rate limit based on IP
+// When a message is sent, the IP is stored in the Map with a timer.
+// After 2 minutes, the timer runs and deletes the IP automatically.
+// 
+// const forwardedFor = request.headers.get("x-forwarded-for");
+// const ip = forwardedFor?.split(",")[0] || "unknown";
+// const now = Date.now();
+// const lastSent = ipTimestamps.get(ip);
+// if (lastSent && now - lastSent < COOLDOWN_MS) {
+//   throw new Error("Cooldown active"); // silent fail
+// }
+// ipTimestamps.set(ip, now);
+// setTimeout(() => ipTimestamps.delete(ip), COOLDOWN_MS);
+///////////////////////////////////////////////////////
+
+
 export async function POST(request) {
-  console.log("IP:", request.headers.get("x-forwarded-for"));
+
+
   try {
+    // Change below to rate limit based on IP
     const rateLimit = checkRateLimit(Date.now());
     if (rateLimit.status == "failed") throw new Error("Rate limited");
 
-    /*
-    const request = await fetch(`https://api.mailgun.net/v3/${DOMAIN}/messages`, {
+    const body = await request.json();
+
+    const mailRequest = await fetch(`https://api.mailgun.net/v3/${DOMAIN}/messages`, {
       method: "POST",
       headers: {
         "Authorization": "Basic " + Buffer.from(`api:${TOKEN}`).toString("base64"),
@@ -29,19 +48,19 @@ export async function POST(request) {
         "from": `${MAIL_FROM}@${DOMAIN}`,
         "to": MAIL_TO,
         "subject": SUBJECT,
-        "text": TEXT,
+        "text": `From: ${body.name}\nEmail: ${body.email}\n\n${body.msg}`,
 
       }).toString()
     });
 
-    if (!request.ok) {
-      console.error("Failed to send message:", await request.text());
+    if (!mailRequest.ok) {
+      console.error("Failed to send message:", await mailRequest.text());
       return NextResponse.json({ status: "failed", message: "Failed to send message" });
     }
 
-    const response = await request.json();
+    const response = await mailRequest.json();
     console.log("Email sent:", response.id);
-    */
+
     lastMessageEpoch = Date.now();
     return NextResponse.json({ status: "success", message: "Message sent!" });
 
@@ -56,8 +75,13 @@ export async function GET(request) {
 }
 
 
-// Rate limit of 1 min
+
+// Change it based on IP
 function checkRateLimit(date) {
+
+
+
+  // Rate limit of 1 min
   if (date - lastMessageEpoch <= waitTime) {
 
     const timeRemaining = waitTime - (date - lastMessageEpoch);
