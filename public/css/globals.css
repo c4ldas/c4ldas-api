@@ -125,14 +125,6 @@ a:visited {
   padding: 20px;
 }
 
-.footer {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-  background-color: hsla(0, 0%, 100%, .5);
-}
-
-
 .code {
   outline: solid;
   outline-color: black;
@@ -405,4 +397,28 @@ td {
 .region {
   color: #ff0000;
   font-weight: 700;
+}
+
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  background-color: hsla(0, 0%, 100%, 0.5);
+}
+
+.footer a,
+.footer a:visited,
+.footer .separator {
+  color: black;
+}
+
+.footer .legal-links {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9rem;
+  align-items: center;
+  text-align: center;
 }
