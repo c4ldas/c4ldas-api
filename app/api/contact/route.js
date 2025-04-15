@@ -29,10 +29,8 @@ const waitTime = 60000; // 60 seconds
 
 
 export async function POST(request) {
-
-
   try {
-    // Change below to rate limit based on IP
+    // Pending: Change below to rate limit based on IP
     const rateLimit = checkRateLimit(Date.now());
     if (rateLimit.status == "failed") throw new Error("Rate limited");
 
@@ -77,10 +75,8 @@ export async function GET(request) {
 
 
 
-// Change it based on IP
+// Pending: Change it based on IP
 function checkRateLimit(date) {
-
-
 
   // Rate limit of 1 min
   if (date - lastMessageEpoch <= waitTime) {
