@@ -8,7 +8,7 @@ export default async function EndUserAgreement() {
       <main className="main block">
         <div>
           <h1 className="title">End User Agreement</h1>
-          <h2 className="subtitle">Last Updated: 02-April-2025</h2>
+          <h2 className="subtitle">Last Updated: 15-April-2025</h2>
         </div>
 
         <p>
@@ -65,7 +65,14 @@ export default async function EndUserAgreement() {
         </p>
 
         <h3>9. Spotify Specific Conditions</h3>
-        <p> If you use features on our Website that involve Spotify, you acknowledge and agree to the following terms as required by Spotify: </p> <ul> <li>We do <strong>not make any warranties or representations</strong> on behalf of Spotify and expressly disclaim all implied warranties with respect to the Spotify Platform, Spotify Service, and Spotify Content, including the implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</li> <li>You are prohibited from <strong>modifying or creating derivative works</strong> based on the Spotify Platform, Spotify Service, or Spotify Content.</li> <li>You are prohibited from <strong>decompiling, reverse-engineering, disassembling, or otherwise reducing</strong> the Spotify Platform, Spotify Service, or Spotify Content to a human-perceivable form, to the fullest extent permitted by law.</li> <li><strong>You are solely responsible</strong> for your use of our Website and services. Spotify shall not be held liable for any issues arising from your use of the Website or its Spotify-integrated features.</li> <li>Spotify is a <strong>third-party beneficiary</strong> of this Agreement and our Privacy Policy, and is entitled to directly enforce the terms against you.</li> </ul>
+        <p> If you use features on our Website that involve Spotify, you acknowledge and agree to the following terms as required by Spotify: </p>
+        <ul>
+          <li>We do <strong>not make any warranties or representations</strong> on behalf of Spotify and expressly disclaim all implied warranties with respect to the Spotify Platform, Spotify Service, and Spotify Content, including the implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</li>
+          <li>You are prohibited from <strong>modifying or creating derivative works</strong> based on the Spotify Platform, Spotify Service, or Spotify Content.</li>
+          <li>You are prohibited from <strong>decompiling, reverse-engineering, disassembling, or otherwise reducing</strong> the Spotify Platform, Spotify Service, or Spotify Content to a human-perceivable form, to the fullest extent permitted by law.</li>
+          <li><strong>You are solely responsible</strong> for your use of our Website and services. Spotify shall not be held liable for any issues arising from your use of the Website or its Spotify-integrated features.</li>
+          <li>Spotify is a <strong>third-party beneficiary</strong> of this Agreement and our Privacy Policy, and is entitled to directly enforce the terms against you.</li>
+        </ul>
 
         <h3>10. Contact Information</h3>
         <p>
