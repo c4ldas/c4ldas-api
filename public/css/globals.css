@@ -54,6 +54,14 @@ body {
   line-height: 1.5;
 }
 
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
 .container {
   width: 100%;
   margin: auto;
@@ -223,6 +231,7 @@ a:visited {
   box-shadow: rgba(55, 47, 47, 0.48) 0px 2px 10px 0px;
   white-space: normal;
   padding: 10px;
+  color: var(--color);
 }
 
 .generate-code {
@@ -347,6 +356,13 @@ dialog {
 dialog::backdrop {
   backdrop-filter: blur(6px) brightness(0.8);
 }
+
+.dialog {
+  visibility: visible;
+  margin-left: 10px;
+  background-color: var(--popup-color);
+}
+
 
 
 /* Toggle for widgets page */
