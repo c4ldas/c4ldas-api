@@ -72,6 +72,8 @@ export default async function EndUserAgreement() {
           <li>You are prohibited from <strong>decompiling, reverse-engineering, disassembling, or otherwise reducing</strong> the Spotify Platform, Spotify Service, or Spotify Content to a human-perceivable form, to the fullest extent permitted by law.</li>
           <li><strong>You are solely responsible</strong> for your use of our Website and services. Spotify shall not be held liable for any issues arising from your use of the Website or its Spotify-integrated features.</li>
           <li>Spotify is a <strong>third-party beneficiary</strong> of this Agreement and our Privacy Policy, and is entitled to directly enforce the terms against you.</li>
+          <li><strong>Data Handling</strong>: You agree to provide consent for the collection and use of your Spotify data, such as authentication tokens, for the specific integration purposes outlined on this Website. You acknowledge that these tokens will be securely stored and only used to enable the features provided by this Website, and will not be shared with unauthorized third parties.</li>
+          <li><strong>Compliance with Spotify&apos;s Developer Terms</strong>: Your use of the Spotify-integrated features on this Website is governed by both this Agreement and Spotify&apos;s Developer Terms of Service. You are responsible for reviewing and complying with these terms, ensuring that your use of the Spotify Platform and related services is consistent with Spotify&apos;s policies.</li>
         </ul>
 
         <h3>10. Contact Information</h3>
