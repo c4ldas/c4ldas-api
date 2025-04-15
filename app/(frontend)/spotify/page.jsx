@@ -131,14 +131,20 @@ export default function Spotify({ _, searchParams }) {
               With this integration, you can generate a widget to show which song is currently playing.
               {/* With this integration, you can show on chat which song is currently playing on Spotify. */}
             </p>
-            <p>Click on the button below to login with Spotify.</p>
+
+            <p>
+              By authenticating with Spotify,
+              you grant permission for this widget to access certain information from your Spotify account, i
+              ncluding your current playback details (song, artist, album).
+            </p>
+            <p>Click the button below to log in with Spotify:</p>
             <a href={baseURL + urlSearchParams.toString()}>
               <button type="submit">Login with Spotify</button>
             </a>
           </>
         )}
         {error && <p>Error: {error}</p>}
-        <p>By using &ldquo;Now Playing Song&rdquo; widget, you agree with <a href="/terms/end-user-agreement">End user agreement</a> and <a href="/terms/privacy-policy">Privacy policy</a></p>
+        <p>By using the &ldquo;Now Playing Song&rdquo; widget, you agree to our <a href="/terms/end-user-agreement">End user agreement</a> and <a href="/terms/privacy-policy">Privacy policy</a></p>
       </main>
       <FooterComponent />
     </div >
