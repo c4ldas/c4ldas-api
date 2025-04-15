@@ -1,7 +1,7 @@
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
 
-export default async function PrivacyPolicy() {
+export default async function EndUserAgreement() {
   return (
     <div className="container">
       <Header />
@@ -64,7 +64,10 @@ export default async function PrivacyPolicy() {
           We encourage you to review this Agreement periodically.
         </p>
 
-        <h3>9. Contact Information</h3>
+        <h3>9. Spotify Specific Conditions</h3>
+        <p> If you use features on our Website that involve Spotify, you acknowledge and agree to the following terms as required by Spotify: </p> <ul> <li>We do <strong>not make any warranties or representations</strong> on behalf of Spotify and expressly disclaim all implied warranties with respect to the Spotify Platform, Spotify Service, and Spotify Content, including the implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</li> <li>You are prohibited from <strong>modifying or creating derivative works</strong> based on the Spotify Platform, Spotify Service, or Spotify Content.</li> <li>You are prohibited from <strong>decompiling, reverse-engineering, disassembling, or otherwise reducing</strong> the Spotify Platform, Spotify Service, or Spotify Content to a human-perceivable form, to the fullest extent permitted by law.</li> <li><strong>You are solely responsible</strong> for your use of our Website and services. Spotify shall not be held liable for any issues arising from your use of the Website or its Spotify-integrated features.</li> <li>Spotify is a <strong>third-party beneficiary</strong> of this Agreement and our Privacy Policy, and is entitled to directly enforce the terms against you.</li> </ul>
+
+        <h3>10. Contact Information</h3>
         <p>
           If you have any questions about this Agreement, please contact us via our <a href="/terms/contact">Contact Page</a>.
         </p>
