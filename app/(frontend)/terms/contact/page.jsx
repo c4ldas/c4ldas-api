@@ -6,87 +6,98 @@ import { useState } from "react";
 
 const maxCharacters = 500;
 
-///////////////////////////////////////////////////////
-// Pending: 
-// - Dialog to inform message failed or sent successfully
-// - If message failed, do not clear the form
-// - Adjust time to remove read-only status from form
-// - Make the form more atractive visually
-///////////////////////////////////////////////////////
-
-
 export default function Contact({ params, searchParams }) {
 
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [msg, setMsg] = useState();
   const [remaining, setRemaining] = useState(maxCharacters);
-  const [result, setResult] = useState();
-  const [readOnly, setReadOnly] = useState(false);
-  const [color, setColor] = useState();
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [submitValue, setSubmitValue] = useState("Send message");
 
   async function sendMessage(e) {
-    e.preventDefault();
-    document.querySelector("#remaining-characters").style.visibility = "hidden";
-    setReadOnly(true);
-    setColor("hsl(0, 0%, 0%, 0.3)");
+    try {
+      e.preventDefault();
 
+      const result = document.querySelector("#result");
+      setIsDisabled(true);
+      setSubmitValue("Sending...");
 
-    const request = await fetch("/api/contact", {
-      method: "POST",
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        msg: msg
-      })
-    });
+      const request = await fetch("/api/contact", {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          msg: msg
+        })
+      });
 
-    const response = await request.json();
-    setResult(response.status);
+      if (!request.ok) throw new Error();
 
-    setTimeout(() => {
-      document.querySelector("#remaining-characters").style.visibility = "visible";
-      document.querySelector("#form").reset();
-      setResult("");
-      setColor("");
-      setReadOnly(false)
-    }, 30 * 1000);
+      const response = await request.json();
 
+      result.innerText = response.status == "success" ? "✅ Message sent!" : "❌ Failed to send. Try again in a few minutes."
+      setSubmitValue("Send message");
+
+      setTimeout(() => {
+        document.querySelector("#remaining-characters").style.visibility = "visible";
+        response.status == "success" ? document.querySelector("#form").reset() : "";
+        setSubmitValue("Send message");
+        setIsDisabled(false);
+        setRemaining(maxCharacters);
+        result.innerText = "";
+      }, 5 * 1000);
+
+    } catch (error) {
+      result.innerText = "❌ Failed to send. Please use the alternative methods to get in touch.";
+
+      setTimeout(() => {
+        document.querySelector("#remaining-characters").style.visibility = "visible";
+        // document.querySelector("#form").reset();
+        setSubmitValue("Send message");
+        setIsDisabled(false);
+        setRemaining(maxCharacters);
+        result.innerText = "";
+      }, 10 * 1000);
+
+    }
   }
+
 
   return (
     <div className="container">
       <Header />
-      <main className="main block">
+      <main className="main block relative">
         <div>
-          <h1 className="title">Contact page</h1>
+          <h1 className="title">Contact</h1>
         </div>
 
         <p>
-          You can contact me at the form below or using any links in the footer of the page (GitHub, Twitter, Twitch, etc). You can also look for me on Discord as <strong>c4ldas</strong>.
+          You can reach out using the form below or through any of the links in the footer (GitHub, Twitter, Twitch, etc).
+          <br />
+          Alternatively, you can find me on Discord as <strong>c4ldas</strong>.
+          <br /><br />
+          Responses will be sent to the email provided in the form.
         </p>
 
-        <form id="form" onSubmit={sendMessage} className="form-inline" style={{ paddingTop: "10px", width: "50px" }}>
+        <form id="form" onSubmit={sendMessage} className="form-inline" style={{ padding: "10px 0 10px 0", width: "150px" }}>
 
-          <input type="text" required={true} readOnly={readOnly} onChange={(e) => setName(e.target.value)} placeholder="Your name" style={{ backgroundColor: color, width: "300px", padding: "10px", marginTop: "10px" }} ></input>
+          <input type="text" required={true} onChange={(e) => setName(e.target.value)} placeholder="Your name" style={{ width: "300px", padding: "10px", marginTop: "10px" }} ></input>
 
-          <input type="email" required={true} readOnly={readOnly} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" style={{ backgroundColor: color, width: "300px", padding: "10px", marginTop: "10px" }} ></input>
+          <input type="email" required={true} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" style={{ width: "300px", padding: "10px", marginTop: "10px" }} ></input>
 
-          <textarea required={true} rows={10} maxLength={maxCharacters} readOnly={readOnly} title="text" onChange={(e) => {
+          <textarea required={true} rows={10} maxLength={maxCharacters} title="text" onChange={(e) => {
             setMsg(e.target.value);
             setRemaining(maxCharacters - e.target.textLength);
           }}
-            style={{ backgroundColor: color, width: "300px", padding: "5px", marginTop: "10px" }}
+            style={{ width: "300px", padding: "5px", marginTop: "10px" }}
           ></textarea>
-          <div id="remaining-characters" style={{ width: "300px" }}>{remaining} characters remaining</div>
-          <input type="submit" value="Send message" disabled={readOnly} />
+          <div id="remaining-characters" style={{ width: "300px", fontSize: "0.8rem", margin: "0 0 5px 0", textAlign: "right" }}>{remaining} characters left</div>
+          <input type="submit" id="submit" className="formatted" value={submitValue} disabled={isDisabled} />
 
         </form>
-        <div id="response">{result}</div>
-
+        <span id="result"></span>
       </main>
-
-
       <FooterComponent />
     </div>
   );
