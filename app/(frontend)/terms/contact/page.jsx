@@ -13,14 +13,20 @@ export default function Contact({ params, searchParams }) {
   const [msg, setMsg] = useState();
   const [remaining, setRemaining] = useState(maxCharacters);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [readOnly, setReadOnly] = useState(false);
   const [submitValue, setSubmitValue] = useState("Send message");
 
   async function sendMessage(e) {
     try {
       e.preventDefault();
 
+      document.querySelector("#email").style.color = "#757575";
+      document.querySelector("#name").style.color = "#757575";
+      document.querySelector("#textarea").style.color = "#757575";
+
       const result = document.querySelector("#result");
       setIsDisabled(true);
+      setReadOnly(true);
       setSubmitValue("Sending...");
 
       const request = await fetch("/api/contact", {
@@ -42,23 +48,30 @@ export default function Contact({ params, searchParams }) {
       setTimeout(() => {
         document.querySelector("#remaining-characters").style.visibility = "visible";
         response.status == "success" ? document.querySelector("#form").reset() : "";
+        document.querySelector("#email").style.color = "var(--color)";
+        document.querySelector("#name").style.color = "var(--color)";
+        document.querySelector("#textarea").style.color = "var(--color)";
         setSubmitValue("Send message");
         setIsDisabled(false);
+        setReadOnly(false);
         setRemaining(maxCharacters);
         result.innerText = "";
-      }, 5 * 1000);
+      }, 4 * 1000);
 
     } catch (error) {
       result.innerText = "❌ Failed to send. Please use the alternative methods to get in touch.";
 
       setTimeout(() => {
         document.querySelector("#remaining-characters").style.visibility = "visible";
-        // document.querySelector("#form").reset();
+        document.querySelector("#email").style.color = "var(--color)";
+        document.querySelector("#name").style.color = "var(--color)";
+        document.querySelector("#textarea").style.color = "var(--color)";
         setSubmitValue("Send message");
         setIsDisabled(false);
+        setReadOnly(false);
         setRemaining(maxCharacters);
         result.innerText = "";
-      }, 10 * 1000);
+      }, 6 * 1000);
 
     }
   }
@@ -82,11 +95,11 @@ export default function Contact({ params, searchParams }) {
 
         <form id="form" onSubmit={sendMessage} className="form-inline" style={{ padding: "10px 0 10px 0", width: "150px" }}>
 
-          <input type="text" required={true} onChange={(e) => setName(e.target.value)} placeholder="Your name" style={{ width: "300px", padding: "10px", marginTop: "10px" }} ></input>
+          <input id="name" type="text" required={true} readOnly={readOnly} onChange={(e) => setName(e.target.value)} placeholder="Your name" style={{ width: "300px", padding: "10px", marginTop: "10px" }} ></input>
 
-          <input type="email" required={true} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" style={{ width: "300px", padding: "10px", marginTop: "10px" }} ></input>
+          <input id="email" type="email" required={true} readOnly={readOnly} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" style={{ width: "300px", padding: "10px", marginTop: "10px" }} ></input>
 
-          <textarea required={true} rows={10} maxLength={maxCharacters} title="text" onChange={(e) => {
+          <textarea id="textarea" required={true} readOnly={readOnly} rows={10} maxLength={maxCharacters} title="text" onChange={(e) => {
             setMsg(e.target.value);
             setRemaining(maxCharacters - e.target.textLength);
           }}
