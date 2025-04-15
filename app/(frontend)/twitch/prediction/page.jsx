@@ -146,7 +146,7 @@ export default function Twitch({ _, searchParams }) {
 
             {/* <!-- pop-up dialog box, containing a form --> */}
             <dialog id="copy-success" style={{ visibility: "visible", marginLeft: "10px", backgroundColor: "var(--popup-color)" }}>Code copied to clipboard</dialog>
-            <dialog id="dialog" className="dialog">
+            <dialog id="dialog">
               <div id="dialog-title">
                 Are you sure you want to remove the integration?<br />
                 You can re-add it at any time.
