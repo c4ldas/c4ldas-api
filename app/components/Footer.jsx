@@ -24,6 +24,14 @@ export default function FooterComponent() {
           <Image className="icons" src="/images/github.svg" width={20} height={20} alt="github" />
         </Link>
       </nav>
+
+      <nav className="legal-links">
+        <Link href="/terms/contact">Contact</Link>
+        <span className="separator"> | </span>
+        <Link href="/terms/end-user-agreement">End User Agreement</Link>
+        <span className="separator"> | </span>
+        <Link href="/terms/privacy-policy">Privacy Policy</Link>
+      </nav>
     </footer >
   )
 }
