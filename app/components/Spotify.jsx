@@ -76,7 +76,7 @@ export default function SpotifyNowPlaying({ userId }) {
     setSongName(message);
     setSongUrl("");
     setArtistName("");
-    setAlbumArt("https://placeholder.pics/svg/96x96/646464-A7A7A7/000000/waiting");
+    setAlbumArt("/images/placeholder_96x96.svg");
     setAlbumUrl("");
     setNextSong("");
     setCurrentTime(0);
@@ -113,7 +113,7 @@ export default function SpotifyNowPlaying({ userId }) {
 
   return (
     <div id="spotify-container" className="spotify-container">
-      {albumArt && <a href={albumUrl}><Image className="album-art" src={albumArt} alt="Album Art" /></a>}
+      {albumArt && <a href={albumUrl}><Image className="album-art" src={albumArt} height={96} width={96} alt="Album Art" /></a>}
       <div className="song-info">
         <div className="song-header">
           <p className={`song-name ${songName.length > 20 ? "scroll" : ""}`}>{songName}</p>
@@ -128,7 +128,7 @@ export default function SpotifyNowPlaying({ userId }) {
           </div>
         }
       </div>
-      <a href={songUrl}><Image className="spotify-logo" src="/images/spotify_logo_green.svg" alt="Spotify Logo" /></a>
+      <a href={songUrl}><Image className="spotify-logo" width={96} height={96} src="/images/spotify_logo_green.svg" alt="Spotify Logo" /></a>
     </div>
   );
 }
