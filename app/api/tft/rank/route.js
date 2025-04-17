@@ -43,6 +43,7 @@ export async function GET(request) {
 async function sendResponse(response, type, msg, error) {
 
   if (error) {
+    console.log(message);
     if (type == "text") {
       const { message, player, tag, } = error.error;
       return new Response(`Error: ${message}. Player: ${player}, tag: ${tag}`, { status: 200 });
@@ -56,6 +57,8 @@ async function sendResponse(response, type, msg, error) {
     .replace(/\(points\)/g, response.leaguePoints)
     .replace(/\(wins\)/g, response.wins)
     .replace(/\(losses\)/g, response.losses);
+
+  console.log(message);
 
   if (type == "text") {
     return new Response(message, { status: 200 });
