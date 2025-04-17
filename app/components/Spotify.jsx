@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "@/public/css/spotify.css";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 
+const MAX_SONG_LENGTH = 25;
+const MAX_ARTIST_LENGTH = 30;
+
 export default function SpotifyNowPlaying({ userId }) {
+
   const { id: paramId } = useParams();
   const id = userId || paramId; // Use prop if provided, else use URL param
 
@@ -21,6 +25,8 @@ export default function SpotifyNowPlaying({ userId }) {
   const [nextSong, setNextSong] = useState("");
   const [timelineProgress, setTimelineProgress] = useState(0);
   const [showTimeline, setShowTimeline] = useState(true);
+  const [songWidth, setSongWidth] = useState("auto");
+  const [artistWidth, setArtistWidth] = useState("auto");
 
   useEffect(() => {
     setOrigin(window.location.origin);
@@ -31,6 +37,18 @@ export default function SpotifyNowPlaying({ userId }) {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+  }
+
+  // Truncate words / sentences larger than 35 characters
+  function truncate(str, max = 35) {
+    if (str.length > max) {
+      return str.slice(0, max) + "...";
+    }
+    return str;
+  }
+
+  function textWidth(text, averageCharWidth = 8) {
+    return `${text.length * averageCharWidth}px`;
   }
 
   // Function to fetch data from API
@@ -59,9 +77,11 @@ export default function SpotifyNowPlaying({ userId }) {
 
   // Function to update UI with new song data
   function updateUI(data) {
+
     setSongName(data.name || "Unknown Song");
-    setSongUrl(data.song_url || "");
     setArtistName(data.artists_array.map((artist) => artist.name).join(", ") || "Unknown Artist");
+
+    setSongUrl(data.song_url || "");
     setAlbumArt(data.album_art?.[1]?.url || "");
     setAlbumUrl(data.album_url || "");
     setNextSong(data.next_song ? `Next song: ${data.next_song}` : "");
@@ -69,6 +89,7 @@ export default function SpotifyNowPlaying({ userId }) {
     setDuration(data.duration_ms / 1000);
     setIsPlaying(data.is_playing);
     setShowTimeline(true);
+
   }
 
   // Function to reset UI when there's no song or user error
@@ -92,10 +113,19 @@ export default function SpotifyNowPlaying({ userId }) {
     }
   }
 
+  // Update text width
+  useEffect(() => {
+    songName.length > MAX_SONG_LENGTH ? setSongWidth(textWidth(songName)) : "";
+    artistName.length > MAX_ARTIST_LENGTH ? setArtistWidth(textWidth(artistName, 6)) : "";
+    // setArtistWidth(textWidth(artistName, 6));
+  }, [songName, artistName]);
+
+  // Update timeline
   useEffect(() => {
     updateTimeline();
   }, [currentTime, duration]);
 
+  // Fetch Spotify data
   useEffect(() => {
     fetchSpotifyData();
     const interval = setInterval(fetchSpotifyData, 3000);
@@ -115,11 +145,13 @@ export default function SpotifyNowPlaying({ userId }) {
     <div id="spotify-container" className="spotify-container">
       {albumArt && <a href={albumUrl}><Image className="album-art" src={albumArt} height={96} width={96} alt="Album Art" /></a>}
       <div className="song-info">
-        <div className="song-header">
-          <p className={`song-name ${songName.length > 20 ? "scroll" : ""}`}>{songName}</p>
+        <div className="song-header" >
+          <p className={`song-name ${songName.length > 23 ? "scroll" : ""}`} style={{ width: songWidth }}>{songName}</p>
         </div>
-        <p className="artist">{artistName}</p>
-        <p className="next-song">{nextSong}</p>
+        <div className="artist-header" style={{ width: artistWidth }}>
+          <p className={`artist-name ${artistName.length > 30 ? "scroll" : ""}`}>{artistName}</p>
+        </div>
+        <p className="next-song">{truncate(nextSong, 80)}</p>
         {showTimeline &&
           <div id="timeline-container" className="timeline-container">
             <span className="time-label elapsedTime">{formatTime(currentTime)}</span>
