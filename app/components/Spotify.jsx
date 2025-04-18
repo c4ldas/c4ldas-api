@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import "@/public/css/spotify.css";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-
-const MAX_SONG_LENGTH = 25;
-const MAX_ARTIST_LENGTH = 30;
+import Marquee from 'react-fast-marquee';
 
 export default function SpotifyNowPlaying({ userId }) {
 
@@ -25,9 +23,8 @@ export default function SpotifyNowPlaying({ userId }) {
   const [nextSong, setNextSong] = useState("");
   const [timelineProgress, setTimelineProgress] = useState(0);
   const [showTimeline, setShowTimeline] = useState(true);
-  const [songWidth, setSongWidth] = useState("auto");
-  const [artistWidth, setArtistWidth] = useState("auto");
 
+  // Get origin
   useEffect(() => {
     setOrigin(window.location.origin);
   }, []);
@@ -45,10 +42,6 @@ export default function SpotifyNowPlaying({ userId }) {
       return str.slice(0, max) + "...";
     }
     return str;
-  }
-
-  function textWidth(text, averageCharWidth = 8) {
-    return `${text.length * averageCharWidth}px`;
   }
 
   // Function to fetch data from API
@@ -113,13 +106,6 @@ export default function SpotifyNowPlaying({ userId }) {
     }
   }
 
-  // Update text width
-  useEffect(() => {
-    songName.length > MAX_SONG_LENGTH ? setSongWidth(textWidth(songName)) : "";
-    artistName.length > MAX_ARTIST_LENGTH ? setArtistWidth(textWidth(artistName, 6)) : "";
-    // setArtistWidth(textWidth(artistName, 6));
-  }, [songName, artistName]);
-
   // Update timeline
   useEffect(() => {
     updateTimeline();
@@ -146,10 +132,16 @@ export default function SpotifyNowPlaying({ userId }) {
       {albumArt && <a href={albumUrl}><Image className="album-art" src={albumArt} height={96} width={96} alt="Album Art" /></a>}
       <div className="song-info">
         <div className="song-header" >
-          <p className={`song-name ${songName.length > 23 ? "scroll" : ""}`} style={{ width: songWidth }}>{songName}</p>
+          <Marquee speed={songName.length < 24 ? 0 : 50} direction="left">
+            <p className={"song-name"}>{songName}</p>
+            <span style={{ width: "20px", display: "inline-block" }}></span>
+          </Marquee>
         </div>
-        <div className="artist-header" style={{ width: artistWidth }}>
-          <p className={`artist-name ${artistName.length > 30 ? "scroll" : ""}`}>{artistName}</p>
+        <div className="artist-header" >
+          <Marquee speed={artistName.length < 35 ? 0 : 25} direction="left">
+            <p className={"artist-name"}> {artistName}</p>
+            <span style={{ width: "20px", display: "inline-block" }}></span>
+          </Marquee>
         </div>
         <p className="next-song">{truncate(nextSong, 80)}</p>
         {showTimeline &&
