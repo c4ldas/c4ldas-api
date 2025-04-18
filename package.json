@@ -18,7 +18,8 @@
     "next-themes": "^0.3.0",
     "pg": "^8.12.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-fast-marquee": "^1.6.5"
   },
   "devDependencies": {
     "crypto-js": "^4.2.0",
