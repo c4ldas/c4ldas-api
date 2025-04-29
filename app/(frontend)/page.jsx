@@ -52,7 +52,7 @@ export default async function Home() {
           title="Spotify Now Playing"
           description="Inform your viewers about the song title and artist currently playing on your livestream."
           link="/spotify"
-          span=" Currently undergoing maintenance."
+          /* span=" Currently undergoing maintenance." */
           spanClass="red"
         />
 
