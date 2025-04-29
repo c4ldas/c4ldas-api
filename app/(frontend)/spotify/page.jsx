@@ -58,9 +58,9 @@ export default function Spotify({ _, searchParams }) {
   }
 
   function copyCode(event) {
-    console.log(event.target.textContent);
+    const command = event.target.getAttribute("datacommand");
     const dialog = document.getElementById("copy-success");
-    navigator.clipboard.writeText(event.target.textContent);
+    navigator.clipboard.writeText(command);
 
     // Show the dialog next to the clicked element
     dialog.style.top = (event.pageY - 70) + "px";
@@ -86,14 +86,8 @@ export default function Spotify({ _, searchParams }) {
             <p><strong>Display name:</strong> {cookie.spotify_display_name} </p>
             <p><strong>ID:</strong> {cookie.spotify_id}</p>
 
-            <h3>Widget URL (click to copy)</h3>
-            <code style={{ border: "1px solid black", padding: "10px", cursor: "pointer" }} onClick={copyCode}>{origin}/spotify/musica/{cookie.spotify_id}</code>
-
-            <h3>Preview (Open Spotify to see the preview):</h3>
-            <SpotifyNowPlaying userId={cookie.spotify_id} />
-
-            {/* 
-            <h3>Create command (click to copy):</h3>
+            <br />
+            <h3>Chat command (click to copy):</h3>
             <code
               style={{ border: "1px solid black", cursor: "pointer", padding: "10px" }}
               onClick={copyCode}
@@ -102,12 +96,21 @@ export default function Spotify({ _, searchParams }) {
               .me $(sender) ► $(customapi.{origin}/api/spotify/musica/...)
             </code>
 
+            {/* 
             <h3>How to use it:</h3>
             <code style={{ border: "1px solid black", padding: "10px" }}>!musica</code>
 
             <h3>Chat response:</h3>
             <code style={{ border: "1px solid black", padding: "10px" }}>Rick Astley - Never Gonna Give You Up</code>
             */}
+
+            <br /><br /><br />
+            <h3>Widget URL (click to copy)</h3>
+            <code style={{ border: "1px solid black", padding: "10px", cursor: "pointer" }} onClick={copyCode}>{origin}/spotify/musica/{cookie.spotify_id}</code>
+
+            <h3>Preview (Open Spotify to see the preview):</h3>
+            <SpotifyNowPlaying userId={cookie.spotify_id} />
+
 
             {/* <!-- pop-up dialog box, containing a form --> */}
             <dialog id="copy-success" style={{ visibility: "visible", marginLeft: "10px", backgroundColor: "var(--popup-color)" }}>Code copied to clipboard</dialog>
@@ -128,19 +131,17 @@ export default function Spotify({ _, searchParams }) {
         {!cookie.spotify_id && (
           <>
             <p>
-              With this integration, you can generate a widget to show which song is currently playing.
-              {/* With this integration, you can show on chat which song is currently playing on Spotify. */}
+              With this integration, you can show on chat which song is currently playing on Spotify. You can also generate a widget with the song is currently playing.
             </p>
 
-            <p>
-              By authenticating with Spotify,
-              you grant permission for this widget to access certain information from your Spotify account, i
-              ncluding your current playback details (song, artist, album).
-            </p>
             <p>Click the button below to log in with Spotify:</p>
             <a href={baseURL + urlSearchParams.toString()}>
               <button type="submit">Login with Spotify</button>
             </a>
+            <p>
+              By authenticating with Spotify,
+              you grant permission for this widget to access certain information from your Spotify account, including your current playback details (song, artist, album).
+            </p>
           </>
         )}
         {error && <p>Error: {error}</p>}
