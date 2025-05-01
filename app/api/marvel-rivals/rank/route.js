@@ -3,6 +3,63 @@
  * https://mrapi.org/api/player/1688689681 
 **/
 
+/*
+PENDING:
+
+As mrapi.org API is now dead, update the code using tracker.gg API:
+- Cache requests for 10min
+- base URL: https://api.tracker.gg/api/v2/marvel-rivals
+- Method: GET
+- Headers:
+Cache-Control: -
+Origin: -
+User-Agent: -
+
+
+- Get current season and username:
+https://api.tracker.gg/api/v2/marvel-rivals/standard/profile/ign/USERNAME
+current_season: json.data.metadata.currentSeason
+username: json.data.platformInfo.platformUserHandle
+
+Incorrect username:
+{
+  "errors": [
+    {
+      "code": "CollectorResultStatus::NotFound",
+      "message": "We could not find the player XXXXXXX. Are you using the right Account Name?",
+      "data": {}
+    }
+  ]
+}
+
+
+- Get Rank and score:
+https://api.tracker.gg/api/v2/marvel-rivals/standard/profile/ign/USERNAME/stats/overview/ranked?mode=competitive
+rank: json.data.history.data[0][1].value[0] // Celestial II
+score: json.data.history.data[0][1].value[1] // 4974
+
+No rank data:
+{
+  "data": {
+    "history": null,
+    "leaderboard": null,
+    "expiryDate": "2025-05-01T04:51:42.6637698+00:00",
+    "bestMatches": null
+  }
+}
+
+
+- Get wins amount:
+https://api.tracker.gg/api/v2/marvel-rivals/standard/profile/ign/USERNAME/segments/career?mode=competitive&season=CURRENT_SEASON
+wins: json.data[0].stats.matchesWon.value // 15
+
+No data:
+{
+  "data": []
+}
+
+*/
+
 import { NextResponse } from "next/server";
 const MARVEL_RIVALS_API_KEY = process.env.MARVEL_RIVALS_API_KEY;
 
