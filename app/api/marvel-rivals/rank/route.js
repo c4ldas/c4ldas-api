@@ -105,7 +105,6 @@ export async function GET(request) {
     }
   });
 
-  console.log(seasonRequest);
   const seasonResponse = await seasonRequest.json();
 
   if (seasonResponse.errors) {
