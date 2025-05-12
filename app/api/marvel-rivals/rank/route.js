@@ -105,9 +105,8 @@ export async function GET(request) {
     }
   });
 
+  console.log(seasonRequest);
   const seasonResponse = await seasonRequest.json();
-
-  console.log(seasonResponse);
 
   if (seasonResponse.errors) {
     return NextResponse.json({ error: `Player not found: ${player}` }, { status: 200 });
