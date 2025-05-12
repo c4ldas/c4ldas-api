@@ -40,6 +40,8 @@ export default async function Home() {
           title="Marvel Rivals rank"
           description="Create a chat command to display your rank in Marvel Rivals."
           link="/marvel-rivals"
+          span=" Currently undergoing maintenance."
+          spanClass="red"
         />
 
         <Linkbox
