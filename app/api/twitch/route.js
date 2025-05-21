@@ -99,6 +99,57 @@ export async function GET(request) {
           required: false,
         }
       }
+    },
+    {
+      endpoint: `/api/twitch/clip/`,
+      description: "Create a Twitch clip.",
+      usage: `${origin}${pathname}/clip/?channel=CHANNELNAME&duration=DURATION&title=TITLE&type=TYPE`,
+      params: {
+        channel: {
+          description: "Twitch channel name to create the clip",
+          required: true,
+        },
+        duration: {
+          description: "Duration of the clip in seconds",
+          required: false,
+          default: 30,
+          additional_info: "Custom duration is not available for type 'text' and 'json', which will default to 30 seconds. Minimum: 5 seconds, Maximum: 30 seconds.",
+        },
+        title: {
+          description: "Title of the clip",
+          required: false,
+          additional_info: "Custom title is not available for type 'text' and 'json', which will default to the current stream title.",
+        },
+        type: {
+          description: "Type of response.",
+          required: false,
+          default: "text",
+          available_variables: ["text", "json", "full", "overlay"],
+          additional_info: ""
+        }
+      }
+    },
+    {
+      endpoint: `/api/twitch/replay/`,
+      description: "Generate a direct link to a Twitch clip (download URL).",
+      usage: `${origin}${pathname}/replay/?channel=CHANNELNAME&id=CLIPID&type=TYPE`,
+      params: {
+        channel: {
+          description: "Twitch channel name",
+          required: true,
+        },
+        id: {
+          description: "Clip ID",
+          required: true,
+        },
+        type: {
+          description: "Type of response.",
+          required: false,
+          default: "text",
+          available_variables: ["text", "json"],
+          additional_info: "'json' type will return more information about the clip whereas 'text' will return only the clip direct link."
+        }
+      }
     }
   ]
   );
