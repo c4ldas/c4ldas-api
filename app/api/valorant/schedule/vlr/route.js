@@ -239,8 +239,7 @@ async function sendResponse(response, status, type, channel, league, msg) {
 
   } else if (type == "text" && response.length == 0) {
     // Created a new custom message and send it when there are no games
-    // const message = msg.replaceAll(/\(league\)/g, validLeagues[league]); // Old array format
-    const leagueDisplayName = leagues.find(item => item.value === league).displayName; // new Object format
+    const leagueDisplayName = leagues.find(item => item.value === league).displayName;
     const message = msg.replaceAll(/\(league\)/g, leagueDisplayName);
     console.log(message);
     return new Response(message, { status: 200 });
