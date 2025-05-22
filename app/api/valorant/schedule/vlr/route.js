@@ -35,11 +35,6 @@ import { Temporal } from "@js-temporal/polyfill";
 const vlrQuery = (query) => `https://vlrggapi.vercel.app/match?q=${query}`;
 const list = ["upcoming", "live_score", "results"];
 
-// Old array format
-// const validLeagues = {
-//   "tixinha_invitational": "Tixinha Invitational by BONOXS",
-//   "vcb": "Gamers Club Challengers League 2025 Brazil: Split 1",
-// }
 
 const leagues = [
   {
@@ -77,6 +72,29 @@ const leagues = [
     name: "Valorant Champions 2025",
     displayName: "Champions 2025",
     value: "valorant_champions_2025"
+  },
+  {
+    name: "Esports World Cup 2025",
+    displayName: "EWC 2025",
+    value: "ewc_2025"
+  },
+  {
+    name: "Esports World Cup 2025",
+    displayName: "EWC 2025 - Americas Qualifier",
+    value: "ewc_2025_americas_qualifier",
+    round_info: "Americas Qualifier"
+  },
+  {
+    name: "Esports World Cup 2025",
+    displayName: "EWC 2025 - EMEA Qualifier",
+    value: "ewc_2025_emea_qualifier",
+    round_info: "EMEA Qualifier"
+  },
+  {
+    name: "Esports World Cup 2025",
+    displayName: "EWC 2025 - Pacific x Asian Champions League Qualifier",
+    value: "ewc_2025_pacific_qualifier",
+    round_info: "Pacific X Asian Champions League Qualifier"
   }
 ];
 
@@ -103,7 +121,6 @@ export async function GET(request) {
         const leagueName = leagues.find(item => item.value === league).name;
 
         const segments = response.data.segments.map((segment) => {
-          // if (segment.match_event == validLeagues[league] || segment.tournament_name == validLeagues[league]) { // Old array format
           if (segment.match_event == leagueName || segment.tournament_name == leagueName) {
             if (!segment.unix_timestamp) {
               // create unix_timestamp based on property "time_completed": "3h 41m ago"
@@ -142,8 +159,18 @@ export async function GET(request) {
       }
     }).filter(Boolean);
 
+    // Filter games by round_info
+    const roundFilteredGames = todayGames.filter((game) => {
+      const leagueName = leagues.find(item => item.value === league);
+      if (leagueName && leagueName.round_info) {
+        return game.round_info.startsWith(leagueName.round_info);
+      }
+      return true; // If no league is specified, return all games
+    })
 
-    return sendResponse(todayGames.flat(), 200, type, channel, league, msg)
+
+    // return sendResponse(todayGames.flat(), 200, type, channel, league, msg)
+    return sendResponse(roundFilteredGames.flat(), 200, type, channel, league, msg)
 
   } catch (error) {
     console.log(error);
