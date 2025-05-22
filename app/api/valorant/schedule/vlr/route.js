@@ -53,7 +53,6 @@ const leagues = [
     value: "vct_americas"
   },
   {
-    // Confirm later if this is the correct name
     name: "Champions Tour 2025: EMEA Stage 1",
     displayName: "VCT EMEA",
     value: "vct_emea"
