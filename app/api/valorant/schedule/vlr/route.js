@@ -158,18 +158,22 @@ export async function GET(request) {
       }
     }).filter(Boolean);
 
-    // Filter games by round_info
-    const roundFilteredGames = todayGames.filter((game) => {
-      const leagueName = leagues.find(item => item.value === league);
-      if (leagueName && leagueName.round_info) {
-        return game.round_info.startsWith(leagueName.round_info);
-      }
-      return true; // If no league is specified, return all games
-    })
+
+    // Filter games based on round_info
+    const leagueInfo = leagues.find(item => item.value === league);
+    const roundInfoFilter = leagueInfo?.round_info;
+
+    const filteredGames = todayGames.filter((game) => {
+      if (!roundInfoFilter) return true;
+      return (
+        (game.round_info && game.round_info.startsWith(roundInfoFilter)) ||
+        (game.match_series && game.match_series.startsWith(roundInfoFilter))
+      );
+    });
 
 
     // return sendResponse(todayGames.flat(), 200, type, channel, league, msg)
-    return sendResponse(roundFilteredGames.flat(), 200, type, channel, league, msg)
+    return sendResponse(filteredGames.flat(), 200, type, channel, league, msg)
 
   } catch (error) {
     console.log(error);
