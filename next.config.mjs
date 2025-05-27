@@ -15,6 +15,19 @@ const nextConfig = {
     ]
   },
 
+  async rewrites() {
+    return [
+      {
+        source: '/about',
+        destination: '/terms/about',
+      },
+      {
+        source: '/contact',
+        destination: '/terms/contact',
+      }
+    ]
+  },
+
 
   images: {
     remotePatterns: [
