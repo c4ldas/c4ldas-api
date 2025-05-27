@@ -33,7 +33,7 @@ export default function About() {
 
         <section style={{ marginTop: '2rem' }}>
           <h2>Professional Experience</h2>
-          <p>This is a brief overview of some roles I&#39;ve held&#8212;my full professional background includes a wider range of experience in support, infrastructure, and development.</p>
+          <p>This is a brief overview of some roles I&#39;ve held&#8212;my full professional background includes a wider range of experience in support and infrastructure.</p>
           <ul>
             <li><strong>Senior Technical Support Engineer at VMware</strong>: Specialized in supporting vSphere and ESXi environments for enterprise customers.</li>
             <li><strong>Technical Support Analyst at Dell</strong>: Provided enterprise support for data protection solutions, including Avamar and Data Domain systems.</li>
