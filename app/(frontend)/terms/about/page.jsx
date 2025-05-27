@@ -1,6 +1,13 @@
+/*
+This page is accessible via /about and /terms/about using the rewrites in next.config.mjs
+*/
+
+"use client"
+
 import Image from 'next/image'
 import Header from '@/app/components/Header'
 import FooterComponent from '@/app/components/Footer'
+
 
 export default function About() {
   return (
@@ -77,7 +84,7 @@ export default function About() {
           <p>
             For all contact details and ways to reach me, please check the footer below
             where you will find my social and professional links. You can also send me a message directly via the{' '}
-            <a href="/terms/contact">contact form</a>.
+            <a href="/contact">contact form</a>.
           </p>
         </section>
       </main>
