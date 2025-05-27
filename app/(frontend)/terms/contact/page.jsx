@@ -1,3 +1,8 @@
+/*
+This page is accessible via /contact and /terms/contact using the rewrites in next.config.mjs
+*/
+
+
 "use client"
 
 import Header from "@/app/components/Header";
