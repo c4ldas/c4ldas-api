@@ -26,6 +26,8 @@ export default function FooterComponent() {
       </nav>
 
       <nav className="legal-links">
+        <Link href="/terms/about">About me</Link>
+        <span className="separator"> | </span>
         <Link href="/terms/contact">Contact</Link>
         <span className="separator"> | </span>
         <Link href="/terms/end-user-agreement">End User Agreement</Link>
