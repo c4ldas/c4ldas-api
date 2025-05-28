@@ -85,12 +85,15 @@ export default function Valorant({ params, searchParams }) {
       <Header />
       <main className="main block">
         <h1>Valorant Schedule</h1>
-        <div>This endpoint shows the official Valorant games of the current day based on the selected league. Games and scores are updated automatically, but can take some minutes to reflect.</div>
+        <div>This endpoint shows the official Valorant games of the current day based on the selected league. Games and scores are updated automatically.</div>
         <h3>How to use this endpoint on Streamelements</h3>
         <div style={{ paddingTop: "10px" }}><code onClick={copyToClipboard} id="code" className="code">$(touser) ► $(customapi.{origin}/api/valorant/schedule/vlr?channel=$(channel)&league=<span className="red">LEAGUE_NAME</span>)</code></div>
 
         {/* Leagues available */}
         <h3>Leagues available:</h3>
+        <h5 style={{ fontStyle: 'italic' }}>
+          More leagues may be added in the future. If you want to have a specific league added, please reach out via the <a href="/contact">contact form</a> with the vlr.gg league page.
+        </h5>
         <table style={{ textAlign: "center", padding: "8px", border: "1px solid #ddd" }}>
           <tbody>
             <tr>
