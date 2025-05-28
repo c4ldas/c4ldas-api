@@ -5,22 +5,6 @@ import FooterComponent from "@/app/components/Footer";
 import { useState, useEffect } from "react";
 import leagues from "@/app/lib/vlrgg_leagues";
 
-/* const leagues = [
-  { code: "tixinha_invitational", displayName: "Tixinha Invitational by BONOXS" },
-  { code: "vcb_split_2", displayName: "Challengers BR - Split 2" },
-  { code: "vcb_split_1", displayName: "Challengers BR - Split 1" },
-  { code: "vct_americas", displayName: "VCT Americas" },
-  { code: "vct_emea", displayName: "VCT EMEA" },
-  { code: "masters_bangkok", displayName: "Masters Bangkok" },
-  { code: "masters_toronto", displayName: "Masters Toronto" },
-  { code: "valorant_champions_2025", displayName: "Champions 2025" },
-  { code: "ewc_2025", displayName: "EWC 2025" },
-  { code: "ewc_2025_americas_qualifier", displayName: "EWC 2025 - Americas Qualifier" },
-  { code: "ewc_2025_emea_qualifier", displayName: "EWC 2025 - EMEA Qualifier" },
-  { code: "ewc_2025_pacific_qualifier", displayName: "EWC 2025 - Pacific x Asian Champions League Qualifier" }
-];
- */
-
 export default function Valorant({ params, searchParams }) {
 
   const [isLoading, setIsLoading] = useState(false);
