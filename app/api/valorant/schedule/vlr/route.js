@@ -31,11 +31,12 @@ Other leagues:
 
 import { NextResponse } from "next/server";
 import { Temporal } from "@js-temporal/polyfill";
+import leagues from "@/app/lib/vlrgg_leagues";
 
 const vlrQuery = (query) => `https://vlrggapi.vercel.app/match?q=${query}`;
 const list = ["upcoming", "live_score", "results"];
 
-
+/*
 const leagues = [
   {
     name: "Tixinha Invitational by BONOXS",
@@ -101,7 +102,7 @@ const leagues = [
     round_info: "Pacific X Asian Champions League Qualifier"
   }
 ];
-
+*/
 
 export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
@@ -122,7 +123,7 @@ export async function GET(request) {
         const response = await request.json();
 
         // Check if the league name matches with the league name in the response
-        const leagueName = leagues.find(item => item.value === league).name;
+        const leagueName = leagues.find(item => item.code === league).name;
 
         const segments = response.data.segments.map((segment) => {
           if (segment.match_event == leagueName || segment.tournament_name == leagueName) {
@@ -165,7 +166,7 @@ export async function GET(request) {
 
 
     // Filter games based on round_info
-    const leagueInfo = leagues.find(item => item.value === league);
+    const leagueInfo = leagues.find(item => item.code === league);
     const roundInfoFilter = leagueInfo?.round_info;
 
     const filteredGames = todayGames.filter((game) => {
@@ -190,8 +191,8 @@ async function checkParams(league, channel) {
   if (!channel) return { status: false, error: "Missing channel" };
   // if (!(league in validLeagues)) return { status: false, error: `Invalid league name. Valid leagues: ${Object.keys(validLeagues).join(", ")}` }; // Old array format
 
-  if (!(leagues.find(item => item.value === league))) {
-    return { status: false, error: `Invalid league name. Valid leagues: ${leagues.map(league => league.value).join(", ")}` };
+  if (!(leagues.find(item => item.code === league))) {
+    return { status: false, error: `Invalid league name. Valid leagues: ${leagues.map(league => league.code).join(", ")}` };
   }
 
   return { status: true, error: null };
@@ -248,7 +249,7 @@ async function sendResponse(response, status, type, channel, league, msg) {
 
   } else if (type == "text" && response.length == 0) {
     // Created a new custom message and send it when there are no games
-    const leagueDisplayName = leagues.find(item => item.value === league).displayName;
+    const leagueDisplayName = leagues.find(item => item.code === league).displayName;
     const message = msg.replaceAll(/\(league\)/g, leagueDisplayName);
     console.log(message);
     return new Response(message, { status: 200 });
