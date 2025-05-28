@@ -26,14 +26,14 @@ const leagues = [
     code: "tixinha_invitational"
   },
   {
-    name: "Gamers Club Challengers League 2025 Brazil: Split 2",
-    displayName: "Challengers BR - Split 2",
-    code: "vcb_split_2"
-  },
-  {
     name: "Gamers Club Challengers League 2025 Brazil: Split 1",
     displayName: "Challengers BR - Split 1",
     code: "vcb_split_1"
+  },
+  {
+    name: "Gamers Club Challengers League 2025 Brazil: Split 2",
+    displayName: "Challengers BR - Split 2",
+    code: "vcb_split_2"
   },
   {
     name: "Champions Tour 2025: Americas Stage 1",
