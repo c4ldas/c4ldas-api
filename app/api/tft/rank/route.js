@@ -22,10 +22,11 @@ export async function GET(request) {
     const puuidRequest = await getSummonerPuuid({ player, tag, region, game });
     const { puuid, gameName, tagLine } = puuidRequest;
 
-    const summonerIdRequest = await getSummonerId({ puuid, region, game });
-    const { id, accountId, summonerLevel } = summonerIdRequest;
+    // const summonerIdRequest = await getSummonerId({ puuid, region, game });
+    // const { id, accountId, summonerLevel } = summonerIdRequest;
 
-    const rankRequest = await getRank({ id, gameName, region, game });
+    // const rankRequest = await getRank({ id, gameName, tag, region, game });
+    const rankRequest = await getRank({ puuid, gameName, tag, region, game });
 
     const soloRank = rankRequest.find((response) => response.queueType === queueType);
     const { tier, rank, leaguePoints, wins, losses } = soloRank || nullValues;
@@ -43,7 +44,7 @@ export async function GET(request) {
 async function sendResponse(response, type, msg, error) {
 
   if (error) {
-    console.log(message);
+    console.log(msg);
     if (type == "text") {
       const { message, player, tag, } = error.error;
       return new Response(`Error: ${message}. Player: ${player}, tag: ${tag}`, { status: 200 });
