@@ -7,14 +7,16 @@ const gameInfo = {
   lol: {
     name: "League of Legends",
     puuidUrl: "lol/summoner/v4/summoners/by-puuid",
-    rankUrl: "lol/league/v4/entries/by-summoner",
+    // rankUrl: "lol/league/v4/entries/by-summoner",
+    rankUrl: "lol/league/v4/entries/by-puuid",
     activeGameUrl: "lol/spectator/v5/active-games/by-summoner",
     tokenName: "LOL_TOKEN"
   },
   tft: {
     name: "Teamfight Tactics",
     puuidUrl: "tft/summoner/v1/summoners/by-puuid",
-    rankUrl: "tft/league/v1/entries/by-summoner",
+    // rankUrl: "tft/league/v1/entries/by-summoner",
+    rankUrl: "tft/league/v1/by-puuid",
     tokenName: "TFT_TOKEN"
   }
 }
@@ -99,13 +101,13 @@ export async function getSummonerId(request) {
 
 export async function getRank(request) {
   try {
-    const { id, gameName, tag, region, game } = request;
+    const { puuid, gameName, tag, region, game } = request;
 
     const apiToken = env == "dev" ?
       decrypt(process.env[gameInfo[game].tokenName]) :
       process.env[gameInfo[game].tokenName];
 
-    const rankRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].rankUrl}/${id}`, {
+    const rankRequest = await fetch(`https://${region}.${apiURL}/${gameInfo[game].rankUrl}/${puuid}`, {
       method: "GET",
       // cache: "force-cache",
       next: { revalidate: 900 }, // 15 minutes
