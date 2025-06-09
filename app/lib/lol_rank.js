@@ -69,6 +69,8 @@ export async function getSummonerPuuid(request) {
   }
 }
 
+/*
+// Riot deprecated this endpoint. Use getSummonerPuuid instead.
 
 export async function getSummonerId(request) {
   try {
@@ -97,7 +99,7 @@ export async function getSummonerId(request) {
     throw (error);
   }
 }
-
+*/
 
 export async function getRank(request) {
   try {

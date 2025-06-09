@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSummonerPuuid, getSummonerId, getRank } from "@/app/lib/lol_rank.js";
+import { getSummonerPuuid, getRank } from "@/app/lib/lol_rank.js";
 
 export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
@@ -22,10 +22,6 @@ export async function GET(request) {
     const puuidRequest = await getSummonerPuuid({ player, tag, region, game });
     const { puuid, gameName, tagLine } = puuidRequest;
 
-    // const summonerIdRequest = await getSummonerId({ puuid, region, game, player, tag });
-    // const { id, accountId, summonerLevel } = summonerIdRequest;
-
-    // const rankRequest = await getRank({ id, gameName, tag, region, game });
     const rankRequest = await getRank({ puuid, gameName, tag, region, game });
 
     const soloRank = rankRequest.find((response) => response.queueType === queueType);
