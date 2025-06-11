@@ -51,7 +51,7 @@ const leagues = [
     code: "masters_bangkok"
   },
   {
-    name: "Champions Tour 2025: Masters Toronto",
+    name: "Valorant Masters 2025: Toronto"
     displayName: "Masters Toronto",
     code: "masters_toronto"
   },
