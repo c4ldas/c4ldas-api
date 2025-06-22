@@ -24,6 +24,7 @@ export async function GET(request) {
 
     const validParams = await checkParams(player, tag, id, channel, region);
     if (!validParams.status) return NextResponse.json({ error: validParams.error }, { status: 400 });
+    if (region.toLowerCase() == "ap") return NextResponse.json({ error: "Due to persistent, unreasonable overuse, access from the AP region is now blocked." }, { status: 400 });
 
     // Check if id is provided
     if (id) {
