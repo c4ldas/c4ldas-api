@@ -269,6 +269,8 @@ a:visited {
   grid-column-end: 3;
   cursor: pointer;
   padding: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 
 .youtube-thumbnail {
