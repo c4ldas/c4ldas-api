@@ -33,12 +33,12 @@ export async function GET(request) {
 
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error: error.error }, { status: 400 });
+    return NextResponse.json({ error: error.error }, { status: 200 });
   }
 }
 
 function checkParams(player, tag) {
-  if (!player || !tag) throw ({ error: { message: "Missing player / tag", player: player, tag: tag, status: 400 } });
+  if (!player || !tag) throw ({ error: { message: "Missing player / tag", player: player, tag: tag, status: 200 } });
   return { status: true, error: null };
 }
 
