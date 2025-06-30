@@ -83,6 +83,11 @@ const leagues = [
     code: "ewc_2025_pacific_qualifier",
     round_info: "Pacific X Asian Champions League Qualifier"
   },
+  {
+    name: "Tixinha & Sacy Invitational By Bonoxs!",
+    displayName: "Tixinha & Sacy Invitational By Bonoxs!",
+    code: "tixinha_sacy_invitational"
+  }
 ];
 
 export default leagues;
