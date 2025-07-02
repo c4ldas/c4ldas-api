@@ -80,6 +80,11 @@ export const tiers = [
 ];
 
 export async function GET(request) {
+
+  // Return a message informing the API is not in operation
+  return NextResponse.json({ message: "Infelizmente, a API de Marvel Rivals está fora por tempo indeterminado :(" }, { status: 200 });
+
+
   const obj = Object.fromEntries(request.nextUrl.searchParams);
   let { player, type = "text", lang = "pt", channel, msg } = obj;
 
