@@ -87,7 +87,7 @@ export default function Twitch({ _, searchParams }) {
             </p>
             <p>Click on the button below to login with Twitch.</p>
             <a href={baseURL + urlSearchParams.toString()}>
-              <button type="submit">Login with Twitch</button>
+              <button type="submit" className="formatted">Login with Twitch</button>
             </a>
           </>
         )}

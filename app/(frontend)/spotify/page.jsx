@@ -136,7 +136,7 @@ export default function Spotify({ _, searchParams }) {
 
             <p>Click the button below to log in with Spotify:</p>
             <a href={baseURL + urlSearchParams.toString()}>
-              <button type="submit">Login with Spotify</button>
+              <button type="submit" className="formatted">Login with Spotify</button>
             </a>
             <p>
               By authenticating with Spotify,
