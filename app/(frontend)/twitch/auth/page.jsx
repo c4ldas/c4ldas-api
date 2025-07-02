@@ -9,13 +9,11 @@ export default function Twitch() {
 
   const baseURL = 'https://id.twitch.tv/oauth2/authorize?'
 
-  const [cookie, setCookie] = useState({});
   const [origin, setOrigin] = useState();
   const [scopes, setScopes] = useState([]);
 
   useEffect(() => {
     setOrigin(window.location.origin);
-    setCookie(getCookies());
   }, []);
 
 
@@ -34,41 +32,53 @@ export default function Twitch() {
       <main className="main">
         <div className="block">
           <h1 className="title">Twitch auth</h1>
-          {!cookie.twitch_id && (
-            <>
-              <p>
-                Custom authentication for Twitch
-              </p>
-              <p>Choose the Twitch scopes you want to add from the list below:</p>
-              <div>
-                <button onClick={() => setScopes(twitchScopes)}>Select all scopes</button>
-                <br /><br />
-                {twitchScopes.map((scope) => (
-                  <div key={scope}>
-                    <input
-                      type="checkbox"
-                      id={scope}
-                      value={scope}
-                      checked={scopes.includes(scope)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setScopes([...scopes, scope]);
-                        } else {
-                          setScopes(scopes.filter((s) => s !== scope));
-                        }
-                      }}
-                    />
-                    <label htmlFor={scope}>{scope}</label>
-                  </div>
-                ))}
-              </div>
+          <>
+            <p>
+              Custom authentication for tests with Twitch. Choose the Twitch scopes you want to add and click on Login with Twitch:</p>
 
-              <p>Click on the button below to login with Twitch.</p>
-              <a href={baseURL + urlSearchParams.toString()}>
-                <button type="submit">Login with Twitch</button>
-              </a>
-            </>
-          )}
+            {/* Button to toggle all scopes at once */}
+            <button onClick={() => {
+              if (scopes.length === 0) setScopes(twitchScopes);
+              else setScopes([]);
+            }}>
+              {scopes.length === 0 ? "Select all scopes" : "Deselect all scopes"}
+            </button>
+
+            <br /><br />
+
+            <a href={baseURL + urlSearchParams.toString()}>
+              <button type="submit" className="formatted">Login with Twitch</button>
+            </a>
+
+            <br /><br />
+
+            {/* Checkbox for each scope */}
+            <div style={{
+              fontSize: "0.8rem",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: "0.5rem 1rem"
+            }}>
+              {twitchScopes.map((scope) => (
+                <div key={scope}>
+                  <input
+                    type="checkbox"
+                    id={scope}
+                    value={scope}
+                    checked={scopes.includes(scope)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setScopes([...scopes, scope]);
+                      } else {
+                        setScopes(scopes.filter((s) => s !== scope));
+                      }
+                    }}
+                  />
+                  <label htmlFor={scope}>{scope}</label>
+                </div>
+              ))}
+            </div>
+          </>
         </div>
 
       </main>
