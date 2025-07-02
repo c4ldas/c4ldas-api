@@ -85,8 +85,8 @@ export async function GET(request) {
   let { player, type = "text", lang = "pt", channel, msg } = obj;
 
   // Return a message informing the API is not in operation
-  if (lang == "pt") return NextResponse.json({ message: "Infelizmente, a API de Marvel Rivals está fora por tempo indeterminado :(" }, { status: 200 });
-  if (lang != "pt") return NextResponse.json({ message: "Unfortunately, the Marvel Rivals API is not available at the moment :(" }, { status: 200 });
+  if (lang == "pt") return NextResponse.json({ message: "Infelizmente, a API de Marvel Rivals está indisponível :(" }, { status: 200 });
+  if (lang != "pt") return NextResponse.json({ message: "Unfortunately, the Marvel Rivals API is unavailable :(" }, { status: 200 });
 
   if (!player) return NextResponse.json({ error: "Missing player name" }, { status: 200 });
   if (!channel) return NextResponse.json({ error: "Missing channel" }, { status: 200 });
