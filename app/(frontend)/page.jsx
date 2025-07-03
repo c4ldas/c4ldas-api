@@ -40,7 +40,7 @@ export default async function Home() {
           title="Marvel Rivals rank"
           description="Create a chat command to display your rank in Marvel Rivals."
           link="/marvel-rivals"
-          span=" Currently undergoing maintenance."
+          span=" Unavailable at the moment."
           spanClass="red"
         />
 
@@ -54,7 +54,6 @@ export default async function Home() {
           title="Spotify Now Playing"
           description="Inform your viewers about the song title and artist currently playing on your livestream."
           link="/spotify"
-          /* span=" Currently undergoing maintenance." */
           spanClass="red"
         />
 
