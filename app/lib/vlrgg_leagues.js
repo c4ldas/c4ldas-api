@@ -84,8 +84,8 @@ const leagues = [
     round_info: "Pacific X Asian Champions League Qualifier"
   },
   {
-    name: "Tixinha & Sacy Invitational By Bonoxs!",
-    displayName: "Tixinha & Sacy Invitational By Bonoxs!",
+    name: "Tixinha & Sacy Invitational By Bonoxs",
+    displayName: "Tixinha & Sacy Invitational By Bonoxs",
     code: "tixinha_sacy_invitational"
   }
 ];
