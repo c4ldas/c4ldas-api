@@ -83,13 +83,13 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
 
   // Build string like "July 4, 2025 9:00 PM"
   const fullDateTime = `${cleanedDate} ${time}`;
-  console.log(fullDateTime)
 
   // System time zone (e.g. "Europe/Dublin")
   const localTimezone = Temporal.Now.timeZoneId();
 
   // 1. Parse with legacy Date (assumes local time zone)
   const legacy = new Date(fullDateTime);
+  console.log(legacy.toString());
   if (isNaN(legacy)) return null; // invalid date
 
   // 2. Extract components (assumed to be in local time zone)
