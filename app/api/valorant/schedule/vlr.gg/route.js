@@ -16,7 +16,7 @@ export async function GET(request) {
     if (!channel) return NextResponse.json({ status: "failed", error: "Missing channel" }, { status: 200 });
     if (!id) return NextResponse.json({ status: "failed", error: "Missing id" }, { status: 200 });
 
-    const html = await fetch(url(id, series), { next: { revalidate: 60 }, headers: { "User-Agent": "Mozilla/5.0" } }).then((res) => res.text());
+    const html = await fetch(url(id, series), { /* next: { revalidate: 60 }, */ headers: { "User-Agent": "Mozilla/5.0" } }).then((res) => res.text());
     if (!html) return NextResponse.json({ status: "failed", error: "Not possible to get the schedule. Please try again" }, { status: 200 });
 
     const document = new JSDOM(html).window.document;
@@ -88,13 +88,15 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
   const fullDateTime = `${cleanedDate} ${time}`;
 
   // System time zone (e.g. "Europe/Dublin")
-  //const localTimezone = Temporal.Now.timeZoneId();
+  const localTimezone = Temporal.Now.timeZoneId();
+  console.log(localTimezone.toString())
 
   // 1. Parse with legacy Date (assumes local time zone)
   const legacy = new Date(fullDateTime);
 
   // 2. Convert to Temporal.Instant
   const instant = Temporal.Instant.from(legacy.toISOString());
+
 
   // 3. Create a ZonedDateTime in Brazilian time
   const brDateTime = instant.toZonedDateTimeISO('America/Sao_Paulo');
@@ -104,7 +106,7 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
 
   // 5. Convert to JSON
   const json = {
-    utcDateTimeFull: utcDateTime.toString().split("[")[0],    // e.g. "2025-07-04T20:00:00Z"
+    utcDateTimeFull: utcDateTime.toInstant().toString(),    // e.g. "2025-07-04T20:00:00Z"
     utcDateTimeNoTZ: utcDateTime.toPlainDateTime().toString(), // e.g. "2025-07-04T20:00:00"
     utcDate: utcDateTime.toPlainDate().toString(), // e.g. "2025-07-04"
     utcTime: utcDateTime.toPlainTime().toString(), // e.g. "20:00:00"
