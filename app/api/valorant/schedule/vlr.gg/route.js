@@ -11,14 +11,17 @@ export async function GET(request) {
     // Convert query strings (map format) to object format - Only works for this specific case!+
     const obj = Object.fromEntries(request.nextUrl.searchParams);
     const { id, series = "all", channel, type = "text", msg = "No games for (league) today" } = obj;
-    const url = (eventId, seriesId) => `https://www.vlr.gg/event/matches/${eventId}/?series_id=${seriesId}`;
+    const url = (eventId, seriesId) => `https://www.vlr.gg/event/matches/${eventId}/?series_id=${seriesId}`; // URL base to get the schedule
 
     if (!channel) return NextResponse.json({ status: "failed", error: "Missing channel" }, { status: 200 });
     if (!id) return NextResponse.json({ status: "failed", error: "Missing id" }, { status: 200 });
 
-    const html = await fetch(url(id, series), { /* next: { revalidate: 60 }, */ headers: { "User-Agent": "Mozilla/5.0" } }).then((res) => res.text());
-    if (!html) return NextResponse.json({ status: "failed", error: "Not possible to get the schedule. Please try again" }, { status: 200 });
+    const html = await fetch(url(id, series), {
+      next: { revalidate: 60 }, // Cache for 1 minute
+      headers: { "User-Agent": "Mozilla/5.0" }
+    }).then((res) => res.text());
 
+    if (!html) return NextResponse.json({ status: "failed", error: "Not possible to get the schedule. Please try again" }, { status: 200 });
     const document = new JSDOM(html).window.document;
 
     // Check for page not found
@@ -26,11 +29,14 @@ export async function GET(request) {
     if (pageNotFound) return NextResponse.json({ status: "failed", error: "Invalid id" }, { status: 200 });
 
 
+    // Get championiship name
     const title = Array.from(document.querySelectorAll(".wf-title")).map((item) => cleanText(item.textContent)).toString();
-    const dayGroup = document.querySelectorAll('[class="wf-card"]');
 
+    // Array to store matches
     const matches = [];
 
+    // Get matches
+    const dayGroup = document.querySelectorAll('[class="wf-card"]');
     dayGroup.forEach((day) => {
       const date = cleanText(day.previousElementSibling.textContent);
       day.querySelectorAll(".wf-module-item").forEach((match) => {
@@ -44,7 +50,7 @@ export async function GET(request) {
           const team1Score = +match.querySelectorAll(".match-item-vs-team-score")[0].textContent.trim() || "0";
           const team2Score = +match.querySelectorAll(".match-item-vs-team-score")[1].textContent.trim() || "0";
 
-          // Create response to send
+          // Create response to be sent
           const response = {
             br_date: parseDate(date, time, "brDate"),
             br_hour: parseDate(date, time, "brHour"),
@@ -71,6 +77,7 @@ export async function GET(request) {
   }
 }
 
+
 function cleanText(text) {
   return text.replace(/\s+/g, " ").trim();
 }
@@ -86,9 +93,6 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
 
   // Build string like "July 4, 2025 9:00 PM"
   const fullDateTime = `${cleanedDate} ${time}`;
-
-  // System time zone (e.g. "Europe/Dublin")
-  // const localTimezone = Temporal.Now.timeZoneId();
 
   // 1. Parse with legacy Date (assumes local time zone)
   const legacy = new Date(fullDateTime);
@@ -106,6 +110,8 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
   const plainDateTime = new Temporal.PlainDateTime(year, month, day, hour, minute, second);
 
   // 4. Interpret as ZonedDateTime in local time zone
+  // System time zone (e.g. "Europe/Dublin")
+  // const localTimezone = Temporal.Now.timeZoneId();
   // const zonedDateTimeLocal = plainDateTime.toZonedDateTime(localTimezone);
   const zonedDateTimeLocal = plainDateTime.toZonedDateTime(timezoneVercel);
 
@@ -135,40 +141,6 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
   };
 
   return json[property];
-
-
-
-
-  // 2. Convert to Temporal.Instant
-  // const instant = Temporal.Instant.from(legacy.toISOString());
-
-
-  // 3. Create a ZonedDateTime in Brazilian time
-  // const brDateTime = instant.toZonedDateTimeISO('America/Sao_Paulo');
-
-  // 4. Convert to UTC (ZonedDateTime in UTC)
-  // const utcDateTime = instant.toZonedDateTimeISO('UTC');
-
-  // 5. Convert to JSON
-  // const json = {
-  //   utcDateTimeFull: utcDateTime.toInstant().toString(),    // e.g. "2025-07-04T20:00:00Z"
-  //   utcDateTimeNoTZ: utcDateTime.toPlainDateTime().toString(), // e.g. "2025-07-04T20:00:00"
-  //   utcDate: utcDateTime.toPlainDate().toString(), // e.g. "2025-07-04"
-  //   utcTime: utcDateTime.toPlainTime().toString(), // e.g. "20:00:00"
-  //   utcTimeNoSeconds: utcDateTime.minute === 0 ? utcDateTime.hour + "h" : utcDateTime.toPlainTime().toString({ smallestUnit: 'minute' }), // e.g. "20h" or "20:15"
-  //   utcHour: utcDateTime.hour,    // e.g. "20"
-  //   utcMinute: String(utcDateTime.minute).padStart(2, '0'), // e.g. "00" or "05"
-  // 
-  //   brDateTimeFull: brDateTime.toString().split("[")[0],    // e.g. "2025-07-04T17:00:00-03:00"
-  //   brDateTimeNoTZ: brDateTime.toPlainDateTime().toString(), // e.g. "2025-07-04T17:00:00"
-  //   brDate: brDateTime.toPlainDate().toString(), // e.g. "2025-07-04"
-  //   brTime: brDateTime.toPlainTime().toString(), // e.g. "17:00:00"
-  //   brTimeNoSeconds: brDateTime.minute === 0 ? brDateTime.hour + "h" : brDateTime.toPlainTime().toString({ smallestUnit: 'minute' }), // e.g. "17h" or "17:15"
-  //   brHour: brDateTime.hour,    // e.g. "17"
-  //   brMinute: String(brDateTime.minute).padStart(2, '0'), // e.g. "00" or "05"
-  // };
-
-  // return json[property];
 }
 
 
@@ -188,7 +160,18 @@ async function sendResponse(data) {
   const games = matches.map((match) => match.message);
   const message = msg.replaceAll(/\(league\)/g, title);
 
-  if (type != "text") return NextResponse.json({ matches, title, channel }, { status: 200 });
-  if (type == "text" && matches.length == 0) return new Response(message, { status: 200 });
+  if (type != "text") {
+    console.log(games.join(" // "));
+    console.log(title);
+    return NextResponse.json({ matches, title }, { status: 200 });
+  }
+
+  if (type == "text" && matches.length == 0) {
+    console.log(message);
+    return new Response(message, { status: 200 });
+  }
+
+  console.log(title);
+  console.log(games.join(" // "));
   return new Response(games.join(" // "), { status: 200 });
 }
