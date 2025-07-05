@@ -107,7 +107,7 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
 
   // 4. Interpret as ZonedDateTime in local time zone
   // const zonedDateTimeLocal = plainDateTime.toZonedDateTime(localTimezone);
-  const zonedDateTimeLocal = plainDateTime.toZonedDateTime(timezoneVercel);
+  const zonedDateTimeLocal = plainDateTime.toZonedDateTime("timezoneVercel");
 
   // 5. Get the Instant (absolut UTC point in time)
   const instant = zonedDateTimeLocal.toInstant();
