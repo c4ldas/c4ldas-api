@@ -5,9 +5,6 @@ import { NextResponse } from "next/server";
 export async function GET(request) {
   try {
 
-
-
-
     // Convert query strings (map format) to object format - Only works for this specific case!+
     const obj = Object.fromEntries(request.nextUrl.searchParams);
     const { id, series = "all", channel, type = "text", msg = "No games for (league) today" } = obj;
@@ -86,6 +83,7 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
 
   // Build string like "July 4, 2025 9:00 PM"
   const fullDateTime = `${cleanedDate} ${time}`;
+  console.log(fullDateTime)
 
   // System time zone (e.g. "Europe/Dublin")
   const localTimezone = Temporal.Now.timeZoneId();
