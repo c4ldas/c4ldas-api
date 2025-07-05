@@ -90,6 +90,7 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
   // System time zone (e.g. "Europe/Dublin")
   const localTimezone = Temporal.Now.timeZoneId();
   console.log(localTimezone.toString())
+  console.log(new Date());
 
   // 1. Parse with legacy Date (assumes local time zone)
   const legacy = new Date(fullDateTime);
