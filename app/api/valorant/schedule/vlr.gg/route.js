@@ -89,23 +89,32 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
 
   // System time zone (e.g. "Europe/Dublin")
   const localTimezone = Temporal.Now.timeZoneId();
-  console.log(localTimezone.toString())
-  console.log(new Date());
 
   // 1. Parse with legacy Date (assumes local time zone)
   const legacy = new Date(fullDateTime);
+  if (isNaN(legacy)) return null; // invalid date
 
-  // 2. Convert to Temporal.Instant
-  const instant = Temporal.Instant.from(legacy.toISOString());
+  // 2. Extract components (assumed to be in local time zone)
+  const year = legacy.getFullYear();
+  const month = legacy.getMonth() + 1;
+  const day = legacy.getDate();
+  const hour = legacy.getHours();
+  const minute = legacy.getMinutes();
+  const second = legacy.getSeconds();
 
+  // 3. Create PlainDateTime from components (no TZ)
+  const plainDateTime = new Temporal.PlainDateTime(year, month, day, hour, minute, second);
 
-  // 3. Create a ZonedDateTime in Brazilian time
+  // 4. Interpret as ZonedDateTime in local time zone
+  const zonedDateTimeLocal = plainDateTime.toZonedDateTime(localTimezone);
+
+  // 5. Get the Instant (absolut UTC point in time)
+  const instant = zonedDateTimeLocal.toInstant();
+
+  // 6. Convert to Brazil and UTC ZonedDateTimes
   const brDateTime = instant.toZonedDateTimeISO('America/Sao_Paulo');
-
-  // 4. Convert to UTC (ZonedDateTime in UTC)
   const utcDateTime = instant.toZonedDateTimeISO('UTC');
 
-  // 5. Convert to JSON
   const json = {
     utcDateTimeFull: utcDateTime.toInstant().toString(),    // e.g. "2025-07-04T20:00:00Z"
     utcDateTimeNoTZ: utcDateTime.toPlainDateTime().toString(), // e.g. "2025-07-04T20:00:00"
@@ -125,6 +134,40 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
   };
 
   return json[property];
+
+
+
+
+  // 2. Convert to Temporal.Instant
+  // const instant = Temporal.Instant.from(legacy.toISOString());
+
+
+  // 3. Create a ZonedDateTime in Brazilian time
+  // const brDateTime = instant.toZonedDateTimeISO('America/Sao_Paulo');
+
+  // 4. Convert to UTC (ZonedDateTime in UTC)
+  // const utcDateTime = instant.toZonedDateTimeISO('UTC');
+
+  // 5. Convert to JSON
+  // const json = {
+  //   utcDateTimeFull: utcDateTime.toInstant().toString(),    // e.g. "2025-07-04T20:00:00Z"
+  //   utcDateTimeNoTZ: utcDateTime.toPlainDateTime().toString(), // e.g. "2025-07-04T20:00:00"
+  //   utcDate: utcDateTime.toPlainDate().toString(), // e.g. "2025-07-04"
+  //   utcTime: utcDateTime.toPlainTime().toString(), // e.g. "20:00:00"
+  //   utcTimeNoSeconds: utcDateTime.minute === 0 ? utcDateTime.hour + "h" : utcDateTime.toPlainTime().toString({ smallestUnit: 'minute' }), // e.g. "20h" or "20:15"
+  //   utcHour: utcDateTime.hour,    // e.g. "20"
+  //   utcMinute: String(utcDateTime.minute).padStart(2, '0'), // e.g. "00" or "05"
+  // 
+  //   brDateTimeFull: brDateTime.toString().split("[")[0],    // e.g. "2025-07-04T17:00:00-03:00"
+  //   brDateTimeNoTZ: brDateTime.toPlainDateTime().toString(), // e.g. "2025-07-04T17:00:00"
+  //   brDate: brDateTime.toPlainDate().toString(), // e.g. "2025-07-04"
+  //   brTime: brDateTime.toPlainTime().toString(), // e.g. "17:00:00"
+  //   brTimeNoSeconds: brDateTime.minute === 0 ? brDateTime.hour + "h" : brDateTime.toPlainTime().toString({ smallestUnit: 'minute' }), // e.g. "17h" or "17:15"
+  //   brHour: brDateTime.hour,    // e.g. "17"
+  //   brMinute: String(brDateTime.minute).padStart(2, '0'), // e.g. "00" or "05"
+  // };
+
+  // return json[property];
 }
 
 
