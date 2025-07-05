@@ -2,6 +2,9 @@ import { JSDOM } from "jsdom";
 import { Temporal } from "@js-temporal/polyfill";
 import { NextResponse } from "next/server";
 
+// Time zone from Vercel default location `us-east-1`
+const timezoneVercel = "America/New_York";
+
 export async function GET(request) {
   try {
 
@@ -85,11 +88,10 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
   const fullDateTime = `${cleanedDate} ${time}`;
 
   // System time zone (e.g. "Europe/Dublin")
-  const localTimezone = Temporal.Now.timeZoneId();
+  // const localTimezone = Temporal.Now.timeZoneId();
 
   // 1. Parse with legacy Date (assumes local time zone)
   const legacy = new Date(fullDateTime);
-  console.log(legacy.toString());
   if (isNaN(legacy)) return null; // invalid date
 
   // 2. Extract components (assumed to be in local time zone)
@@ -104,7 +106,8 @@ function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
   const plainDateTime = new Temporal.PlainDateTime(year, month, day, hour, minute, second);
 
   // 4. Interpret as ZonedDateTime in local time zone
-  const zonedDateTimeLocal = plainDateTime.toZonedDateTime(localTimezone);
+  // const zonedDateTimeLocal = plainDateTime.toZonedDateTime(localTimezone);
+  const zonedDateTimeLocal = plainDateTime.toZonedDateTime(timezoneVercel);
 
   // 5. Get the Instant (absolut UTC point in time)
   const instant = zonedDateTimeLocal.toInstant();
