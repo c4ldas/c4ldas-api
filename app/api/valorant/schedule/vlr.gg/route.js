@@ -1,13 +1,13 @@
 import { JSDOM } from "jsdom";
 import { Temporal } from "@js-temporal/polyfill";
 import { NextResponse } from "next/server";
+import { convertTZ, regionToTZ } from "@/app/lib/convert_timezone";
 
-// Time zone from Vercel default location `us-east-1`
-const timezoneVercel = "America/New_York";
+// Check if project is local or on Vercel and set the correct time zone
+const localTimeZone = process.env.VERCEL_URL ? regionToTZ[process.env.AWS_REGION] : Temporal.Now.timeZoneId();
 
 export async function GET(request) {
   try {
-
     // Convert query strings (map format) to object format - Only works for this specific case!+
     const obj = Object.fromEntries(request.nextUrl.searchParams);
     const { id, series = "all", channel, type = "text", msg = "No games for (league) today" } = obj;
@@ -24,10 +24,9 @@ export async function GET(request) {
     if (!html) return NextResponse.json({ status: "failed", error: "Not possible to get the schedule. Please try again" }, { status: 200 });
     const document = new JSDOM(html).window.document;
 
-    // Check for page not found
+    // Check for page not found, possibly invalid id
     const pageNotFound = document.querySelectorAll(".col.mod-1")[0].textContent.trim().startsWith("Page not found");
     if (pageNotFound) return NextResponse.json({ status: "failed", error: "Invalid id" }, { status: 200 });
-
 
     // Get championiship name
     const title = Array.from(document.querySelectorAll(".wf-title")).map((item) => cleanText(item.textContent)).toString();
@@ -41,8 +40,7 @@ export async function GET(request) {
       const date = cleanText(day.previousElementSibling.textContent);
       day.querySelectorAll(".wf-module-item").forEach((match) => {
         const time = match.querySelector(".match-item-time").textContent.trim();
-
-        const isToday = getIsToday(parseDate(date, time, "brDateTimeNoTZ"));
+        const isToday = getIsToday(parseDate(date, time, "br", "noTZ"));
 
         if (isToday) {
           const team1 = match.querySelectorAll(".match-item-vs-team-name")[0].textContent.trim();
@@ -52,16 +50,16 @@ export async function GET(request) {
 
           // Create response to be sent
           const response = {
-            br_date: parseDate(date, time, "brDate"),
-            br_hour: parseDate(date, time, "brHour"),
-            br_minute: parseDate(date, time, "brMinute"),
-            br_date_time: parseDate(date, time, "brDateTimeFull"),
-            utc_date_time: parseDate(date, time, "utcDateTimeFull"),
+            br_date: parseDate(date, time, "br", "date"),
+            br_hour: parseDate(date, time, "br", "hour"),
+            br_minute: parseDate(date, time, "br", "minute"),
+            br_date_time: parseDate(date, time, "br", "full"),
+            utc_date_time: parseDate(date, time, "utc", "full"),
             team_1: team1,
             team_2: team2,
             team_1_score: team1Score,
             team_2_score: team2Score,
-            message: `${parseDate(date, time, "brTimeNoSeconds")} - ${team1} ${team1Score}x${team2Score} ${team2}`,
+            message: `${parseDate(date, time, "br", "timeNoSec")} - ${team1} ${team1Score}x${team2Score} ${team2}`,
           }
 
           matches.push(response);
@@ -82,65 +80,31 @@ function cleanText(text) {
   return text.replace(/\s+/g, " ").trim();
 }
 
-
-function parseDate(rawDate, time, property = "brDateTimeNoTZ") {
+// Parse date from raw date
+function parseDate(rawDate, time, timezoneId = "br", property = "noTZ") {
   // Check if time is "TBD"
   if (time == "TBD") return null;
 
-  // Clean input: remove weekday and "Today"/"Yesterday"
-  let cleanedDate = rawDate.replace(/^\w{3},\s*/, '');
-  cleanedDate = cleanedDate.replace(/\s+(Today|Yesterday)$/i, '').trim();
+  // 1.Clean input: remove weekday and "Today"/"Yesterday"
+  let cleanedDate = rawDate
+    .replace(/^\w{3},\s*/, '')
+    .replace(/\s+(Today|Yesterday)$/i, '')
+    .trim();
 
-  // Build string like "July 4, 2025 9:00 PM"
-  const fullDateTime = `${cleanedDate} ${time}`;
+  // 2. Parse date
+  const parts = new Date(`${cleanedDate} ${time}`);
+  if (Number.isNaN(parts)) return null; // invalid date
 
-  // 1. Parse with legacy Date (assumes local time zone)
-  const legacy = new Date(fullDateTime);
-  if (isNaN(legacy)) return null; // invalid date
+  const date = Temporal.ZonedDateTime.from({
+    year: parts.getFullYear(),
+    month: parts.getMonth() + 1,
+    day: parts.getDate(),
+    hour: parts.getHours(),
+    minute: parts.getMinutes(),
+    timeZone: localTimeZone
+  });
 
-  // 2. Extract components (assumed to be in local time zone)
-  const year = legacy.getFullYear();
-  const month = legacy.getMonth() + 1;
-  const day = legacy.getDate();
-  const hour = legacy.getHours();
-  const minute = legacy.getMinutes();
-  const second = legacy.getSeconds();
-
-  // 3. Create PlainDateTime from components (no TZ)
-  const plainDateTime = new Temporal.PlainDateTime(year, month, day, hour, minute, second);
-
-  // 4. Interpret as ZonedDateTime in local time zone
-  // System time zone (e.g. "Europe/Dublin")
-  // const localTimezone = Temporal.Now.timeZoneId();
-  // const zonedDateTimeLocal = plainDateTime.toZonedDateTime(localTimezone);
-  const zonedDateTimeLocal = plainDateTime.toZonedDateTime(timezoneVercel);
-
-  // 5. Get the Instant (absolut UTC point in time)
-  const instant = zonedDateTimeLocal.toInstant();
-
-  // 6. Convert to Brazil and UTC ZonedDateTimes
-  const brDateTime = instant.toZonedDateTimeISO('America/Sao_Paulo');
-  const utcDateTime = instant.toZonedDateTimeISO('UTC');
-
-  const json = {
-    utcDateTimeFull: utcDateTime.toInstant().toString(),    // e.g. "2025-07-04T20:00:00Z"
-    utcDateTimeNoTZ: utcDateTime.toPlainDateTime().toString(), // e.g. "2025-07-04T20:00:00"
-    utcDate: utcDateTime.toPlainDate().toString(), // e.g. "2025-07-04"
-    utcTime: utcDateTime.toPlainTime().toString(), // e.g. "20:00:00"
-    utcTimeNoSeconds: utcDateTime.minute === 0 ? utcDateTime.hour + "h" : utcDateTime.toPlainTime().toString({ smallestUnit: 'minute' }), // e.g. "20h" or "20:15"
-    utcHour: utcDateTime.hour,    // e.g. "20"
-    utcMinute: String(utcDateTime.minute).padStart(2, '0'), // e.g. "00" or "05"
-
-    brDateTimeFull: brDateTime.toString().split("[")[0],    // e.g. "2025-07-04T17:00:00-03:00"
-    brDateTimeNoTZ: brDateTime.toPlainDateTime().toString(), // e.g. "2025-07-04T17:00:00"
-    brDate: brDateTime.toPlainDate().toString(), // e.g. "2025-07-04"
-    brTime: brDateTime.toPlainTime().toString(), // e.g. "17:00:00"
-    brTimeNoSeconds: brDateTime.minute === 0 ? brDateTime.hour + "h" : brDateTime.toPlainTime().toString({ smallestUnit: 'minute' }), // e.g. "17h" or "17:15"
-    brHour: brDateTime.hour,    // e.g. "17"
-    brMinute: String(brDateTime.minute).padStart(2, '0'), // e.g. "00" or "05"
-  };
-
-  return json[property];
+  return convertTZ(date, timezoneId, property);
 }
 
 
@@ -149,7 +113,7 @@ function getIsToday(date) {
   const now = Temporal.Now.instant();
   const today = now.toZonedDateTimeISO("America/Sao_Paulo");
 
-  const isToday = date.getDate() === today.day && date.getMonth() === today.month - 1 && date.getFullYear() === today.year;
+  const isToday = date.getDate() == today.day && date.getMonth() == today.month - 1 && date.getFullYear() == today.year;
   return isToday;
 }
 
