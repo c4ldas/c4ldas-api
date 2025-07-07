@@ -2,6 +2,7 @@
   "name": "c4ldas-api",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "schtasks /run /tn custom_tasks\\postgres_start && next dev",
     "build": "next build",
