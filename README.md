@@ -80,8 +80,9 @@ This is the structure of the application:
 |     |    |-- lastgame/
 |     |    |-- rank/
 |     |    |-- puuid/
-|     |    |-- schedule/
-|     |           |-- vlr/
+|     |    |-- schedule/ (soon to be replaced by /schedule/vlr.gg)
+|     |           |-- vlr/ (soon to be removed)
+|     |           |-- vlr.gg/ (soon to replace /schedule)
 |     |
 |     |-- lol/
 |     |    |-- rank/
