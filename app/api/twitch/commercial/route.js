@@ -32,7 +32,7 @@ The active-game endpoint will return a JSON object with the following structure:
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
-  return NextResponse.json({ status: "failed", message: "Method not allowed (yet)" });
+  return NextResponse.json({ status: "failed", message: "Not implemented (yet)" });
 }
 
 export async function POST(request) {
