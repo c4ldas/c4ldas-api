@@ -10,13 +10,13 @@ export async function GET(request) {
   try {
     // Convert query strings (map format) to object format - Only works for this specific case!+
     const obj = Object.fromEntries(request.nextUrl.searchParams);
-    const { id, series = "all", channel, type = "text", msg = "No games for (league) today" } = obj;
+    const { id, series_id = "all", channel, type = "text", msg = "No games for (league) today" } = obj;
     const url = (eventId, seriesId) => `https://www.vlr.gg/event/matches/${eventId}/?series_id=${seriesId}`; // URL base to get the schedule
 
     if (!channel) return NextResponse.json({ status: "failed", error: "Missing channel" }, { status: 200 });
     if (!id) return NextResponse.json({ status: "failed", error: "Missing id" }, { status: 200 });
 
-    const html = await fetch(url(id, series), {
+    const html = await fetch(url(id, series_id), {
       next: { revalidate: 60 }, // Cache for 1 minute
       headers: { "User-Agent": "Mozilla/5.0" }
     }).then((res) => res.text());
