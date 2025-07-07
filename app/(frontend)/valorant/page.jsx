@@ -16,8 +16,8 @@ export default function Valorant() {
           </h2>
         </div>
         <Linkbox title="Valorant Rank" link="/valorant/rank" description="Craft a chat command to display your real-time rank and elo in VALORANT." />
-        <Linkbox title="Official games of the day" link="/valorant/schedule" description="Set up a chat command to display real-time scores of todays's official Valorant tournament matches." />
-        <Linkbox title="Games of the day from vlr.gg" link="/valorant/schedule-vlrgg" description="Set up a chat command to display real-time scores of todays's tournament matches. Data obtained from vlr.gg" />
+        <Linkbox title="Valorant Games Schedule" link="/valorant/schedule" description="Set up a chat command to display real-time scores of todays's Valorant tournament matches." />
+        {/* <Linkbox title="Games of the day from vlr.gg" link="/valorant/schedule-vlrgg" description="Set up a chat command to display real-time scores of todays's tournament matches. Data obtained from vlr.gg" /> */}
         <Linkbox title="Valorant Last Game" link="/valorant/lastgame" description="Have your last VALORANT ranked game results displayed in chat." />
         <Linkbox title="Valorant Puuid" link="/valorant/puuid" description="Find your Valorant Account ID or someone elses's. Helpful when configuring Valorant rank command." />
 

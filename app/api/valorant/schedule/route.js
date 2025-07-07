@@ -84,6 +84,8 @@ export async function GET(request) {
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
   const { channel, league, type = "text", msg = "No games for (league) today" } = obj;
+
+  // return NextResponse.json({ status: "failed", message: "API deprecated. Please check https://repl.c4ldas.com.br/api/valorant/schedule for the new version" });
   const todayDate = Temporal.Now.plainDateISO(timeZone).toString(); // Date for Brazil time zone
 
   try {

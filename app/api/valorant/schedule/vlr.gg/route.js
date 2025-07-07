@@ -1,3 +1,28 @@
+/**
+* This is the future route for schedule
+* This page uses vlr.gg as a data source
+* Currently, there are 3 endpoints for schedule:
+* - /valorant/schedule
+* - /valorant/schedule/vlr
+* - /valorant/schedule/vlr.gg
+* The idea is to move /api/valorant/schedule/vlr.gg to /api/valorant/schedule and use it for all requests
+* So, in the future, only one endpoint will be used (/api/valorant/schedule) and it will gather data from vlr.gg website
+* 
+* TO DO:  
+* - Check how many people are using /api/valorant/schedule endpoint
+* - If not many (or none at all), just put the /vlr.gg code directly on /api/valorant/schedule
+* - Move the endpoint /api/valorant/schedule/vlr.gg to /api/valorant/schedule
+* - Remove the page /valorant/schedule-vlrgg
+* - Remove page.jsx from /(frontend)/valorant/schedule
+* - Rename page_new.jsx to page.jsx from /(frontend)/valorant/schedule
+* - Add a response (for a limited time) on /api/valorant/schedule/vlr.gg to use /api/valorant/schedule instead (just remove the /vlr.gg from the URL)
+* - Remove any /api/valorant/schedule/vlr.gg from the this page (lines 46, 68, 95, and 102) and use /api/valorant/schedule
+*
+* Future TO DO:
+* - Remove the route /api/valorant/schedule/vlr and /api/valorant/schedule/vlr.gg
+*/
+
+
 import { JSDOM } from "jsdom";
 import { Temporal } from "@js-temporal/polyfill";
 import { NextResponse } from "next/server";
