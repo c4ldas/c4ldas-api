@@ -115,7 +115,7 @@ export default function ValorantSchedule({ params, searchParams }) {
         <ul>
           <li><code className="blue" style={{ fontSize: "1rem" }}>&msg</code> - Message to be shown when there are no games. Available variables: (league).</li>
           <li><code className="blue" style={{ fontSize: "1rem" }}>&type</code> - Type of response. Available values: text (default), json.</li>
-          <li><code className="blue" style={{ fontSize: "1rem" }}>&series_id</code> - If the league has many stages, you can filter the games at a stage (default: "all"). Choose the <strong>Stage</strong> from the drop-down menu on the event page and the <code className="blue" style={{ fontSize: "1rem" }}>series_id</code> will also be available in the URL.</li>
+          <li><code className="blue" style={{ fontSize: "1rem" }}>&series_id</code> - If the league has many stages, you can filter the games at a stage (default: &quot;all&quot;). Choose the <strong>Stage</strong> from the drop-down menu on the event page and the <code className="blue" style={{ fontSize: "1rem" }}>series_id</code> will also be available in the URL.</li>
         </ul>
 
         <h2>Test the command</h2>
