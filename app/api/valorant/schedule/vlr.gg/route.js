@@ -70,8 +70,10 @@ export async function GET(request) {
         if (isToday) {
           const team1 = match.querySelectorAll(".match-item-vs-team-name")[0].textContent.trim();
           const team2 = match.querySelectorAll(".match-item-vs-team-name")[1].textContent.trim();
-          const team1Score = +match.querySelectorAll(".match-item-vs-team-score")[0].textContent.trim() || "0";
-          const team2Score = +match.querySelectorAll(".match-item-vs-team-score")[1].textContent.trim() || "0";
+          const team1Score = +match.querySelectorAll(".match-item-vs-team-score")[0].textContent.trim() || 0;
+          const team2Score = +match.querySelectorAll(".match-item-vs-team-score")[1].textContent.trim() || 0;
+
+          if (team1 == "TBD" || team2 == "TBD") return;
 
           // Create response to be sent
           const response = {
