@@ -7,10 +7,13 @@ const extensions = `{ "persistedQuery": { "version": 1, "sha256Hash": "48a028dd5
 let leagueName = "League of Legends EWC";
 
 export async function GET(request) {
-  const obj = Object.fromEntries(request.nextUrl.searchParams);
-  const { channel, type = "text", msg = "No games for (league) today" } = obj;
-
   try {
+
+    const obj = Object.fromEntries(request.nextUrl.searchParams);
+    const { channel, type = "text", msg = "No games for (league) today" } = obj;
+
+    if (!channel) return NextResponse.json({ status: "failed", error: "Missing channel" }, { status: 200 });
+
     const gameRequest = await fetch(`${baseURL}?` +
       new URLSearchParams({
         "operationName": operationName,
@@ -24,8 +27,8 @@ export async function GET(request) {
       return sendResponse(gameRequest, error = true);
     }
 
-    const response = await gameRequest.json();
-    const matches = listTodayMatches(response);
+    const gameResponse = await gameRequest.json();
+    const matches = listTodayMatches(gameResponse);
 
     return sendResponse({ matches, type, channel, msg });
 
