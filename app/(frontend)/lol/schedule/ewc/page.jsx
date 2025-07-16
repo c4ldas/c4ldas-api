@@ -45,14 +45,14 @@ export default function ValorantSchedule({ params, searchParams }) {
     setIsLoading(false);
   }
 
-  async function generateCode(event) {
-    event.preventDefault();
-    document.querySelector('#response-code').style.visibility = 'hidden';
-    setTimeout(() => document.querySelector('#response-code').style.visibility = 'visible', 250);
-
-    const responseCode = `.me $(touser) ► $\{customapi.${origin}/api/valorant/schedule?channel=$(channel)&id=${id}&msg="${msg}"\}`;
-    document.querySelector('#response-code').innerText = responseCode;
-  }
+  /*   async function generateCode(event) {
+      event.preventDefault();
+      document.querySelector('#response-code').style.visibility = 'hidden';
+      setTimeout(() => document.querySelector('#response-code').style.visibility = 'visible', 250);
+  
+      const responseCode = `.me $(touser) ► $\{customapi.${origin}/api/valorant/schedule?channel=$(channel)&id=${id}&msg="${msg}"\}`;
+      document.querySelector('#response-code').innerText = responseCode;
+    } */
 
   function copyToClipboard(event) {
     const copyText = document.getElementById(event.target.id);
@@ -77,7 +77,7 @@ export default function ValorantSchedule({ params, searchParams }) {
         <h1>League of Legends EWC Schedule</h1>
         <div>This endpoint shows the League of Legends games of the current day from EWC. Games and scores are updated automatically.</div>
         <h2>How to use this endpoint on StreamElements</h2>
-        <div style={{ paddingTop: "10px" }}><code onClick={copyToClipboard} id="code" className="code">$(touser) ► $(customapi.{origin}/api/lol/schedule?channel=$(channel))</code></div>
+        <div style={{ paddingTop: "10px" }}><code onClick={copyToClipboard} id="code" className="code">$(touser) ► $(customapi.{origin}/api/lol/schedule/ewc?channel=$(channel))</code></div>
 
         <h2>Optional parameters</h2>
         <div>There are 2 optional parameters you can use to customize the response:</div>
