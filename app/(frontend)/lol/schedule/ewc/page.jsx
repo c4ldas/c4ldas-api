@@ -5,7 +5,7 @@ import FooterComponent from "@/app/components/Footer";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-export default function ValorantSchedule({ params, searchParams }) {
+export default function LoLScheduleEWC({ params, searchParams }) {
 
   const [origin, setOrigin] = useState('');
 
