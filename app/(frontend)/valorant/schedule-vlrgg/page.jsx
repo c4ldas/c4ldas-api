@@ -84,53 +84,57 @@ export default function Valorant({ params, searchParams }) {
     <div className="container">
       <Header />
       <main className="main block">
-        <h1>Valorant Schedule</h1>
-        <div>This endpoint shows the official Valorant games of the current day based on the selected league. Games and scores are updated automatically.</div>
-        <h3>How to use this endpoint on Streamelements</h3>
-        <div style={{ paddingTop: "10px" }}><code onClick={copyToClipboard} id="code" className="code">$(touser) ► $(customapi.{origin}/api/valorant/schedule/vlr?channel=$(channel)&league=<span className="red">LEAGUE_NAME</span>)</code></div>
+        <h1>Valorant Schedule (Deprecated)</h1>
+        <p>Please check out the <a href="/valorant/schedule">new endpoint</a>.</p>
+        <p>This page will be removed in the future.</p>
+        <del>
+          <p>This endpoint shows the official Valorant games of the current day based on the selected league. Games and scores are updated automatically.</p>
+          <h3>How to use this endpoint on Streamelements</h3>
+          <div style={{ paddingTop: "10px" }}><code onClick={copyToClipboard} id="code" className="code">$(touser) ► $(customapi.{origin}/api/valorant/schedule/vlr?channel=$(channel)&league=<span className="red">LEAGUE_NAME</span>)</code></div>
 
-        {/* Leagues available */}
-        <h3>Leagues available:</h3>
-        <h5 style={{ fontStyle: 'italic' }}>
-          More leagues may be added in the future. If you want to have a specific league added, please reach out via the <a href="/contact">contact form</a> with the vlr.gg league page.
-        </h5>
-        <table style={{ textAlign: "center", padding: "8px", border: "1px solid #ddd" }}>
-          <tbody>
-            <tr>
-              <th>Code</th>
-              <th>League Name</th>
-            </tr>
-            {leagues.map((league, index) => (
-              <tr key={index}>
-                <td className="region">{league.code}</td>
-                <td>{league.displayName}</td>
+          {/* Leagues available */}
+          <h3>Leagues available:</h3>
+          <h5 style={{ fontStyle: 'italic' }}>
+            More leagues may be added in the future. If you want to have a specific league added, please reach out via the <a href="/contact">contact form</a> with the vlr.gg league page.
+          </h5>
+          <table style={{ textAlign: "center", padding: "8px", border: "1px solid #ddd" }}>
+            <tbody>
+              <tr>
+                <th>Code</th>
+                <th>League Name</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+              {leagues.map((league, index) => (
+                <tr key={index}>
+                  <td className="region">{league.code}</td>
+                  <td>{league.displayName}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
 
-        <h2>Test the command</h2>
-        <div>Select the league you want to use and click on <span className="blue">Show response</span> button to check the response:</div>
-        <form id="form" onSubmit={handleSubmit} className="form" style={{ paddingTop: "10px" }}>
+          <h2>Test the command</h2>
+          <div>Select the league you want to use and click on <span className="blue">Show response</span> button to check the response:</div>
+          <form id="form" onSubmit={handleSubmit} className="form" style={{ paddingTop: "10px" }}>
 
-          <select id="region" className="regionName" onChange={handleLeagueChange} value={leagueName}>
-            {availableLeagues.map((league) => (
-              <option key={league.code} value={league.code}>{league.displayName}</option>
-            ))}
-            {(availableLeagues.length == leagues.length) /* && <option value="more_leagues">Load more leagues...</option> */}
-          </select>
+            <select id="region" className="regionName" onChange={handleLeagueChange} value={leagueName}>
+              {availableLeagues.map((league) => (
+                <option key={league.code} value={league.code}>{league.displayName}</option>
+              ))}
+              {(availableLeagues.length == leagues.length) /* && <option value="more_leagues">Load more leagues...</option> */}
+            </select>
 
 
-          <input type="text" id="message" className="message" placeholder="Message: No games for (league) today" onChange={(e) => { setMsg(e.target.value) }} />
-          <h5 className="variables">Optional: Type a message to be shown when there are no games. Available variables: (league)</h5>
-          <input type="submit" id="formatted" className="formatted" value="Show response" />
-          <input type="submit" id="generate-code" className="generate-code" value="Generate chat code" />
-          {isLoading && (<div id="loading" className="loading">Loading...</div>)}
-          <div id="response" className="response"></div>
-          <div id="response-code" className="response-code" onClick={copyToClipboard}></div>
-        </form>
-        <dialog id="popup" style={{ backgroundColor: "var(--popup-color)" }}>Copied to clipboard</dialog>
+            <input type="text" id="message" className="message" placeholder="Message: No games for (league) today" onChange={(e) => { setMsg(e.target.value) }} />
+            <h5 className="variables">Optional: Type a message to be shown when there are no games. Available variables: (league)</h5>
+            <input type="submit" id="formatted" className="formatted" value="Show response" />
+            <input type="submit" id="generate-code" className="generate-code" value="Generate chat code" />
+            {isLoading && (<div id="loading" className="loading">Loading...</div>)}
+            <div id="response" className="response"></div>
+            <div id="response-code" className="response-code" onClick={copyToClipboard}></div>
+          </form>
+          <dialog id="popup" style={{ backgroundColor: "var(--popup-color)" }}>Copied to clipboard</dialog>
+        </del>
       </main >
       <FooterComponent />
     </div >

@@ -1,72 +1,40 @@
+/**
+* This is the future front page for schedule
+* The old page will be removed soon in the future and replaced with this one
+* This page uses vlr.gg as a data source
+* Currently, there are 3 endpoints for schedule:
+* - /valorant/schedule
+* - /valorant/schedule/vlr
+* - /valorant/schedule/vlr.gg
+* The idea is to move /api/valorant/schedule/vlr.gg to /api/valorant/schedule and use it for all requests
+* So, in the future, only one endpoint will be used (/api/valorant/schedule) and it will gather data from vlr.gg website
+* 
+* TO DO:  
+* - Check how many people are using /api/valorant/schedule endpoint
+* - If not many (or none at all), just put the /vlr.gg code directly on /api/valorant/schedule
+* - Move the endpoint /api/valorant/schedule/vlr.gg to /api/valorant/schedule
+* - Remove the page /valorant/schedule-vlrgg
+* - Remove page.jsx from this folder
+* - Rename this file to page.jsx
+* - Add a response (for a limited time) on /api/valorant/schedule/vlr.gg to use /api/valorant/schedule instead (just remove the /vlr.gg from the URL)
+* - Remove any /api/valorant/schedule/vlr.gg from the this page (lines 46, 68, 95, and 102) and use /api/valorant/schedule
+*
+* Future TO DO:
+* - Remove the route /api/valorant/schedule/vlr and /api/valorant/schedule/vlr.gg
+*/
+
 "use client"
 
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
 import { useState, useEffect } from "react";
 
-
-const leagues = [
-  { code: "challengers_br", league_name: "Challengers BR" },
-  { code: "vct_lock_in", league_name: "VCT LOCK//IN" },
-  { code: "game_changers_series_brazil", league_name: "Game Changers BR" },
-  { code: "last_chance_qualifier_br_and_latam", league_name: "Last Chance Qualifier BR & Latam" },
-  { code: "vct_americas", league_name: "VCT Americas" },
-  { code: "vct_masters", league_name: "Masters" },
-  { code: "champions", league_name: "Champions" },
-  { code: "ascension_americas", league_name: "Ascension Americas" },
-  { code: "last_chance_qualifier_americas", league_name: "Last Chance Qualifier Americas" },
-  { code: "game_changers_championship", league_name: "Game Changers Championship" },
-  { code: "vct_emea", league_name: "VCT EMEA" },
-  { code: "game_changers_emea", league_name: "Game Changers EMEA" }
-]
-
-const moreLeagues = [
-  { code: "game_changers_na", league_name: "Game Changers NA" },
-  { code: "challengers_na", league_name: "Challengers NA" },
-  { code: "vct_pacific", league_name: "VCT Pacific" },
-  { code: "vct_china", league_name: "VCT China" },
-  { code: "challengers_jpn", league_name: "Challengers Japan" },
-  { code: "challengers_kr", league_name: "Challengers Korea" },
-  { code: "challengers_latam", league_name: "Challengers LATAM" },
-  { code: "challengers_latam_n", league_name: "Challengers LATAM North" },
-  { code: "challengers_latam_s", league_name: "Challengers LATAM South" },
-  { code: "challengers_apac", league_name: "Challengers APAC" },
-  { code: "challengers_sea_id", league_name: "Challengers SEA Indonesia" },
-  { code: "challengers_sea_ph", league_name: "Challengers SEA Philippines" },
-  { code: "challengers_sea_sg_and_my", league_name: "Challengers SEA Singapore & Malaysia" },
-  { code: "challengers_sea_th", league_name: "Challengers SEA Thailand" },
-  { code: "challengers_sea_hk_and_tw", league_name: "Challengers SEA Hong Kong & Taiwan" },
-  { code: "challengers_sea_vn", league_name: "Challengers SEA Vietnam" },
-  { code: "valorant_oceania_tour", league_name: "Valorant Oceania Tour" },
-  { code: "challengers_south_asia", league_name: "Challengers South Asia" },
-  { code: "game_changers_sea", league_name: "Game Changers SEA" },
-  { code: "game_changers_east_asia", league_name: "Game Changers East Asia" },
-  { code: "game_changers_jpn", league_name: "Game Changers Japan" },
-  { code: "game_changers_kr", league_name: "Game Changers Korea" },
-  { code: "game_changers_latam", league_name: "Game Changers LATAM" },
-  { code: "masters", league_name: "Masters" },
-  { code: "last_chance_qualifier_apac", league_name: "Last Chance Qualifier APAC" },
-  { code: "last_chance_qualifier_east_asia", league_name: "Last Chance Qualifier East Asia" },
-  { code: "last_chance_qualifier_emea", league_name: "Last Chance Qualifier EMEA" },
-  { code: "last_chance_qualifier_na", league_name: "Last Chance Qualifier NA" },
-  { code: "vrl_spain", league_name: "VRL Spain" },
-  { code: "vrl_northern_europe", league_name: "VRL Northern Europe" },
-  { code: "vrl_dach", league_name: "VRL DACH" },
-  { code: "vrl_france", league_name: "VRL France" },
-  { code: "vrl_east", league_name: "VRL East" },
-  { code: "vrl_turkey", league_name: "VRL Turkey" },
-  { code: "vrl_cis", league_name: "VRL CIS" },
-  { code: "mena_resilence", league_name: "MENA Resilience" },
-  { code: "challengers_italy", league_name: "Challengers Italy" },
-  { code: "challengers_portugal", league_name: "Challengers Portugal" }
-]
-
-export default function Valorant({ params, searchParams }) {
+export default function ValorantSchedule({ params, searchParams }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [origin, setOrigin] = useState('');
-  const [leagueName, setLeagueName] = useState('challengers_br');
-  const [availableLeagues, setAvailableLeagues] = useState(leagues);
+  const [id, setId] = useState('');
+  const [seriesId, setSeriesId] = useState('all');
   const [msg, setMsg] = useState("No games for (league) today");
 
   useEffect(() => {
@@ -88,7 +56,8 @@ export default function Valorant({ params, searchParams }) {
       new URLSearchParams({
         channel: "$(channel)",
         type: 'text',
-        league: leagueName,
+        id: id,
+        series_id: seriesId,
         msg: msg
       }), {
       method: "GET",
@@ -105,12 +74,7 @@ export default function Valorant({ params, searchParams }) {
     document.querySelector('#response-code').style.visibility = 'hidden';
     setTimeout(() => document.querySelector('#response-code').style.visibility = 'visible', 250);
 
-    const responseCode = `.me $(touser) ► $\{customapi.${origin}/api/valorant/schedule?channel=$(channel)&league=${leagueName}&msg="${msg}"\}`;
-    /* const formattedResponseCode = responseCode
-      .replace(/\//g, '\u200B/')
-      .replace(/&/g, '\u200B&')
-      .replace(/\?/g, '\u200B?'); */
-    /* document.querySelector('#response-code').innerText = responseCode; */
+    const responseCode = `.me $(touser) ► $\{customapi.${origin}/api/valorant/schedule?channel=$(channel)&id=${id}&msg="${msg}"\}`;
     document.querySelector('#response-code').innerText = responseCode;
   }
 
@@ -129,84 +93,38 @@ export default function Valorant({ params, searchParams }) {
     setTimeout(() => dialog.close(), 2000);
   }
 
-  function collapseMenu(event) {
-    const element = event.currentTarget;
-    element.classList.toggle("active");
-    var item = element.nextElementSibling;
-    if (item.style.maxHeight) {
-      item.style.maxHeight = null;
-    } else {
-      item.style.maxHeight = item.scrollHeight + "px";
-    }
-  }
-
-  function handleLeagueChange(event) {
-    if (event.target.value !== 'more_leagues') return setLeagueName(event.target.value);
-
-    setAvailableLeagues(leagues.concat(moreLeagues));
-    setLeagueName(moreLeagues[0].code);
-  }
 
   return (
     <div className="container">
       <Header />
       <main className="main block">
-        <h1>Valorant Schedule</h1>
-        <div>This endpoint shows the official Valorant games of the current day based on the selected league. Games and scores are updated automatically, but can take some minutes to reflect.</div>
-        <h3>How to use this endpoint on Streamelements</h3>
-        <div style={{ paddingTop: "10px" }}><code onClick={copyToClipboard} id="code" className="code">$(touser) ► $(customapi.{origin}/api/valorant/schedule?channel=$(channel)&league=<span className="red">LEAGUE_NAME</span>)</code></div>
+        <h1>Valorant Games Schedule</h1>
+        <div>This endpoint shows the Valorant games of the current day (obtained from https://vlr.gg). Games and scores are updated automatically.</div>
+        <h2>How to use this endpoint on StreamElements</h2>
+        <div style={{ paddingTop: "10px" }}><code onClick={copyToClipboard} id="code" className="code">$(touser) ► $(customapi.{origin}/api/valorant/schedule?channel=$(channel)&id=<span className="red">LEAGUE_ID</span>)</code></div>
 
-        {/* Leagues available */}
-        <h3>Leagues available:</h3>
-        <table style={{ textAlign: "center", padding: "8px", border: "1px solid #ddd" }}>
-          <tbody>
-            <tr>
-              <th>Code</th>
-              <th>League Name</th>
-            </tr>
-            {leagues.map((league, index) => (
-              <tr key={index}>
-                <td className="region">{league.code}</td>
-                <td>{league.league_name}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <h2>How to get the League ID</h2>
 
-        {/* Load more leagues */}
-        <h3>More leagues (click to show):</h3>
-        <h3 id="toggle-reset" className="toggle" onClick={collapseMenu}>Show more leagues:</h3>
-        <div id="collapsible-reset" className="collapsible">
-          <table style={{ textAlign: "center", padding: "8px", border: "1px solid #ddd" }}>
-            <tbody>
-              <tr>
-                <th>Code</th>
-                <th>League Name</th>
-              </tr>
-              {moreLeagues.map((league) => (
-                <tr key={league.code}>
-                  <td className="region">{league.code}</td>
-                  <td>{league.league_name}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <p>In order to get the League ID, go to <a href="https://vlr.gg/events">https://vlr.gg/events</a> and click on the league you want to use. You will find the League ID in the URL of the page, right after the /event/ part.</p>
+        <p>As an example, we can use the <strong>Esports World Cup 2025</strong>, which we can find at <a href="https://www.vlr.gg/event/2449/esports-world-cup-2025">https://www.vlr.gg/event/<span className="red">2449</span>/esports-world-cup-2025</a>.</p>
+        <p>The League ID is <span className="red">2449</span>, so the code would be:</p>
+        <code onClick={copyToClipboard} id="code" className="code">$(touser) ► $(customapi.{origin}/api/valorant/schedule?channel=$(channel)&id=<span className="red">2449</span>)</code>
+
+        <h2>Optional parameters</h2>
+        <div>There are 3 optional parameters you can use to customize the response:</div>
+        <ul>
+          <li><code className="blue" style={{ fontSize: "1rem" }}>&msg</code> - Message to be shown when there are no games. Available variables: <code>(league)</code>.</li>
+          <li><code className="blue" style={{ fontSize: "1rem" }}>&type</code> - Type of response. Available values: <code>json / text</code></li>
+          <li><code className="blue" style={{ fontSize: "1rem" }}>&series_id</code> - If the league has many stages/series, you can filter the games at a stage/series. Choose the stages/series from the drop-down menu on the event page and the <code className="blue">series_id</code> will be available in the URL.</li>
+        </ul>
 
         <h2>Test the command</h2>
         <div>Select the league you want to use and click on <span className="blue">Show response</span> button to check the response:</div>
         <form id="form" onSubmit={handleSubmit} className="form" style={{ paddingTop: "10px" }}>
-
-          <select id="region" className="regionName" onChange={handleLeagueChange} value={leagueName}>
-            {availableLeagues.map((league) => (
-              <option key={league.code} value={league.code}>{league.league_name}</option>
-            ))}
-            {(availableLeagues.length == leagues.length) && <option value="more_leagues">Load more leagues...</option>}
-          </select>
-
-
-          <input type="text" id="message" className="message" placeholder="Message: No games for (league) today" onChange={(e) => { setMsg(e.target.value) }} />
-          <h5 className="variables">Optional: Type a message to be shown when there are no games. Available variables: (league)</h5>
+          <input type="text" id="league-id" className="playername" placeholder="League ID: 2449" onChange={(e) => { setId(e.target.value) }} required={true}></input>
+          <input type="text" id="series-id" className="tagline" placeholder="Series ID (optional): all" onChange={(e) => { setSeriesId(e.target.value) }}></input>
+          <input type="text" id="message" className="message" placeholder="Message (optional): No games for (league) today" onChange={(e) => { setMsg(e.target.value) }} />
+          <h5 className="variables">Optional: Type a message to be shown when there are no games. Available variables: <code>(league)</code></h5>
           <input type="submit" id="formatted" className="formatted" value="Show response" />
           <input type="submit" id="generate-code" className="generate-code" value="Generate chat code" />
           {isLoading && (<div id="loading" className="loading">Loading...</div>)}

@@ -37,6 +37,9 @@ const vlrQuery = (query) => `https://vlrggapi.vercel.app/match?q=${query}`;
 const list = ["upcoming", "live_score", "results"];
 
 export async function GET(request) {
+
+  return NextResponse.json({ status: "failed", message: `Not in use anymore, please check ${request.nextUrl.origin}/valorant/schedule for the new version` }, { status: 200 });
+
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
   const { channel, league, type = "text", msg = "No games for (league) today" } = obj;
