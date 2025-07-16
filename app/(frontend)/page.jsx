@@ -31,8 +31,8 @@ export default async function Home() {
         />
 
         <Linkbox
-          title="League of Legends Rank"
-          description="Create a chat command to instantly showcase your rank and elo in League of Legends."
+          title="League of Legends"
+          description="Valorant commands to be used on Stream or overlays."
           link="/lol"
         />
 
@@ -40,7 +40,7 @@ export default async function Home() {
           title="Marvel Rivals rank"
           description="Create a chat command to display your rank in Marvel Rivals."
           link="/marvel-rivals"
-          span=" Unavailable at the moment."
+          span=" Unavailable."
           spanClass="red"
         />
 
