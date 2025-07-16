@@ -7,52 +7,11 @@ import Image from "next/image";
 
 export default function ValorantSchedule({ params, searchParams }) {
 
-  const [isLoading, setIsLoading] = useState(false);
   const [origin, setOrigin] = useState('');
-  const [id, setId] = useState('');
-  const [seriesId, setSeriesId] = useState('all');
-  const [msg, setMsg] = useState("No games for (league) today");
 
   useEffect(() => {
     setOrigin(window.location.origin);
   }, []);
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const submitter = event.nativeEvent.submitter.id;
-    submitter === "formatted" ? showFormatted(event) : generateCode(event);
-  }
-
-  async function showFormatted(event) {
-    event.preventDefault();
-    setIsLoading(true);
-    document.querySelector("#response").innerText = "";
-
-    const request = await fetch("/api/valorant/schedule?" +
-      new URLSearchParams({
-        channel: "$(channel)",
-        type: 'text',
-        id: id,
-        series_id: seriesId,
-        msg: msg
-      }), {
-      method: "GET",
-    })
-
-    const response = await request.text();
-    console.log(response)
-    document.querySelector('#response').innerText = response;
-    setIsLoading(false);
-  }
-
-  /*   async function generateCode(event) {
-      event.preventDefault();
-      document.querySelector('#response-code').style.visibility = 'hidden';
-      setTimeout(() => document.querySelector('#response-code').style.visibility = 'visible', 250);
-  
-      const responseCode = `.me $(touser) ► $\{customapi.${origin}/api/valorant/schedule?channel=$(channel)&id=${id}&msg="${msg}"\}`;
-      document.querySelector('#response-code').innerText = responseCode;
-    } */
 
   function copyToClipboard(event) {
     const copyText = document.getElementById(event.target.id);
