@@ -32,7 +32,7 @@ export default async function Home() {
 
         <Linkbox
           title="League of Legends"
-          description="Valorant commands to be used on Stream or overlays."
+          description="League of Legends commands to be used on Stream or overlays."
           link="/lol"
         />
 
