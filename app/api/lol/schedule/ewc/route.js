@@ -57,11 +57,7 @@ export async function GET(request) {
 // Function to list today's matches
 function listTodayMatches(data) {
   const matchList = data.data.matchSeries.items;
-  const lastMatch = matchList[matchList.length - 1];
-  title = lastMatch.tournament.name;
-
   const todayBR = Temporal.Now.zonedDateTimeISO(localTimeZone);
-
   const matches = [];
 
   for (let i = 0; i < matchList.length; i++) {
