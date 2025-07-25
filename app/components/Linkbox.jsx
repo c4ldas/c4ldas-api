@@ -33,6 +33,7 @@ export default function Linkbox(props) {
           href={props.link}
           onClick={props.onClick}
           className="link-content"
+          target={props.target || "_self"}
           style={{ position: 'relative', zIndex: 2 }}
           {...props}
         >
@@ -43,7 +44,7 @@ export default function Linkbox(props) {
           </p>
         </a>)
         : (
-          <Link href={props.link} className="link-content" style={{ position: 'relative', zIndex: 2 }}>
+          <Link href={props.link} className="link-content" target={props.target || "_self"} style={{ position: 'relative', zIndex: 2 }}>
             <h3 style={{ color: 'black' }}>{props.title}</h3>
             <p className="description">{props.description}
               <br />
