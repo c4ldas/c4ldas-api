@@ -73,6 +73,15 @@ body {
   padding: 20px;
 }
 
+.header-links {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  margin: 1rem;
+  font-size: 0.8rem;
+}
+
 .navigation {
   display: flex;
   align-items: flex-end;

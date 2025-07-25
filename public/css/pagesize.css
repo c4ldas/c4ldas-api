@@ -1,4 +1,13 @@
 /* Page size configuration */
+
+/* Devices with less than 800px will hide all but the home link */
+@media (max-width: 800px) {
+  .header-links> :not(.home) {
+    display: none;
+  }
+}
+
+
 /* Devices with at least 800px will fit 2 boxes per row */
 @media (min-width: 800px) {
   .link-box {
