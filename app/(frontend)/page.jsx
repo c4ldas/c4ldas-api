@@ -36,6 +36,7 @@ export default async function Home() {
           link="/lol"
         />
 
+        {/* 
         <Linkbox
           title="Marvel Rivals rank"
           description="Create a chat command to display your rank in Marvel Rivals."
@@ -43,6 +44,7 @@ export default async function Home() {
           span=" Unavailable."
           spanClass="red"
         />
+        */}
 
         <Linkbox
           title="Valorant"
@@ -63,23 +65,28 @@ export default async function Home() {
           link="/youtube"
         />
 
+        {/*
         <Linkbox
           title="Streamelements Leaderboard CSV download"
           description="Generate and download the Streamelements leaderboard in CSV format."
           link="https://seapi.c4ldas.com.br/leaderboard"
-        />
-
-        <Linkbox
-          title="Streamelements Overlay Sharing Tool"
-          description="Share custom overlays with colleagues using one-time-use codes for effortless installation in their Streamelements accounts."
-          link="https://seapi.c4ldas.com.br"
-        />
+        /> 
+        */}
 
         <Linkbox
           title="Streamelements Widgets"
           description="Discover available widgets to enhance your stream overlays."
           link="/widgets"
         />
+
+        <Linkbox
+          title="Streamelements Overlay Sharing Tool"
+          description="Webpage to share custom overlays with colleagues or clients using a quick link."
+          span="(Open in a new tab)"
+          target="_blank"
+          link="https://seapi.c4ldas.com.br"
+        />
+
       </main>
       <FooterComponent />
     </div>
