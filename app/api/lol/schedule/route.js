@@ -131,18 +131,3 @@ async function getLeagueName(league, language) {
   const response = await request.json();
   return response.data.leagues.find(l => l.id == leagues[league]).name;
 }
-
-
-async function getLatestTournamentId(league, language) {
-  const request = await fetch(`${baseURL}/getTournamentsForLeague?hl=${language}&leagueId=${leagues[league]}`, {
-    method: "GET",
-    headers: {
-      "accept": "application/json",
-      "x-api-key": LOL_ESPORTS_TOKEN
-    }
-  });
-
-  const response = await request.json();
-  // return response;
-  return { tournamentId: response.data.leagues[0].tournaments[0].id, slug: response.data.leagues[0].tournaments[0].slug };
-}
