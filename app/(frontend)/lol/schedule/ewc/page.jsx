@@ -14,8 +14,9 @@ export default function LoLScheduleEWC({ params, searchParams }) {
   }, []);
 
   function copyToClipboard(event) {
-    const copyText = document.getElementById(event.target.id);
-    navigator.clipboard.writeText(copyText.innerText);
+    const copyText = event.currentTarget.innerText;
+    // const copyText = document.getElementById(event.target.id);
+    navigator.clipboard.writeText(copyText);
 
     const dialog = document.getElementById("popup");
 
