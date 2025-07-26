@@ -17,9 +17,27 @@ const leagues = [
   { code: "circuito_desafiante", league_name: "Circuito Desafiante" },
 ]
 
-const moreLeagues = [
-  { code: "circuito_desafiante", league_name: "Circuito Desafiante" },
+const languages = [
+  "en-US",
+  "en-GB",
+  "en-AU",
+  "cs-CZ",
+  "de-DE",
+  "el-GR",
+  "es-ES",
+  "es-MX",
+  "fr-FR",
+  "hu-HU",
+  "it-IT",
+  "pl-PL",
+  "pt-BR",
+  "ro-RO",
+  "ru-RU",
+  "tr-TR",
+  "ja-JP",
+  "ko-KR",
 ]
+
 
 export default function LoLSchedule({ params, searchParams }) {
 
@@ -84,16 +102,6 @@ export default function LoLSchedule({ params, searchParams }) {
     setTimeout(() => dialog.close(), 2000);
   }
 
-  function collapseMenu(event) {
-    const element = event.currentTarget;
-    element.classList.toggle("active");
-    var item = element.nextElementSibling;
-    if (item.style.maxHeight) {
-      item.style.maxHeight = null;
-    } else {
-      item.style.maxHeight = item.scrollHeight + "px";
-    }
-  }
 
   function handleLeagueChange(event) {
     if (event.target.value !== 'more_leagues') return setLeagueName(event.target.value);
@@ -106,7 +114,7 @@ export default function LoLSchedule({ params, searchParams }) {
     <div className="container">
       <Header />
       <main className="main block">
-        <h1>League of Legends Schedule (under development)</h1>
+        <h1>League of Legends Schedule</h1>
         <div>This endpoint shows the official League of Legends games of the current day based on the selected league. Games and scores are updated automatically, but can take some minutes to reflect.</div>
         <h3>How to use this endpoint on Streamelements</h3>
         <div style={{ paddingTop: "10px" }}><code onClick={copyToClipboard} id="code" className="code">$(touser) ► $(customapi.{origin}/api/lol/schedule?channel=$(channel)&league=<span className="red">LEAGUE_NAME</span>)</code></div>
@@ -128,25 +136,13 @@ export default function LoLSchedule({ params, searchParams }) {
           </tbody>
         </table>
 
-        {/* Load more leagues */}
-        <h3>More leagues (click to show):</h3>
-        <h3 id="toggle-reset" className="toggle" onClick={collapseMenu}>Show more leagues:</h3>
-        <div id="collapsible-reset" className="collapsible">
-          <table style={{ textAlign: "center", padding: "8px", border: "1px solid #ddd" }}>
-            <tbody>
-              <tr>
-                <th>Code</th>
-                <th>League Name</th>
-              </tr>
-              {moreLeagues.map((league) => (
-                <tr key={league.code}>
-                  <td className="region">{league.code}</td>
-                  <td>{league.league_name}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <h2>Optional parameters</h2>
+        <div>There are 3 optional parameters you can use to customize the response:</div>
+        <ul>
+          <li><code className="blue" style={{ fontSize: "1rem" }}>&msg</code> - Message to be shown when there are no games. Available variables: <code>(league)</code>.</li>
+          <li><code className="blue" style={{ fontSize: "1rem" }}>&type</code> - Type of response. Available values: <code>json / text</code></li>
+          <li><code className="blue" style={{ fontSize: "1rem" }}>&language</code> - language for the league name response. Available values: <code>{languages.join(', ')}</code></li>
+        </ul>
 
         <h2>Test the command</h2>
         <div>Select the league you want to use and click on <span className="blue">Show response</span> button to check the response:</div>
@@ -156,7 +152,6 @@ export default function LoLSchedule({ params, searchParams }) {
             {availableLeagues.map((league) => (
               <option key={league.code} value={league.code}>{league.league_name}</option>
             ))}
-            {(availableLeagues.length == leagues.length) && <option value="more_leagues">Load more leagues...</option>}
           </select>
 
 
