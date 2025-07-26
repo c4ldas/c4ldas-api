@@ -15,8 +15,8 @@ export default function LeagueOfLegends() {
           </h2>
         </div>
         <Linkbox title="League of Legends Rank" link="/lol/rank" description="Craft a chat command to display your real-time rank and elo in League of Legends." />
-        {/* <Linkbox title="League of Legends Games Schedule" link="/lol/schedule" description="Set up a chat command to display real-time scores of todays's League of Legends tournament matches." /> */}
-        <Linkbox title="League of Legends EWC Schedule" link="/lol/schedule/ewc" description="Set up a chat command to display real-time scores of todays's EWC games." />
+        <Linkbox title="League of Legends Games Schedule" link="/lol/schedule" description="Set up a chat command to display real-time scores of todays's League of Legends tournament matches." />
+        {/* <Linkbox title="League of Legends EWC Schedule" link="/lol/schedule/ewc" description="Set up a chat command to display real-time scores of todays's EWC games." /> */}
       </main>
       <FooterComponent />
     </div>
