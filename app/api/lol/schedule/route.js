@@ -39,7 +39,7 @@ export async function GET(data) {
 
 
   } catch (error) {
-    console.log("Error!", error.message);
+    console.log("Error:", error.message);
     return sendResponse({ status: "failed", error: "Failed to list League of Legends matches. Please try again." });
   }
 }
