@@ -25,7 +25,7 @@ export async function GET(data) {
   try {
 
     const obj = Object.fromEntries(data.nextUrl.searchParams);
-    const { league, channel, type = "text", msg = "No games for (league) today", language = "pt-BR" } = obj;
+    const { league, channel, type = "text", msg = "No games for (league) today", language = "en-US" } = obj;
 
     if (!league || !leagues[league]) return NextResponse.json({ status: "failed", error: `Missing or invalid league. Available leagues: ${Object.keys(leagues).join(", ")}` }, { status: 200 });
     if (!channel) return NextResponse.json({ status: "failed", error: "Missing channel" }, { status: 200 });
