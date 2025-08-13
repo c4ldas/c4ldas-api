@@ -34,9 +34,7 @@ export async function GET(data) {
 
     const matches = await listTodayMatches(leagues[league], language);
 
-    // return NextResponse.json(matches, { status: 200 });
     return sendResponse({ matches, type, channel, title, msg });
-
 
   } catch (error) {
     console.log("Error:", error.message);
@@ -48,6 +46,8 @@ export async function GET(data) {
 async function listTodayMatches(leagueId, language) {
   try {
 
+    const matches = [];
+
     const request = await fetch(`${baseURL}/getSchedule?hl=${language}&leagueId=${leagueId}`, {
       method: "GET",
       headers: {
@@ -57,19 +57,36 @@ async function listTodayMatches(leagueId, language) {
     });
 
     const response = await request.json();
-    const todayGames = response.data.schedule.events.filter(game => new Date(game.startTime).toDateString() == new Date().toDateString());
 
-    const matches = [];
+    // Add startTimeBR property to each game
+    const games = response.data.schedule.events.map(game => {
+      game.startTimeBR = Temporal.Instant.from(game.startTime).toZonedDateTimeISO(localTimeZone).toString({ timeZoneName: 'never' });
+      return game;
+    })
 
+    // Filter today's matches
+    const todayGames = games.filter(game => {
+      const today = Temporal.Now.zonedDateTimeISO(localTimeZone).toPlainDate().toString();
+      return game.startTimeBR.split("T")[0] === today;
+    });
+
+    // Just for debugging purposes (when there is no match today)
+    // const yesterdayGames = games.filter(game => {
+    //   const yesterday = Temporal.Now.zonedDateTimeISO(localTimeZone).subtract({ days: 1 }).toPlainDate().toString();
+    //   return game.startTimeBR.split("T")[0] === yesterday;
+    // });
+
+    // Add today's matches to the matches array
     for (let i = 0; i < todayGames.length; i++) {
       const match = todayGames[i];
 
+      // Set startTime and startTimeBR variables for game object creation
       const startTime = Temporal.Instant.from(match.startTime).toZonedDateTimeISO("UTC");
-      const startTimeBR = Temporal.Instant.from(match.startTime).toZonedDateTimeISO(localTimeZone);
+      const startTimeBR = Temporal.Instant.from(match.startTimeBR).toZonedDateTimeISO(localTimeZone);
 
       const game = {
         startTime: match.startTime,
-        startTimeBR: startTimeBR.toString({ timeZoneName: 'never' }),
+        startTimeBR: match.startTimeBR,
         startHour: startTime.hour,
         startHourBR: startTimeBR.hour,
         team1: match.match.teams[0].name,
