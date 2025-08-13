@@ -32,6 +32,9 @@ import { convertTZ, regionToTZ } from "@/app/lib/convert_timezone";
 const localTimeZone = process.env.VERCEL_URL ? regionToTZ[process.env.AWS_REGION] : Temporal.Now.timeZoneId();
 
 export async function GET(request) {
+
+  return NextResponse.json({ status: "failed", message: `Not in use anymore, please check ${request.nextUrl.origin}/valorant/schedule for the new version` }, { status: 200 });
+
   try {
     // Convert query strings (map format) to object format - Only works for this specific case!+
     const obj = Object.fromEntries(request.nextUrl.searchParams);
