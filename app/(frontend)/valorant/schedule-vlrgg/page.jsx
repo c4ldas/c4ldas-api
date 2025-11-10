@@ -84,7 +84,7 @@ export default function Valorant({ params, searchParams }) {
     <div className="container">
       <Header />
       <main className="main block">
-        <h1>Valorant Schedule (Deprecated)</h1>
+        <h1>Valorant Schedule (Deprecated in July 2025)</h1>
         <p>Please check out the <a href="/valorant/schedule">new endpoint</a>.</p>
         <p>This page will be removed in the future.</p>
         <del>
