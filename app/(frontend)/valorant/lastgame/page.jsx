@@ -113,7 +113,7 @@ export default function Valorant({ searchParams }) {
     setTimeout(() => document.querySelector('#response-code').style.visibility = 'visible', 250);
 
     const values = id ? `id=${id}` : `player=${player}&tag=${tag}&region=${regionName}`;
-    const responseCode = `.me $(sender) ► $\{customapi.${origin}/api/valorant/lastgame?channel=$(channel)&type=text&${values}"\}`;
+    const responseCode = `.me $(sender) ► $\{customapi.${origin}/api/valorant/lastgame?channel=$(channel)&type=text&${values}\}`;
     document.querySelector('#response-code').innerText = responseCode;
   }
 
