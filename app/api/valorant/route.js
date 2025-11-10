@@ -94,34 +94,27 @@ export async function GET(request) {
           description: "Your channel name, no need to change",
           required: true
         },
-        league: {
-          description: "Name of the league",
-          required: true,
-          available_variables: [
-            "challengers_br",
-            "vct_lock_in",
-            "game_changers_series_brazil",
-            "last_chance_qualifier_br_and_latam",
-            "vct_americas",
-            "vct_masters",
-            "champions",
-            "ascension_americas",
-            "last_chance_qualifier_americas",
-            "game_changers_championship",
-            "vct_emea"
-          ]
+        id: {
+          description: "League ID from vlr.gg",
+          required: true
         },
         type: {
           description: "Format of the response",
           required: false,
           default: "text",
           available_variables: ["json", "text"],
-        }
+        },
+        msg: {
+          description: "Message to be displayed as response when no game is found",
+          required: false,
+          default: "No games for (league) today",
+          available_variables: ["(league)"],
+        },
       }
     },
     {
       endpoint: `/api/valorant/schedule/vlr`,
-      description: "Display the games of the day from vlr.gg.",
+      description: "DEPRECATED, please check /api/valorant/schedule. Display the games of the day from vlr.gg.",
       usage: `${origin}${pathname}schedule/vlr?channel=$(channel)&league=LEAGUE_NAME&type=TYPE`,
       params: {
         channel: {
