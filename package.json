@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "schtasks /run /tn custom_tasks\\postgres_start && next dev",
+    "dev:pg": "schtasks /run /tn custom_tasks\\postgres_start && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
