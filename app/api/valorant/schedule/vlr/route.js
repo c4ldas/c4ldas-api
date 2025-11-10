@@ -1,4 +1,6 @@
 /*
+DEPRECATED IN JULY 2025 - please check /valorant/schedule for the new version
+
 This endpoint shows the games of the day based on the tournament searched. This is aimed to official and unofficial Riot tournaments.
 
 Endpoint: 

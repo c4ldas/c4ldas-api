@@ -1,4 +1,7 @@
 /**
+DEPRECATED IN JULY 2025 - please check /valorant/schedule for the new version
+
+
 * This is the future route for schedule
 * This page uses vlr.gg as a data source
 * Currently, there are 3 endpoints for schedule:
