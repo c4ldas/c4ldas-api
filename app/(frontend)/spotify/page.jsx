@@ -106,7 +106,12 @@ export default function Spotify({ _, searchParams }) {
 
             <br /><br /><br />
             <h3>Widget URL (click to copy)</h3>
-            <code style={{ border: "1px solid black", padding: "10px", cursor: "pointer" }} onClick={copyCode}>{origin}/spotify/musica/{cookie.spotify_id}</code>
+            <code style={{ border: "1px solid black", padding: "10px", cursor: "pointer" }}
+              onClick={copyCode}
+              datacommand={`${origin}/spotify/musica/${cookie.spotify_id}`}
+            >
+              {origin}/spotify/musica/{cookie.spotify_id}
+            </code>
 
             <h3>Preview (Open Spotify to see the preview):</h3>
             <SpotifyNowPlaying userId={cookie.spotify_id} />
