@@ -25,8 +25,6 @@
     "react-fast-marquee": "^1.6.5"
   },
   "devDependencies": {
-    "crypto-js": "^4.2.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "crypto-js": "^4.2.0"
   }
 }
