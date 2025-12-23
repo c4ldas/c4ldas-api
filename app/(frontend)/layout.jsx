@@ -20,7 +20,7 @@ export const viewport = {
 
 export const metadata = {
   title: "c4ldas webpage",
-  description: "Just a webpage",
+  description: "Collection of tools and utilities for Twitch streaming and Streamelements",
   backgroundColor: "#3c3c3c",
 
   // Google verification
@@ -58,20 +58,20 @@ export const metadata = {
   // OpenGraph / Facebook
   openGraph: {
     title: "c4ldas webpage",
-    description: "Just a webpage",
+    description: "Collection of tools and utilities for Twitch streaming and Streamelements",
     url: "https://c4ldas.com.br",
     creator: "@c4ldas",
-    images: "/images/cover.png",
+    images: "/images/cover/home.png",
   },
 
   // Twitter
   twitter: {
-    card: "summary_large_image",
+    /* card: "summary_large_image", */
     title: "c4ldas webpage",
-    description: "Just a webpage",
+    description: "Collection of tools and utilities for Twitch streaming and Streamelements",
     site: "https://c4ldas.com.br",
     creator: "@c4ldas",
-    image: "/images/cover.png",
+    image: "/images/cover/home.png",
   }
 };
 
