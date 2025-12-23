@@ -6,7 +6,7 @@
 // - The user that creates the clip is in the environment variable CLIP_CHANNEL
 
 import { twitchGetTokenDatabase, twitchSaveToDatabase } from "@/app/lib/database";
-import { createClip, editClipData, getClipData, getClipDownloadURL, getUserData } from "@/app/lib/twitch";
+import { createClip, /* editClipData, */ getClipData, getClipDownloadURL, getUserData } from "@/app/lib/twitch";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 25; // Vercel config for max duration of the route
@@ -32,7 +32,7 @@ export async function GET(request) {
     if (!validTypes.includes(type)) return NextResponse.json({ status: "failed", message: `Invalid type. 'type' should be one of ${validTypes.join(", ")}` }, { status: 200 });
 
     // Check if the duration is valid
-    if (isNaN(duration) || duration < 5 || duration > 30) return NextResponse.json({ status: "failed", message: `Invalid duration. 'duration' should be a number between 5 and 30` }, { status: 200 });
+    if (isNaN(duration) || duration < 5 || duration > 60) return NextResponse.json({ status: "failed", message: `Invalid duration. 'duration' should be a number between 5 and 60` }, { status: 200 });
 
     // Get the token from c4ldasbot user and check if it is valid
     let token = await twitchGetTokenDatabase(CLIP_CODE, CLIP_CHANNEL);
@@ -66,14 +66,14 @@ export async function GET(request) {
     const clipData = await createClip(userData.id, token.access_token, title, duration);
     console.log(`Creating clip for ${channel}...`);
 
+    // Create a sleep to wait for the clip to be created
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     if (type != "full" && type != "overlay") {
       console.log(`Clip created: ${CLIP_BASE_URL}${clipData.id}`);
-      if (type === "text") return new Response(CLIP_BASE_URL + clipData.id, { status: 200 });
+      if (type == "text") return new Response(CLIP_BASE_URL + clipData.id, { status: 200 });
       if (type == "json") return NextResponse.json({ status: "success", data: { id: clipData.id, url: CLIP_BASE_URL + clipData.id } }, { status: 200 });
     }
-
-    // Create a sleep to wait for the clip to be created
-    await new Promise((resolve) => setTimeout(resolve, 4000));
 
     // Check if the clip is created
     let getClipFailed = 0;
@@ -81,31 +81,37 @@ export async function GET(request) {
 
     while (!getClip && getClipFailed < 5) {
       console.log(`Clip not yet created for ${channel}, retrying...`);
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 4000));
       getClip = await getClipData(clipData.id, token.access_token);
       getClipFailed++;
     }
 
-    if (!getClip) return NextResponse.json({ status: "failed", message: "Failed to create clip, try again later" }, { status: 200 });
+    if (!getClip) {
+      console.log({ status: "failed", message: "Failed to create clip, try again later" });
+      return NextResponse.json({ status: "failed", message: "Failed to create clip, try again later" }, { status: 200 });
+    }
 
-    /*
+    console.log("Clip data:", getClip);
+
+
     // Get the clip data to edit the title and duration
-    const clipURL = getClip.url;
-    const assetId = getClip.thumbnail_url.split("/").at(-2);
-    const slug = getClip.id;
-    const originalTitle = getClip.title;
+    // const url = getClip.url;
+    // const assetId = getClip.thumbnail_url.split("/").at(-2);
+    // const slug = getClip.id;
+    // const clipTitle = getClip.title;
 
-    // Edit the clip
-    const editClip = await editClipData({ slug, assetId, title, duration, originalTitle });
-    if (editClip[0].errors) { console.log("Error editing clip", editClip[0].data.error); }
+    // Edit the clip - Not needed anymore
+    // const editClip = await editClipData({ slug, assetId, title, duration, originalTitle: clipTitle });
+    // if (editClip[0].errors) { console.log("Error editing clip", editClip[0].data.error); }
 
     // Get the download URL
-    console.log(`Generating download URL for clip ${clipData.id}...`);
-    await new Promise((resolve) => setTimeout(resolve, 4000));
-    const downloadURL = await getClipDownloadURL(clipData.id);
+    console.log(`Generating download URL for clip ${getClip.id}...`);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    const videoUrl = await getClipDownloadURL(getClip.id);
 
-    return NextResponse.json({ status: "success", data: { id: clipData.id, url: clipURL, video_url: downloadURL, title: editClip[0].data.editClipMedia.clip.title } }, { status: 200 });
-*/
+    console.log({ status: "success", data: { id: getClip.id, url: getClip.url, video_url: videoUrl, title: getClip.title } });
+    return NextResponse.json({ status: "success", data: { id: getClip.id, url: getClip.url, video_url: videoUrl, title: getClip.title } }, { status: 200 });
+
 
   } catch (error) {
     console.log(error);
