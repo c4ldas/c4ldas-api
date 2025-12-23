@@ -23,7 +23,7 @@ const validTypes = ["text", "json", "full", "overlay"];
 export async function GET(request) {
   try {
     const obj = Object.fromEntries(request.nextUrl.searchParams);
-    const { channel, type = "text", duration = 30, title } = obj;
+    const { channel, type = "text", duration = 30, title = '0' } = obj;
 
     // Check if the user is missing from the request
     if (!channel) return NextResponse.json({ status: "failed", message: "Missing channel" }, { status: 200 });
@@ -63,7 +63,7 @@ export async function GET(request) {
     }
 
     // Create a clip
-    const clipData = await createClip(userData.id, token.access_token);
+    const clipData = await createClip(userData.id, token.access_token, title, duration);
     console.log(`Creating clip for ${channel}...`);
 
     if (type != "full" && type != "overlay") {
@@ -88,6 +88,7 @@ export async function GET(request) {
 
     if (!getClip) return NextResponse.json({ status: "failed", message: "Failed to create clip, try again later" }, { status: 200 });
 
+    /*
     // Get the clip data to edit the title and duration
     const clipURL = getClip.url;
     const assetId = getClip.thumbnail_url.split("/").at(-2);
@@ -104,6 +105,7 @@ export async function GET(request) {
     const downloadURL = await getClipDownloadURL(clipData.id);
 
     return NextResponse.json({ status: "success", data: { id: clipData.id, url: clipURL, video_url: downloadURL, title: editClip[0].data.editClipMedia.clip.title } }, { status: 200 });
+*/
 
   } catch (error) {
     console.log(error);
