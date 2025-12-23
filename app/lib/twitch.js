@@ -196,9 +196,11 @@ async function getOpenPrediction(accessToken, broadcasterId) {
 
 
 // Create a clip
-async function createClip(broadcaster_id, token) {
+async function createClip(broadcaster_id, token, title = 0, duration = 30) {
   try {
-    const request = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${broadcaster_id}`, {
+    if (title == 0) title = '';
+
+    const request = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${broadcaster_id}&duration=${duration}&title=${title}`, {
       method: "POST",
       next: { revalidate: 0 }, // disable cache
       headers: {
