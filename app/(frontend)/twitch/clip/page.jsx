@@ -43,7 +43,16 @@ export default function TwitchClip({ params, searchParams }) {
         <div>Just copy the code below to the command you want to use (i.e.: <code>!clip</code>):</div>
         <br />
 
-        <div style={{ paddingTop: "10px", cursor: "pointer" }}><code id="code" className="code" onClick={copyToClipboard}>$(touser) ► $(customapi.{origin}/api/twitch/clip?type=text&channel=$(channel))</code></div>
+        <div style={{ paddingTop: "10px", cursor: "pointer" }}><code id="code" className="code" onClick={copyToClipboard}>$(sender) ► $(customapi.{origin}/api/twitch/clip?type=text&channel=$(channel)&duration=30&title=$(1:|'0'))</code></div>
+
+        <h2>Optional parameters</h2>
+        <div>There are 2 optional parameters you can use to customize the response:</div>
+        <ul>
+          <li><code className="blue" style={{ fontSize: "1rem" }}>&title</code> - The title of the clip. Default is the stream title.</li>
+          <li><code className="blue" style={{ fontSize: "1rem" }}>&duration</code> - You can choose the clip duration in seconds from 5 to 60 seconds. Default is 30 seconds.</li>
+        </ul>
+
+
         <h3>Example response:</h3>
         <Image src="/images/clip.png" width={440} height={740} alt="Clip Screenshot" />
 
