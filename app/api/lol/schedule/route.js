@@ -19,6 +19,8 @@ const leagues = {
   "lta_cross": "113475149040947852",
   "first_stand": "113464388705111224",
   "circuito_desafiante": "105549980953490846",
+  "cblol": "98767991332355509",
+  "lcs": "98767991299243165",
 }
 
 export async function GET(data) {

@@ -15,6 +15,8 @@ const leagues = [
   { code: "lec", league_name: "LEC" },
   { code: "lcp", league_name: "LCP" },
   { code: "circuito_desafiante", league_name: "Circuito Desafiante" },
+  { code: "cblol", league_name: "CBLOL" },
+  { code: "lcs", league_name: "LCS" },
 ]
 
 const languages = [
