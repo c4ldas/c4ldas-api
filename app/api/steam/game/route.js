@@ -48,7 +48,7 @@ export async function GET(request) {
     const appId = gameId.response.players[0]?.gameid || "";
 
     // color.log("green", `Game ID: ${JSON.stringify(appId)}`);
-    if (!appId) return NextResponse.json(nullValues, { status: 404 });;
+    if (!appId) return NextResponse.json(nullValues, { status: 200 });;
 
     const gameDetailsRequest = await fetch(getGameDetails(apiToken, appId, region));
     const gameDetails = await gameDetailsRequest.json();

@@ -27,6 +27,10 @@ const nextConfig = {
       {
         source: '/contact',
         destination: '/terms/contact',
+      },
+      {
+        source: '/api/steam/game/',
+        destination: '/api/steam/game',
       }
     ]
   },
