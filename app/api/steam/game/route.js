@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { color } from "/app/lib/colorLog";
 import decrypt from "/app/lib/encode_key";
 
 const env = process.env.ENVIRONMENT;
@@ -43,7 +42,6 @@ export async function GET(request) {
     const validParams = checkParams(id, region);
 
     const gameIdRequest = await fetch(getGameId(apiToken, id), { next: { revalidate: 0 } });
-    // color.log("blue", JSON.stringify(gameIdRequest));
     const gameId = await gameIdRequest.json();
 
     // console.log("game id: ", gameId);
