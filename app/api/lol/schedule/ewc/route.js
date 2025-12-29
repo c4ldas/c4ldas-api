@@ -10,6 +10,10 @@
  * https://repl.c4ldas.com.br/api/lol/schedule/ewc?channel=$(channel)&type=text
 */
 
+// The line below clears the error during the deployment:
+// [Error]: Dynamic server usage: Route /api/json-textify couldn't be rendered statically because it used `nextUrl.searchParams`.
+export const dynamic = 'force-dynamic';
+
 import { Temporal } from "@js-temporal/polyfill";
 import { NextResponse } from "next/server";
 

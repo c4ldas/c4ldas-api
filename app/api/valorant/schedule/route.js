@@ -22,6 +22,10 @@
 * - Add a response (for a limited time) on /api/valorant/schedule/vlr.gg to use /api/valorant/schedule instead (just remove the /vlr.gg from the URL)
 */
 
+// The line below clears the error during the deployment:
+// [Error]: Dynamic server usage: Route /api/json-textify couldn't be rendered statically because it used `nextUrl.searchParams`.
+export const dynamic = 'force-dynamic';
+
 import { JSDOM } from "jsdom";
 import { Temporal } from "@js-temporal/polyfill";
 import { NextResponse } from "next/server";

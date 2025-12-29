@@ -1,3 +1,7 @@
+// The line below clears the error during the deployment:
+// [Error]: Dynamic server usage: Route /api/json-textify couldn't be rendered statically because it used `nextUrl.searchParams`.
+export const dynamic = 'force-dynamic';
+
 const { NextResponse } = require("next/server");
 import { Temporal } from "@js-temporal/polyfill";
 
