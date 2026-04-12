@@ -20,7 +20,7 @@ export default function Puuid() {
       setIsLoading(true);
       clearResponse();
 
-      const request = await fetch(`/api/valorant/puuid?player=${player}&tag=${tag}`);
+      const request = await fetch(`/api/valorant/puuid?player=${player}&tag=${tag}&type=json`);
       const response = await request.json();
 
       if (!response.data) throw new Error("Not found, please check the username and tagline are correct");
