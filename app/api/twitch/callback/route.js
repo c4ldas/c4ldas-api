@@ -8,6 +8,7 @@ export async function GET(request) {
   const obj = Object.fromEntries(request.nextUrl.searchParams);
   const { code, state } = obj;
   const origin = request.nextUrl.origin;
+  const cookieStore = await cookies();
 
   if (!code) return Response.redirect(`${origin}/twitch?error=Code not found`);
 
@@ -31,9 +32,9 @@ export async function GET(request) {
     return NextResponse.json({ status: "success", data: data }, { status: 200 });
   }
 
-  cookies().set('twitch_id', data.id);
-  cookies().set('twitch_username', data.username);
-  cookies().set('twitch_code', data.code);
+  cookieStore.set('twitch_id', data.id);
+  cookieStore.set('twitch_username', data.username);
+  cookieStore.set('twitch_code', data.code);
 
   return Response.redirect(`${origin}/twitch/prediction`);
 }

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { getAccessToken, getNextSong, getSong, sendResponse } from "@/app/lib/spotify";
 import { spotifyGetRefreshTokenDatabase } from "@/app/lib/database";
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
   const { channel, type = "text" } = obj;

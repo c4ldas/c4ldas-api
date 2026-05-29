@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
 import { validRegions } from "@/app/lib/valorant_rank";
@@ -10,7 +10,8 @@ import { validRegions } from "@/app/lib/valorant_rank";
 // const id = "10726a29-ce65-5471-a794-32733f309a16"; // Coreano
 // const id = "19071032-691d-55a3-8529-4fbbbd867eaf" // Aprendendo
 
-export default function Valorant({ searchParams }) {
+export default function Valorant(props) {
+  const searchParams = use(props.searchParams);
 
   const [isLoading, setIsLoading] = useState(false);
   const [id, setId] = useState(searchParams.id || '');

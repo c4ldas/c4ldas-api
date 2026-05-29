@@ -6,22 +6,58 @@ export default function FooterComponent() {
     <footer className="footer">
       <nav className="navigation">
         <Link href="/">
-          <Image className="icons" src="/images/home.svg" width={20} height={20} alt="home" />
+          <Image
+            className="icons"
+            src="/images/home.svg"
+            width={20}
+            height={20}
+            alt="home"
+          />
         </Link>
         <Link href="https://twitter.com/c4ldas" target="_blank">
-          <Image className="icons" src="/images/twitter.svg" width={20} height={20} alt="twitch" />
+          <Image
+            className="icons"
+            src="/images/twitter.svg"
+            width={20}
+            height={20}
+            alt="twitch"
+          />
         </Link>
         <Link href="https://twitch.tv/c4ldas" target="_blank">
-          <Image className="icons" src="/images/twitch.svg" width={20} height={20} alt="twitch" />
+          <Image
+            src="/images/twitch.svg"
+            className="icons"
+            width={20}
+            height={20}
+            alt="twitch"
+          />
         </Link>
         <Link href="https://youtube.com/c4ldas" target="_blank">
-          <Image className="icons" src="/images/youtube.svg" width={20} height={20} alt="youtube" />
+          <Image
+            className="icons"
+            src="/images/youtube.svg"
+            width={20}
+            height={20}
+            alt="youtube"
+          />
         </Link>
         <Link href="https://instagram.com/c4ldas" target="_blank">
-          <Image className="icons" src="/images/instagram.svg" width={20} height={20} alt="instagram" />
+          <Image
+            className="icons"
+            src="/images/instagram.svg"
+            width={20}
+            height={20}
+            alt="instagram"
+          />
         </Link>
         <Link href="https://github.com/c4ldas" target="_blank">
-          <Image className="icons" src="/images/github.svg" width={20} height={20} alt="github" />
+          <Image
+            className="icons"
+            src="/images/github.svg"
+            width={20}
+            height={20}
+            alt="github"
+          />
         </Link>
       </nav>
 

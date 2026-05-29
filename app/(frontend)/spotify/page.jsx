@@ -1,13 +1,15 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { getCookies } from "cookies-next";
 import Header from "@/app/components/Header";
 import FooterComponent from "@/app/components/Footer";
 import SpotifyNowPlaying from "@/app/components/Spotify";
 import "@/public/css/spotify.css";
 
-export default function Spotify({ _, searchParams }) {
+export default function Spotify(props) {
+  const searchParams = use(props.searchParams);
+
   const error = searchParams.error;
 
   const [cookie, setCookie] = useState({});
@@ -65,8 +67,6 @@ export default function Spotify({ _, searchParams }) {
     // Show the dialog next to the clicked element
     dialog.style.top = (event.pageY - 70) + "px";
     dialog.style.marginLeft = (event.pageX) + "px";
-    // dialog.style.top = (event.clientY - 70) + "px";
-    // dialog.style.marginLeft = (event.clientX + 50) + "px";
     dialog.show();
 
     // Close the dialog after 2 seconds
@@ -95,14 +95,6 @@ export default function Spotify({ _, searchParams }) {
             >
               .me $(sender) ► $(customapi.{origin}/api/spotify/musica/...)
             </code>
-
-            {/* 
-            <h3>How to use it:</h3>
-            <code style={{ border: "1px solid black", padding: "10px" }}>!musica</code>
-
-            <h3>Chat response:</h3>
-            <code style={{ border: "1px solid black", padding: "10px" }}>Rick Astley - Never Gonna Give You Up</code>
-            */}
 
             <br /><br /><br />
             <h3>Widget URL (click to copy)</h3>
