@@ -7,6 +7,7 @@ export async function GET(request) {
   const obj = Object.fromEntries(request.nextUrl.searchParams);
   const { code } = obj;
   const origin = request.nextUrl.origin;
+  const cookieStore = await cookies();
 
   if (!code) return Response.redirect(`${origin}/spotify?error=Code not found`);
 
@@ -26,8 +27,8 @@ export async function GET(request) {
   const saved = await spotifySaveToDatabase(data);
   if (!saved) return Response.redirect(`${origin}/spotify?error=Error while saving to database`);
   // if (!saved) return NextResponse.json({ error: "Failed to save to database, try again later." }, { status: 500 });
-  cookies().set('spotify_id', data.id);
-  cookies().set('spotify_display_name', data.display_name);
+  cookieStore.set('spotify_id', data.id);
+  cookieStore.set('spotify_display_name', data.display_name);
 
 
   return Response.redirect(`${origin}/spotify`);

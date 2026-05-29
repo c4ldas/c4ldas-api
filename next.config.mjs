@@ -2,9 +2,6 @@
 
 const nextConfig = {
   skipTrailingSlashRedirect: true,
-  eslint: {
-    ignoreDuringBuilds: true
-  },
   async headers() {
     return [
       {
@@ -38,6 +35,7 @@ const nextConfig = {
 
 
   images: {
+    qualities: [75, 100],
     remotePatterns: [
       {
         protocol: 'https',

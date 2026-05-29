@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { twitchGetTokenDatabase } from "@/app/lib/database";
 import { getOpenPrediction } from "@/app/lib/twitch";
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   try {
     const obj = Object.fromEntries(request.nextUrl.searchParams);
     const code = params.code;

@@ -7,13 +7,14 @@ import { spotifyRemoveIntegration } from "@/app/lib/database";
 
 export async function POST(request) {
   try {
-    const id = cookies().get('spotify_id').value;
-    const username = cookies().get('spotify_display_name').value;
+    const cookieStore = await cookies();
+    const id = cookieStore.get('spotify_id').value;
+    const username = cookieStore.get('spotify_display_name').value;
 
     const isRemoved = await spotifyRemoveIntegration(id, username);
 
-    cookies().delete('spotify_id');
-    cookies().delete('spotify_display_name');
+    cookieStore.delete('spotify_id');
+    cookieStore.delete('spotify_display_name');
 
     return NextResponse.json({ status: "success", message: "Integration removed successfully" });
 

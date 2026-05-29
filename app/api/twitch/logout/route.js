@@ -9,15 +9,16 @@ import { twitchRemoveIntegration } from "@/app/lib/database";
 
 export async function POST(request) {
   try {
-    const id = cookies().get('twitch_id').value;
-    const username = cookies().get('twitch_username').value;
-    const code = cookies().get('twitch_code').value;
+    const cookieStore = await cookies();
+    const id = cookieStore.get('twitch_id').value;
+    const username = cookieStore.get('twitch_username').value;
+    const code = cookieStore.get('twitch_code').value;
 
     const isRemoved = await twitchRemoveIntegration(id, username, code);
 
-    cookies().delete('twitch_id');
-    cookies().delete('twitch_username');
-    cookies().delete('twitch_code');
+    cookieStore.delete('twitch_id');
+    cookieStore.delete('twitch_username');
+    cookieStore.delete('twitch_code');
 
     return NextResponse.json({ status: "success", message: "Integration removed successfully" });
 

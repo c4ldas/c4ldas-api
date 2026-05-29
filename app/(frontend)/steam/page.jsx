@@ -3,13 +3,13 @@
 import { usePathname } from "next/navigation";
 import Header from "/app/components/Header";
 import FooterComponent from "/app/components/Footer";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import Icon from "@mdi/react";
 import { mdiCurrencyUsd, mdiController } from "@mdi/js";
 
 
-export default function Steam({ params, searchParams }) {
-  // color.log("green", `Search Params: ${JSON.stringify(searchParams)}`);
+export default function Steam(props) {
+  const searchParams = use(props.searchParams);
   const mySteamId = searchParams.id || 0
   const myRegion = searchParams.locale || "br"
 

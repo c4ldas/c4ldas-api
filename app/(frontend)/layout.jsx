@@ -19,6 +19,7 @@ export const viewport = {
 }
 
 export const metadata = {
+  metadataBase: new URL("https://c4ldas.com.br"),
   title: "c4ldas webpage",
   description: "Collection of tools and utilities for Twitch streaming and Streamelements",
   backgroundColor: "#3c3c3c",

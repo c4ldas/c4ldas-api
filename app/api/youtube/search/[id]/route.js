@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getVideoData } from '../route';
 
-export async function GET(request, { params }) {
+export async function GET(request, props) {
+  const params = await props.params;
   // Convert query strings (map format) to object format - Only works for this specific case!
   const obj = Object.fromEntries(request.nextUrl.searchParams);
   const { type = "json" } = obj;
