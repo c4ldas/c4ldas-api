@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import decrypt from "/app/lib/encode_key";
+import decrypt from "@/app/lib/encode_key";
 
 const env = process.env.ENVIRONMENT;
 

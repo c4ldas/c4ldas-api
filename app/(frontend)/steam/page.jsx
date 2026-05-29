@@ -1,8 +1,8 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import Header from "/app/components/Header";
-import FooterComponent from "/app/components/Footer";
+import Header from "@/app/components/Header";
+import FooterComponent from "@/app/components/Footer";
 import { useEffect, useState, use } from "react";
 import Icon from "@mdi/react";
 import { mdiCurrencyUsd, mdiController } from "@mdi/js";
