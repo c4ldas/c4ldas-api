@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import decrypt from "@/app/lib/encode_key";
 const env = process.env.ENVIRONMENT;
+const userAgent = process.env.USER_AGENT;
 
 const apiToken = env == "dev" ?
   decrypt(process.env.VALORANT_TOKEN) :
@@ -22,7 +23,9 @@ export async function GET(request) {
     const url = puuid ? urlByPuuid(puuid) : urlByPlayer(player, tag);
 
     const getData = await fetch(url, {
+      method: "GET",
       headers: {
+        "User-Agent": userAgent,
         "Authorization": apiToken
       }
     });

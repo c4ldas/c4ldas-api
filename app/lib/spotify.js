@@ -5,6 +5,7 @@ const env = process.env.ENVIRONMENT;
 const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI;
 let SPOTIFY_CLIENT_ID;
 let SPOTIFY_CLIENT_SECRET;
+const userAgent = process.env.USER_AGENT;
 
 if (env == "dev") {
   SPOTIFY_CLIENT_ID = decrypt(process.env.SPOTIFY_CLIENT_ID);
@@ -21,6 +22,7 @@ async function getTokenCode(code) {
     method: "POST",
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
+      "User-Agent": userAgent,
       Authorization: `Basic ${Buffer.from(SPOTIFY_CLIENT_ID + ":" + SPOTIFY_CLIENT_SECRET).toString("base64")}`,
     },
     body: new URLSearchParams({
@@ -49,6 +51,7 @@ async function getAccessToken(refreshToken, type) {
     method: "POST",
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
+      "User-Agent": userAgent,
       Authorization: `Basic ${Buffer.from(SPOTIFY_CLIENT_ID + ":" + SPOTIFY_CLIENT_SECRET).toString("base64")}`,
     },
     body: new URLSearchParams({
@@ -66,6 +69,7 @@ async function getUserData(token) {
     method: "GET",
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
+      "User-Agent": userAgent,
       Authorization: `Bearer ${token}`,
     },
   });
@@ -106,7 +110,7 @@ async function getSong(accessToken, type) {
       "headers": {
         "Accept": "application/json",
         "Authorization": `Bearer ${accessToken}`,
-        "Content-Type": "application/json"
+        "User-Agent": userAgent
       }
     });
 
@@ -128,7 +132,7 @@ async function getNextSong(accessToken, type) {
       "headers": {
         "Accept": "application/json",
         "Authorization": `Bearer ${accessToken}`,
-        "Content-Type": "application/json"
+        "User-Agent": userAgent
       }
     });
 

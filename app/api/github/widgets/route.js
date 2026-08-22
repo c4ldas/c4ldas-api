@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { JSDOM } from "jsdom";
 
+const userAgent = process.env.USER_AGENT;
+
 export async function GET() {
   try {
     const request = await getGithubWidgets();
@@ -18,6 +20,7 @@ export async function getGithubWidgets() {
     // Get the directory list from the repository
     const request = await fetch('https://api.github.com/repos/c4ldas/streamelements-widgets/contents/', {
       "headers": {
+        "User-Agent": userAgent,
         "Accept": "application/vnd.github.v3.raw",
         "Authorization": `Bearer ${process.env.GITHUB_API_KEY}`
       }

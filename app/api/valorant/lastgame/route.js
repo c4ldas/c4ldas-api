@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { tiers, validRegions } from '@/app/lib/valorant_rank';
 import decrypt from "@/app/lib/encode_key";
 const env = process.env.ENVIRONMENT;
+const userAgent = process.env.USER_AGENT;
 
 const apiToken = env == "dev" ?
   decrypt(process.env.VALORANT_TOKEN) :
@@ -23,7 +24,8 @@ export async function GET(request) {
       // cache: "force-cache",
       next: { revalidate: 0 },
       headers: {
-        "Authorization": apiToken
+        "Authorization": apiToken,
+        "User-Agent": userAgent
       }
     });
 

@@ -5,6 +5,7 @@ const DOMAIN = process.env.MAILGUN_DOMAIN;
 const MAIL_FROM = process.env.MAILGUN_MAIL_FROM; // @${DOMAIN}
 const MAIL_TO = process.env.MAILGUN_MAIL_TO;
 const SUBJECT = "Website c4ldas.com.br";
+const userAgent = process.env.USER_AGENT;
 
 let lastMessageEpoch;
 const waitTime = 60000; // 60 seconds
@@ -40,7 +41,8 @@ export async function POST(request) {
       method: "POST",
       headers: {
         "Authorization": "Basic " + Buffer.from(`api:${TOKEN}`).toString("base64"),
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": userAgent
       },
 
       body: new URLSearchParams({

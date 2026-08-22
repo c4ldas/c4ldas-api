@@ -15,6 +15,7 @@
 import { NextResponse } from 'next/server';
 
 const apiToken = process.env.OPENWEATHER_API_KEY;
+const userAgent = process.env.USER_AGENT;
 
 export async function GET(data) {
 
@@ -34,10 +35,13 @@ export async function GET(data) {
     if (zipcode && country) searchParams.append("zip", `${zipcode},${country}`);
     if (city) searchParams.append("q", city);
 
-    console.log(`https://api.openweathermap.org/data/2.5/weather?${searchParams.toString()}`);
+    // console.log(`https://api.openweathermap.org/data/2.5/weather?${searchParams.toString()}`);
 
     const request = await fetch(`https://api.openweathermap.org/data/2.5/weather?${searchParams.toString()}`, {
       method: 'GET',
+      headers: {
+        "User-Agent": userAgent
+      },
       next: { revalidate: 60 * 30 } // 30 minutes
     });
 

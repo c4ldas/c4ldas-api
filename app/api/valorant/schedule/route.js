@@ -30,6 +30,7 @@ import { JSDOM } from "jsdom";
 import { Temporal } from "@js-temporal/polyfill";
 import { NextResponse } from "next/server";
 import { convertTZ, regionToTZ } from "@/app/lib/convert_timezone";
+const userAgent = process.env.USER_AGENT;
 
 // Check if project is local or on Vercel and set the correct time zone
 const localTimeZone = process.env.VERCEL_URL ? regionToTZ[process.env.AWS_REGION] : Temporal.Now.timeZoneId();
@@ -46,7 +47,7 @@ export async function GET(request) {
 
     const html = await fetch(url(id, series_id), {
       next: { revalidate: 60 }, // Cache for 1 minute
-      headers: { "User-Agent": "Mozilla/5.0" }
+      headers: { "User-Agent": userAgent }
     }).then((res) => res.text());
 
     if (!html) return NextResponse.json({ status: "failed", error: "Not possible to get the schedule. Please try again" }, { status: 200 });

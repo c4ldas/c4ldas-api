@@ -1,5 +1,6 @@
 import decrypt from "./encode_key";
 const env = process.env.ENVIRONMENT;
+const userAgent = process.env.USER_AGENT;
 
 const apiURL = "api.riotgames.com";
 
@@ -53,7 +54,8 @@ export async function getSummonerPuuid(request) {
       method: "GET",
       next: { revalidate: 3600 * 12 }, // 12 hour cache
       headers: {
-        "X-Riot-Token": apiToken
+        "X-Riot-Token": apiToken,
+        "User-Agent": userAgent
       }
     });
 
@@ -84,7 +86,8 @@ export async function getSummonerId(request) {
       method: "GET",
       next: { revalidate: 3600 * 12 }, // 12 hours cache
       headers: {
-        "X-Riot-Token": apiToken
+        "X-Riot-Token": apiToken,
+        "User-Agent": userAgent  
       }
     });
 
@@ -114,7 +117,8 @@ export async function getRank(request) {
       // cache: "force-cache",
       next: { revalidate: 900 }, // 15 minutes
       headers: {
-        "X-Riot-Token": apiToken
+        "X-Riot-Token": apiToken,
+        "User-Agent": userAgent
       }
     });
 
@@ -147,7 +151,8 @@ export async function getPreviousGame(request) {
       method: "GET",
       next: { revalidate: 0 }, // 0 seconds cache
       headers: {
-        "X-Riot-Token": apiToken
+        "X-Riot-Token": apiToken,
+        "User-Agent": userAgent
       }
     });
 
@@ -164,7 +169,8 @@ export async function getPreviousGame(request) {
       // cache: "force-cache",
       next: { revalidate: 0 }, // 0 seconds cache
       headers: {
-        "X-Riot-Token": apiToken
+        "X-Riot-Token": apiToken,
+        "User-Agent": userAgent
       }
     });
 
@@ -210,7 +216,8 @@ export async function getActiveGame(request) {
       method: "GET",
       next: { revalidate: 0 }, // 0 seconds cache
       headers: {
-        "X-Riot-Token": apiToken
+        "X-Riot-Token": apiToken,
+        "User-Agent": userAgent
       }
     });
 

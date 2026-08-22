@@ -7,6 +7,7 @@ import { Temporal } from "@js-temporal/polyfill";
 
 const baseURL = "https://esports-api.lolesports.com/persisted/gw";
 const LOL_ESPORTS_TOKEN = process.env.LOL_ESPORTS_TOKEN;
+const userAgent = process.env.USER_AGENT;
 const localTimeZone = "America/Sao_Paulo";
 
 const leagues = {
@@ -57,6 +58,7 @@ async function listTodayMatches(leagueId, language) {
     const request = await fetch(`${baseURL}/getSchedule?hl=${language}&leagueId=${leagueId}`, {
       method: "GET",
       headers: {
+        "User-Agent": userAgent,
         "accept": "application/json",
         "x-api-key": LOL_ESPORTS_TOKEN
       }
@@ -146,6 +148,7 @@ async function getLeagueName(league, language) {
   const request = await fetch(`${baseURL}/getLeagues?hl=${language}`, {
     method: "GET",
     headers: {
+      "User-Agent": userAgent,
       "accept": "application/json",
       "x-api-key": LOL_ESPORTS_TOKEN
     }

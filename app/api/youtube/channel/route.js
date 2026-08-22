@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import decrypt from "@/app/lib/encode_key";
 const env = process.env.ENVIRONMENT;
+const userAgent = process.env.USER_AGENT;
 
 const apiToken = env == "dev" ?
   decrypt(process.env.YOUTUBE_KEY) :
@@ -48,6 +49,9 @@ async function getChannelByHandle(username) {
   try {
     const htmlRequest = await fetch(`https://youtube.com/${username}`, {
       revalidate: 900, // 15 minutes
+      headers: {
+        "User-Agent": userAgent
+      },
     });
     const html = await htmlRequest.text();
 

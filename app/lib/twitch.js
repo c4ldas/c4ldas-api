@@ -1,6 +1,7 @@
 import decrypt from "@/app/lib/encode_key";
 
 const env = process.env.ENVIRONMENT;
+const userAgent = process.env.USER_AGENT;
 const TWITCH_REDIRECT_URI = process.env.TWITCH_REDIRECT_URI;
 let TWITCH_CLIENT_ID;
 let TWITCH_CLIENT_SECRET;
@@ -21,6 +22,11 @@ async function getTokenCode(code) {
   try {
     const request = await fetch("https://id.twitch.tv/oauth2/token", {
       method: "POST",
+      headers: {
+        "User-Agent": userAgent,
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json",
+      },
       body: new URLSearchParams({
         client_id: TWITCH_CLIENT_ID,
         client_secret: TWITCH_CLIENT_SECRET,
@@ -42,6 +48,11 @@ async function getNewToken(refreshToken) {
   try {
     const request = await fetch("https://id.twitch.tv/oauth2/token", {
       method: "POST",
+      headers: {
+        "User-Agent": userAgent,
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json",
+      },
       body: new URLSearchParams({
         client_id: TWITCH_CLIENT_ID,
         client_secret: TWITCH_CLIENT_SECRET,
@@ -64,7 +75,7 @@ async function getUserData(accessToken, channel) {
       method: "GET",
       next: { revalidate: 0 }, // Remove cache
       headers: {
-        "Content-type": "application/json",
+        "User-Agent": userAgent,
         "Client-Id": channel ? CLIP_TWITCH_CLIENT_ID : TWITCH_CLIENT_ID,
         "Authorization": `Bearer ${accessToken}`
       },
@@ -89,6 +100,7 @@ async function createPrediction(accessToken, broadcasterId, question, options, t
         'authorization': `Bearer ${accessToken}`,
         'Client-Id': TWITCH_CLIENT_ID,
         'Content-Type': 'application/json',
+        'User-Agent': userAgent
       },
       body: JSON.stringify({
         'broadcaster_id': broadcasterId,
@@ -118,7 +130,8 @@ async function closePrediction(accessToken, broadcasterId, predictionId, winner)
       "headers": {
         "Authorization": `Bearer ${accessToken}`,
         "Client-Id": TWITCH_CLIENT_ID,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "User-Agent": userAgent
       },
       "body": JSON.stringify({
         "broadcaster_id": broadcasterId,
@@ -148,7 +161,8 @@ async function cancelPrediction(accessToken, broadcasterId, predictionId) {
       "headers": {
         "Authorization": `Bearer ${accessToken}`,
         "Client-Id": TWITCH_CLIENT_ID,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "User-Agent": userAgent
       },
       "body": JSON.stringify({
         "broadcaster_id": broadcasterId,
@@ -176,7 +190,8 @@ async function getOpenPrediction(accessToken, broadcasterId) {
       "method": "GET",
       "headers": {
         "Authorization": `Bearer ${accessToken}`,
-        "Client-Id": TWITCH_CLIENT_ID
+        "Client-Id": TWITCH_CLIENT_ID,
+        "User-Agent": userAgent
       }
     });
     const response = await request.json();
@@ -206,7 +221,8 @@ async function createClip(broadcaster_id, token, title = 0, duration = 30) {
       headers: {
         "Content-type": "application/json",
         "Client-Id": CLIP_TWITCH_CLIENT_ID,
-        "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${token}`,
+        "User-Agent": userAgent
       },
     });
     const response = await request.json();
@@ -225,9 +241,9 @@ async function getClipData(clip_id, token) {
     const request = await fetch(`https://api.twitch.tv/helix/clips?id=${clip_id}`, {
       method: "GET",
       headers: {
-        "Content-type": "application/json",
         "Client-Id": CLIP_TWITCH_CLIENT_ID,
         "Authorization": `Bearer ${token}`,
+        "User-Agent": userAgent
       },
     });
     const response = await request.json();
@@ -259,6 +275,7 @@ async function editClipData(data) {
         "Content-type": "application/json",
         "Client-Id": GQL_TWITCH_CLIENT_ID,
         "Authorization": `OAuth ${GQL_TWITCH_CLIENT_SECRET}`,
+        "User-Agent": userAgent
       },
       body: JSON.stringify([{
         operationName: "ClipEdit_EditClipMedia",
@@ -303,6 +320,7 @@ async function getClipDownloadURL(slug) {
       headers: {
         "Content-type": "application/json",
         "Client-Id": GQL_TWITCH_CLIENT_ID,
+        "User-Agent": userAgent
       },
       body: JSON.stringify([{
         operationName: "VideoAccessToken_Clip",
