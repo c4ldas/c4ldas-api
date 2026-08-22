@@ -14,7 +14,7 @@ export async function getRank(url, apiToken) {
       }
     });
     const data = await rankRequest.json();
-    console.log("getRank() function: ", data);
+    // console.log("getRank() function: ", data);
     return data;
 
   } catch (error) {
