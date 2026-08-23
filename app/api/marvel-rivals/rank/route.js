@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { fetch } from "wreq-js"; // This is needed for Cloudflare bypass on tracker.gg
 
-const userAgent = process.env.USER_AGENT;
+// const userAgent = process.env.USER_AGENT;
 
 // Tiers data to be translated to Portuguese
 export const tiers = [
@@ -36,8 +36,8 @@ export async function GET(request) {
   let { player, type = "text", lang = "pt", channel, msg } = obj;
 
   // Return a message informing the API is not in operation
-  // if (lang == "pt") return NextResponse.json({ message: "Infelizmente, a API de Marvel Rivals está indisponível :(" }, { status: 200 });
-  // if (lang != "pt") return NextResponse.json({ message: "Unfortunately, the Marvel Rivals API is unavailable :(" }, { status: 200 });
+  if (lang == "pt") return NextResponse.json({ message: "Infelizmente, a API de Marvel Rivals está indisponível :(" }, { status: 200 });
+  if (lang != "pt") return NextResponse.json({ message: "Unfortunately, the Marvel Rivals API is unavailable :(" }, { status: 200 });
 
   if (!player) return NextResponse.json({ error: "Missing player name" }, { status: 200 });
   if (!channel) return NextResponse.json({ error: "Missing channel" }, { status: 200 });
@@ -56,7 +56,7 @@ export async function GET(request) {
     // next: { revalidate: 3600 * 12 }, // 12 hours
     browser: "chrome_149",
     headers: {
-      "User-Agent": userAgent
+      // "User-Agent": userAgent
     }
   });
 
@@ -74,7 +74,7 @@ export async function GET(request) {
     browser: "chrome_149",
     // next: { revalidate: 900 }, // 15 minutes
     headers: {
-      "User-Agent": userAgent
+      // "User-Agent": userAgent
     }
   });
 
@@ -90,7 +90,7 @@ export async function GET(request) {
     browser: "chrome_149",
     // next: { revalidate: 900 }, // 15 minutes
     headers: {
-      "User-Agent": userAgent
+      // "User-Agent": userAgent
     }
   });
 
@@ -102,7 +102,6 @@ export async function GET(request) {
   const wins = winsResponse.data[0]?.stats.matchesWon.value || 0; // 15
 
   return sendResponse({ username, rankInfo, score, wins }, type, msg, lang);
-
 }
 
 // Format and send response

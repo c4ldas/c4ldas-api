@@ -37,13 +37,13 @@ export default async function Home() {
         />
 
 
-        <Linkbox
+        {/* <Linkbox
           title="Marvel Rivals rank"
           description="Create a chat command to display your rank in Marvel Rivals."
           link="/marvel-rivals"
-          /* span=" Unavailable." */
+          span=" Unavailable."
           spanClass="red"
-        />
+        /> */}
 
 
         <Linkbox
