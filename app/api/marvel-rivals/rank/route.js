@@ -54,10 +54,13 @@ export async function GET(request) {
   const seasonRequest = await fetch(seasonURL(player), {
     method: "GET",
     // next: { revalidate: 3600 * 12 }, // 12 hours
+    browser: "chrome_149",
     headers: {
       "User-Agent": userAgent
     }
   });
+
+  console.log("seasonRequest: ", seasonRequest);
 
   const seasonResponse = await seasonRequest.json();
 
@@ -68,6 +71,7 @@ export async function GET(request) {
   // Get rank
   const rankRequest = await fetch(rankURL(player), {
     method: "GET",
+    browser: "chrome_149",
     // next: { revalidate: 900 }, // 15 minutes
     headers: {
       "User-Agent": userAgent
@@ -83,6 +87,7 @@ export async function GET(request) {
   // Get wins
   const winsRequest = await fetch(winsURL(player, seasonResponse.data.metadata.currentSeason), {
     method: "GET",
+    browser: "chrome_149",
     // next: { revalidate: 900 }, // 15 minutes
     headers: {
       "User-Agent": userAgent
