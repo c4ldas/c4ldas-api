@@ -10,7 +10,7 @@ export default function MarvelRivals() {
   const [isLoading, setIsLoading] = useState(false);
   const [language, setLanguage] = useState("pt");
   const [player, setPlayer] = useState();
-  const [msg, setMsg] = useState(`(player) está (rank) com score (score) e (wins) vitórias.`);
+  const [msg, setMsg] = useState(``);
 
   const lang = [
     { code: "pt", name: "Rank language: Português" },

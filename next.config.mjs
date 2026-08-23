@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  serverExternalPackages: ['wreq-js'],
   skipTrailingSlashRedirect: true,
   async headers() {
     return [
