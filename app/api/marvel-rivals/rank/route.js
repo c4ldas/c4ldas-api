@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { fetch } from "wreq-js"; // This is needed for Cloudflare bypass on tracker.gg
 
 // const userAgent = process.env.USER_AGENT;
 
